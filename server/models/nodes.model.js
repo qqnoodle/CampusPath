@@ -22,14 +22,12 @@ const NodeSchema = mongoose.Schema(
             },
             weight: {
                 type: Number,
-                required: true,
                 default: 0,
             }
         }],
         attribute: {
             type: [String],
             enum: ['walk', 'sheltered', 'lift', 'ramp'],
-            required: true,
             default: ['walk'],
         },
         clusterGroup: {
@@ -39,7 +37,6 @@ const NodeSchema = mongoose.Schema(
         nodeType: {
             type: String,
             enum: ['door', 'junction'],
-            required: true,
             default: 'door'
         }
     },
