@@ -1,0 +1,566 @@
+{
+  "nodes": [
+    {
+      "node_id": "COM1-B1-D-6-7",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-J-8-9",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-J-8-9",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-6-7",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-10-9",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "junction"
+    },
+    {
+      "node_id": "COM1-B1-D-10-9",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-J-8-9",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-10-15",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-10-15",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-9",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-10-19",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-10-19",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-15",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-J-10-22",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-J-10-22",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-19",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-14-22",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "junction"
+    },
+    {
+      "node_id": "COM1-B1-D-14-22",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-J-10-22",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-21-22",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-21-22",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-14-22",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-28-22",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-28-22",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-21-22",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-28-19",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-28-19",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-28-22",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_A",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-J-10-22",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-26",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_B",
+      "nodeType": "junction"
+    },
+    {
+      "node_id": "COM1-B1-D-10-26",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-J-10-22",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-J-10-32",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_B",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-J-10-32",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-26",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-14-32",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_B",
+      "nodeType": "junction"
+    },
+    {
+      "node_id": "COM1-B1-D-14-32",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-J-10-32",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-21-32",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_B",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-21-32",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-14-32",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-28-32",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_B",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-28-32",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-21-32",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_B",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-J-10-32",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-35",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_C",
+      "nodeType": "junction"
+    },
+    {
+      "node_id": "COM1-B1-D-10-35",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-J-10-32",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-10-37",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_C",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-10-37",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-35",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-10-39",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_C",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-10-39",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-37",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-10-47",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_C",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-10-47",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-39",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-D-10-52",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_C",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-D-10-52",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-47",
+          "weight": 1
+        },
+        {
+          "id": "COM1-B1-J-8-51",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_C",
+      "nodeType": "door"
+    },
+    {
+      "node_id": "COM1-B1-J-8-51",
+      "building": "COM1",
+      "floor": 0,
+      "adjacents": [
+        {
+          "id": "COM1-B1-D-10-52",
+          "weight": 1
+        }
+      ],
+      "attribute": [
+        "walk"
+      ],
+      "clusterGroup": "COM1_B1_C",
+      "nodeType": "junction"
+    }
+  ],
+  "locations": [
+    {
+      "name": "Discussion Room 1",
+      "roomNumber": "B-14B",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-6-7"
+      ]
+    },
+    {
+      "name": "Discussion Room 2",
+      "roomNumber": "B-14A",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-6-7"
+      ]
+    },
+    {
+      "name": "IT Security & OS Lab",
+      "roomNumber": "B-13",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-9"
+      ]
+    },
+    {
+      "name": "Programming Lab 1",
+      "roomNumber": "B-12",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-15"
+      ]
+    },
+    {
+      "name": "Programming Lab 4",
+      "roomNumber": "B-11",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-19",
+        "COM1-B1-D-28-19"
+      ]
+    },
+    {
+      "name": "Programming Lab 3",
+      "roomNumber": "B-08",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-14-22",
+        "COM1-B1-D-14-32"
+      ]
+    },
+    {
+      "name": "Programming Lab 2",
+      "roomNumber": "B-09",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-21-22",
+        "COM1-B1-D-21-32"
+      ]
+    },
+    {
+      "name": "Programming Lab 5",
+      "roomNumber": "B-10",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-28-22",
+        "COM1-B1-D-28-32"
+      ]
+    },
+    {
+      "name": "Tech Hangout",
+      "roomNumber": "B-01",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-26",
+        "COM1-B1-D-10-35"
+      ]
+    },
+    {
+      "name": "Technical Room 1",
+      "roomNumber": "B-05",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-35"
+      ]
+    },
+    {
+      "name": "Technical Room 1",
+      "roomNumber": "B-05",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-37"
+      ]
+    },
+    {
+      "name": "Data Communications and Networking Lab",
+      "roomNumber": "B-02",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-37",
+        "COM1-B1-D-10-47"
+      ]
+    },
+    {
+      "name": "Active Learning Lab",
+      "roomNumber": "B-03",
+      "building": "COM1",
+      "floor": 0,
+      "doors": [
+        "COM1-B1-D-10-39",
+        "COM1-B1-D-10-52"
+      ]
+    }
+  ]
+}
