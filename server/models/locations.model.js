@@ -31,6 +31,9 @@ const LocationSchema = mongoose.Schema(
     },
 );
 
+//Enable index on name, building, roomNumber because they are frequently queried in search
+LocationSchema.index({ name: 1, roomNumber: 1, building: 1 });
+
 const Locations = mongoose.model('Location', LocationSchema);
 module.exports = Locations;
 
