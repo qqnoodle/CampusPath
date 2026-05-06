@@ -27,7 +27,7 @@ const NodeSchema = mongoose.Schema(
         }],
         attribute: {
             type: [String],
-            enum: ['walk', 'sheltered', 'lift', 'ramp'],
+            enum: ['walk', 'sheltered', 'lift', 'stairs', 'ramp'],
             default: ['walk'],
         },
         clusterGroup: {

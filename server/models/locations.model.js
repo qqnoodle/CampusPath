@@ -4,7 +4,11 @@ const LocationSchema = mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true, 'Location name required'],
+            default: () => { return this.roomNumber }
+        },
+        roomNumber: {
+            type: String,
+            required: [true]
         },
         building: {
             type: String,
