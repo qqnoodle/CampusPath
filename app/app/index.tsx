@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native';
 import OptionSelector from '../../components/OptionSelector';
+import LocationSearch from "../components/LocationSearch";
+
+export default function Index() {
+    return <LocationSearch />;
+}
+
+/*
 export default function App() {
     //state to manage optionSelector
     const [selected, updateSelected] = useState(0);
@@ -27,6 +34,7 @@ export default function App() {
         </View>
     );
 }
+*/
 
 const styles = StyleSheet.create(
     {
