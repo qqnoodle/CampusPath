@@ -25,23 +25,26 @@ const styles = StyleSheet.create({
     activeButton: {
         borderRadius: 10,
         padding: 12,
-        margin: 2,
-        backgroundColor: "#d45020",
+        backgroundColor: "#303233",
         transform: [{ scale: 1.08 }],
     },
     inactiveButton: {
         padding: 12,
         margin: 0,
-        backgroundColor: "#f0a68b",
         transform: [{ scale: 1.00 }],
     },
     text: {
         color: "white"
     },
     container: {
+        width: "77%",
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: "#bbc1c9",
+        borderColor: "#797c80",
+        borderWidth: 2,
+        borderRadius: 10,
     },
 });
 
