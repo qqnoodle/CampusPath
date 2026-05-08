@@ -6,12 +6,11 @@ const cors = require("cors");
 const locationRoute = require("./routes/location.route.js");
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 3000;
-const routeRoute = require("./routes/route.route");
+const routeRoute = require("./routes/path.route");
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/route", routeRoute);
 
 //API Connection test
 app.get("/", (req, res) => {
@@ -24,6 +23,7 @@ app.get("/", (req, res) => {
 
 //routes
 app.use("/api/locations", locationRoute);
+app.use("/api/path", findPath);
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
