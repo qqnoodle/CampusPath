@@ -1,0 +1,38 @@
+d 6 7
+j 8 9
+d 10 9
+d 10 15
+d 10 19
+j 10 22
+d 14 22
+d 21 22
+d 28 22
+d 28 19
+j 10 22
+d 10 26
+j 10 32
+d 14 32
+d 21 32
+d 28 32
+j 10 32
+d 10 35
+d 10 37
+d 10 39
+d 10 47
+d 10 52
+j 8 51
+*
+Discussion Room 1, B-14B: 6 7
+Discussion Room 2, B-14A: 6 7
+IT Security & OS Lab, B-13: 10 9
+Programming Lab 1, B-12: 10 15
+Programming Lab 4, B-11: 10 19 28 19
+Programming Lab 3, B-08: 14 22 14 32
+Programming Lab 2, B-09: 21 22 21 32
+Programming Lab 5, B-10: 28 22 28 32
+Tech Hangout, B-01: 10 26 10 35
+Technical Room 1, B-05: 10 35
+Technical Room 1, B-05: 10 37
+Data Communications and Networking Lab, B-02: 10 37 10 47
+Active Learning Lab, B-03: 10 39 10 52
+
