@@ -20,7 +20,7 @@ type Props = {
 
 
 const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) => {
-    const API = process.env.API_LOCATIONS ? process.env.API_LOCATIONS : "https://campus-path.vercel.app/api";
+    const API = process.env.API_LOCATIONS ? process.env.API_LOCATIONS : "https://campus-path.vercel.app/api/locations";
 
     //States
     const [query, setQuery] = useState("");
@@ -51,7 +51,6 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) =>
             setLoading(true);
             const response = await fetch(`${API}?q=${encodeURIComponent(query)}`);
             const data = await response.json();
-            console.log(data);
             setSearchResult(data);
         } catch (error) {
             //TODO WE NEED TO HAVE A BETTER SAFEGUARD INSTEAD OF CRASHING THE PROGRAM
@@ -109,18 +108,6 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) =>
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
-    },
-
-    title: {
-        fontSize: 28,
-        fontWeight: "bold",
-        marginBottom: 24,
-    },
-
     section: {
         marginBottom: 24,
     },
