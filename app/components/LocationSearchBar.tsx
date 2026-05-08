@@ -24,22 +24,21 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) =>
 
     //States
     const [query, setQuery] = useState("");
-    const [hasSelected, setSelected] = useState(false);
+    const [hasSelected, setSelected] = useState(true);
     const [searchResult, setSearchResult] = useState<SearchResultItem[]>([]);
     const [isLoading, setLoading] = useState(false);
 
     //Hooks
     useEffect(() => {
-        //Prevents reappear
+        //Prevents retrigger on click
         if (hasSelected) return;
-
         //Waits 300ms before we retrieve data from API, saves money
         const timer = setTimeout(() => {
             fetchLocations(query);
         }, 300);
         //kills off the timer when components gets destroyed when switching tabs/ query changes
         return () => clearTimeout(timer);
-    }, [query]);
+    }, [query, hasSelected]);
 
 
     //Helper Functions
@@ -68,7 +67,6 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) =>
                     setOutput(item);
                     setSelected(true);
                     setQuery(item.name);
-                    setSelected(false);
                     setSearchResult([]);
                 }
                 }
@@ -90,6 +88,7 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) =>
                 placeholder={defaultSearchText}
                 value={query}
                 onChangeText={(text) => {
+                    setSelected(false);
                     setQuery(text);
                     setOutput(null);
                 }}
