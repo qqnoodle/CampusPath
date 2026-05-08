@@ -27,9 +27,6 @@ export default function LocationSearch() {
 
     const [routeData, setRouteData] = useState(null);
 
-    // =========================
-    // API FETCH
-    // =========================
     const fetchLocations = async (query, type) => {
         if (!query.trim()) {
             if (type === "start") {
@@ -61,25 +58,25 @@ export default function LocationSearch() {
         }
     };
 
-    // =========================
-    // DEBOUNCE START SEARCH
-    // =========================
+    //Query changes detection
     useEffect(() => {
+        //Waits 300ms before we retrieve data from API, saves money
         const timer = setTimeout(() => {
             fetchLocations(startQuery, "start");
         }, 300);
 
+        //kills off the timer when components gets destroyed when switching tabs/ query changes
         return () => clearTimeout(timer);
     }, [startQuery]);
 
-    // =========================
-    // DEBOUNCE END SEARCH
-    // =========================
+
     useEffect(() => {
+        //Waits 300ms before we retrieve data from API, saves money
         const timer = setTimeout(() => {
             fetchLocations(endQuery, "end");
         }, 300);
 
+        //kills off the timer when components gets destroyed when switching tabs/ query changes
         return () => clearTimeout(timer);
     }, [endQuery]);
 
@@ -109,6 +106,7 @@ export default function LocationSearch() {
         </TouchableOpacity>
     );
 
+    //TO BE UPDATED
     const getRoute = async () => {
         if (!selectedStart || !selectedEnd) {
             alert("Please select both locations");
