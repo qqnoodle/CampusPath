@@ -1,38 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native';
-import OptionSelector from '../../components/OptionSelector';
-import LocationSearch from "../components/LocationSearch";
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Button, ActivityIndicator } from 'react-native';
+import OptionSelector from '../components/OptionSelector';
+import LocationSearchBar from '../components/LocationSearchBar';
+import { SearchResultItem } from '../types/SearchResultItem';
+import { router } from 'expo-router';
 
-export default function Index() {
-    return <LocationSearch />;
-}
-
-/*
 export default function App() {
-<<<<<<< Updated upstream
-    //state to manage optionSelector
-    const [selected, updateSelected] = useState(0);
-    return (
-        <View style={{ backgroundColor: 'white' }}>
-            <View>
-                <Text> Route Options </Text>
-                <OptionSelector
-                    options={['Fastest', 'Sheltered', 'Accessible']}
-                    selected={selected}
-                    onSelect={updateSelected}
-                />
-            </View >
-            <View style={{ flexDirection: 'row' }}>
-                <Text> Start </Text>
-                <TextInput
-                    placeholder='Search'
-                    clearButtonMode='always'
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    style={styles.searchbar}
-                />
-            </View>
-=======
     const API = process.env.EXPO_PUBLIC_API;
     const [startLocation, setStartLocation] = useState<SearchResultItem | null>(null);
     const [endLocation, setEndLocation] = useState<SearchResultItem | null>(null);
@@ -101,25 +74,21 @@ export default function App() {
                 onPress={findPath}
             />
 
->>>>>>> Stashed changes
         </View>
     );
 }
-*/
 
-const styles = StyleSheet.create(
-    {
-        searchbar: {
-            marginHorizontal: 20,
-            marginVertical: 10,
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            borderColor: '#c4c8cf',
-            borderRadius: 8,
-            borderWidth: 1,
-            flex: 1,
 
-        },
-    }
-);
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: "#fff",
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: "bold",
+        marginBottom: 24,
+    },
+});
 
