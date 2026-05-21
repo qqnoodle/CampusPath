@@ -12,7 +12,7 @@ const OptionSelector = ({ options, selected, onSelect }: Props) => {
             {
                 //for every element, return create a Pressable usings the element value and index
                 options.map((option, index) => (
-                    <Pressable onPress={() => onSelect(index)} style={selected === index ? styles.activeButton : styles.inactiveButton}>
+                    <Pressable key={option} onPress={() => onSelect(index)} style={selected === index ? styles.activeButton : styles.inactiveButton}>
                         <Text style={styles.text}> {option} </Text>
                     </Pressable>
                 ))
