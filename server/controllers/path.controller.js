@@ -62,6 +62,7 @@ const findPath = async (req, res) => {
 
         //TODO Handle the history
     } catch (error) {
+        res.header("Access-Control-Allow-Origin", "*");
         res.status(500).send(error.message);
     }
 };
