@@ -1,8 +1,8 @@
-const expres = require("express");
+const express = require("express");
 const Location = require("../models/locations.model.js");
 const Nodes = require("../models/nodes.model.js");
-const graphBuilder = require("../algorithm/graphBuilder.js");
-const Astar = require("../algorithm/Astar.js");
+const { graphBuilder } = require("../algorithm/graphBuilder.js");
+const { Astar } = require("../algorithm/Astar.js");
 
 const findPath = async (req, res) => {
     const optimisationMap = {
