@@ -26,7 +26,7 @@ function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator) {
         let { curNode, cost } = openList.dequeue();
 
         //lazy deletion
-        let curF = F(G.score.get(curNode), H(graph, curNode, dst));
+        let curF = F(Gscore.get(curNode), H(graph, curNode, dst));
         if (Fcomparator(cost, curF)) continue;
         if (curNode == dst) break;
         if (closeList.has(curNode)) continue;
@@ -36,7 +36,7 @@ function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator) {
         //go over the neighbours
         let g = Gscore.get(curNode);
         graph.get(curNode).neighbour.forEach(n => {
-            let child = n.node_id;
+            let child = n.node;
             if (closeList.has(child)) return;
 
             //very similar to dijkstra with small modification of this heuristic
