@@ -15,8 +15,8 @@ const findPath = async (req, res) => {
 
         //TODO Convert information into graphs
 
-        const start = await Location.findOne({ roomNumber: startLocation }).populate('doors');
-        const end = await Location.findOne({ roomNumber: endLocation }).populate('doors');
+        const start = await Location.findOne({ roomNumber: startLocation });
+        const end = await Location.findOne({ roomNumber: endLocation });
         // Pick the first door node as src/dst(temp)
         const srcNodeId = start.doors[0].node_id;
         const dstNodeId = end.doors[0].node_id;
@@ -37,7 +37,7 @@ const findPath = async (req, res) => {
 
         const Gdefault = 0;
         const Gcomparator = (a, b) => a < b;  // lower g is better
-        const Fcomparator = (a, b) => a - b;  // for MinPriorityQueue
+        const Fcomparator = (a, b) => a < b;  // for MinPriorityQueue
 
         const optimisationLabel = optimisationMap[optimisation];
 
