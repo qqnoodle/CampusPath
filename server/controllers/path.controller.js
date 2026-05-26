@@ -43,6 +43,8 @@ const findPath = async (req, res) => {
 
         const path = Astar(graph, srcNodeId, dstNodeId, F, H, G, Gdefault, Fcomparator, Gcomparator);
         //TODO Configure the output to fit the needs of frontend
+        //
+        /*
         const enrichedPath = path.map(nodeId => {
             const node = graph.get(nodeId);
             return {
@@ -52,11 +54,13 @@ const findPath = async (req, res) => {
                 attributes: node.attribute,
             };
         });
+        */
 
         res.status(200).json({
             success: true,
             optimisation: optimisationLabel,
-            path: enrichedPath,
+            path: path,
+            //path: enrichedPath,
             totalNodes: enrichedPath.length,
         });
 
