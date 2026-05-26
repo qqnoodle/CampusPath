@@ -5,9 +5,6 @@ const graphBuilder = require("../algorithm/graphBuilder.js");
 const Astar = require("../algorithm/Astar.js");
 
 const findPath = async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     const optimisationMap = {
         0: "Shortest",
         1: "Sheltered",
