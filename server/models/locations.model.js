@@ -20,8 +20,7 @@ const LocationSchema = mongoose.Schema(
         },
         doors: {
             type: [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Node'
+                type: String
             }],
             required: [true, 'All location must have doors'],
         }

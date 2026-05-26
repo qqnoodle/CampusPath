@@ -16,8 +16,7 @@ const NodeSchema = mongoose.Schema(
         },
         neighbour: [{
             node: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Node',
+                type: String,
                 required: true,
             },
             weight: {
