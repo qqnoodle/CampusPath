@@ -2,13 +2,31 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
-const locationRoute = require("./routes/location.route.js");
+
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 3000;
+
+const locationRoute = require("./routes/location.route.js");
 const pathRoute = require("./routes/path.route");
 
-app.use(cors());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    res.header(
+        "Access-Control-Allow-Methods",
+        "GET,POST,PUT,DELETE,OPTIONS"
+    );
+
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(200);
+    }
+
+    next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,10 +56,6 @@ app.get("/debug", (req, res) => {
 //routes
 app.use("/api/locations", locationRoute);
 app.use("/api/path", pathRoute);
-
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
-});
 
 
 //Database connection test
