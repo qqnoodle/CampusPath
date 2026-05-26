@@ -1,5 +1,4 @@
-import { MinPriorityQueue } from '@datastructures-js/priority-queue';
-
+const { MinPriorityQueue } = require('@datastructures-js/priority-queue');
 
 function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator) {
     /*
@@ -64,3 +63,5 @@ function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator) {
     path.push(src);
     return path.reverse();
 };
+
+module.exports = Astar;

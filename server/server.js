@@ -11,7 +11,6 @@ const pathRoute = require("./routes/path.route");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/route", routeRoute);
 
 //API Connection test
 app.get("/", (req, res) => {
