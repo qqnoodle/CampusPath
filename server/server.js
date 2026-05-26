@@ -20,6 +20,20 @@ app.get("/", (req, res) => {
         res.send("API failure");
     }
 });
+//debug
+app.get("/debug", (req, res) => {
+    const routes = [];
+    app._router.stack.forEach(r => {
+        if (r.route) {
+            routes.push(r.route.path);
+        } else if (r.name === 'router') {
+            r.handle.stack.forEach(layer => {
+                if (layer.route) routes.push(layer.route.path);
+            });
+        }
+    });
+    res.json(routes);
+});
 
 //routes
 app.use("/api/locations", locationRoute);
