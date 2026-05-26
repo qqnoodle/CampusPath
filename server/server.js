@@ -6,11 +6,7 @@ const cors = require("cors");
 const locationRoute = require("./routes/location.route.js");
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 3000;
-<<<<<<< Updated upstream
-const routeRoute = require("./routes/route.route");
-=======
 const pathRoute = require("./routes/path.route");
->>>>>>> Stashed changes
 
 app.use(cors());
 app.use(express.json());
@@ -28,10 +24,7 @@ app.get("/", (req, res) => {
 
 //routes
 app.use("/api/locations", locationRoute);
-<<<<<<< Updated upstream
-=======
 app.use("/api/path", pathRoute);
->>>>>>> Stashed changes
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
@@ -42,6 +35,5 @@ app.listen(PORT, () => {
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
-
 
 module.exports = app;

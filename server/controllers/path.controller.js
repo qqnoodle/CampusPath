@@ -2,10 +2,10 @@ const expres = require("express");
 const Location = require("../models/locations.model.js");
 const Nodes = require("../models/nodes.model.js");
 const graphBuilder = require("../utils/graphBuilder.js");
-const Astar = require("../utils/Astar.js");  
+const Astar = require("../utils/Astar.js");
 
 const findPath = async (req, res) => {
-    optimisationMap = {
+    const optimisationMap = {
         0: "Shortest",
         1: "Sheltered",
         2: "Accessible"
@@ -16,7 +16,7 @@ const findPath = async (req, res) => {
         //TODO Convert information into graphs
 
         const start = await Location.findOne({ roomNumber: startLocation }).populate('doors');
-        const end   = await Location.findOne({ roomNumber: endLocation }).populate('doors');
+        const end = await Location.findOne({ roomNumber: endLocation }).populate('doors');
         // Pick the first door node as src/dst(temp)
         const srcNodeId = start.doors[0].node_id;
         const dstNodeId = end.doors[0].node_id;
@@ -38,9 +38,9 @@ const findPath = async (req, res) => {
         const Gdefault = 0;
         const Gcomparator = (a, b) => a < b;  // lower g is better
         const Fcomparator = (a, b) => a - b;  // for MinPriorityQueue
-    
+
         const optimisationLabel = optimisationMap[optimisation];
-        
+
         const path = Astar(graph, srcNodeId, dstNodeId, F, H, G, Gdefault, Fcomparator, Gcomparator);
         //TODO Configure the output to fit the needs of frontend
         const enrichedPath = path.map(nodeId => {

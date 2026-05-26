@@ -6,7 +6,7 @@ import { SearchResultItem } from '../types/SearchResultItem';
 import { router } from 'expo-router';
 
 export default function App() {
-    const API = process.env.EXPO_PUBLIC_API;
+    const API = process.env.EXPO_PUBLIC_API ? process.env.EXPO_PUBLIC_API : "https://campus-path.vercel.app/api";
     const [startLocation, setStartLocation] = useState<SearchResultItem | null>(null);
     const [endLocation, setEndLocation] = useState<SearchResultItem | null>(null);
     const [selected, setSelected] = useState(0);
@@ -22,7 +22,7 @@ export default function App() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     optimisation: selected,
-                    startLocation: startLocation?.roomNumber, 
+                    startLocation: startLocation?.roomNumber,
                     endLocation: endLocation?.roomNumber,
                 })
             });
@@ -33,7 +33,7 @@ export default function App() {
             }
 
             const data = await response.json();
-            
+
             router.push({
                 pathname: "/Path",
                 params: {
