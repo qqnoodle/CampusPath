@@ -3,12 +3,18 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const locationRoute = require("./routes/location.route.js");
+
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 3000;
+
+const locationRoute = require("./routes/location.route.js");
 const pathRoute = require("./routes/path.route");
 
-app.use(cors());
+app.use(cors({
+    origin: "*", // allow everything
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
