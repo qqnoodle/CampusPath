@@ -20,7 +20,8 @@ type Props = {
 
 
 const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) => {
-    const API = process.env.API_LOCATIONS ? process.env.API_LOCATIONS : "https://campus-path.vercel.app/api/locations";
+    const API = process.env.EXPO_PUBLIC_API ? process.env.EXPO_PUBLIC_API : "https://campus-path.vercel.app/api";
+    console.log(`API location : ${process.env.EXPO_PUBLIC_API}`);
 
     //States
     const [query, setQuery] = useState("");
@@ -48,7 +49,7 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) =>
         }
         try {
             setLoading(true);
-            const response = await fetch(`${API}?q=${encodeURIComponent(query)}`);
+            const response = await fetch(`${API}/locations?q=${encodeURIComponent(query)}`);
             const data = await response.json();
             setSearchResult(data);
         } catch (error) {
