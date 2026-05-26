@@ -31,10 +31,6 @@ app.get("/", (req, res) => {
 app.use("/api/locations", locationRoute);
 app.use("/api/path", pathRoute);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
-});
-
 
 //Database connection test
 mongoose.connect(process.env.MONGO_URI)
