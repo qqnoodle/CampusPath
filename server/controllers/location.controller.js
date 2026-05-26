@@ -20,11 +20,11 @@ const getLocation = async (req, res) => {
                 { name: { $regex: `.*${query}.*`, $options: "i" } },
                 { roomNumber: { $regex: `.*${query}.*`, $options: "i" } },
                 { building: { $regex: `.*${query}.*`, $options: "i" } },
-
             ]
         });
         res.status(200).json(locationData);
     } catch (error) {
+        console.error(error);
         res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
     }
 }
