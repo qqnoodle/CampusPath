@@ -60,8 +60,9 @@ const findPath = async (req, res) => {
             success: true,
             optimisation: optimisationLabel,
             path: path,
+            totalNodes: path.length,
             //path: enrichedPath,
-            totalNodes: enrichedPath.length,
+            //totalNodes: enrichedPath.length,
         });
 
         //TODO Handle the history
