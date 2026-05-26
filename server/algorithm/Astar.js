@@ -64,4 +64,4 @@ function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator) {
     return path.reverse();
 };
 
-module.exports = Astar;
+module.exports = { Astar };
