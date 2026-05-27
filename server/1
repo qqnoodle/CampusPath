@@ -1,0 +1,173 @@
+const { Astar } = require("./Astar.js");
+
+
+const graph = new Map([
+    [
+        "COM1-1-D-7-7",
+        {
+            node_id: "COM1-1-D-7-7",
+            neighbour: [
+                { node: "COM1-1-J-7-5", weight: 2 },
+                { node: "COM1-1-D-7-10", weight: 3 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-7-10",
+        {
+            node_id: "COM1-1-D-7-10",
+            neighbour: [
+                { node: "COM1-1-D-7-7", weight: 2 },
+                { node: "COM1-1-D-7-12", weight: 2 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-7-12",
+        {
+            node_id: "COM1-1-D-7-12",
+            neighbour: [
+                { node: "COM1-1-D-7-10", weight: 2 },
+                { node: "COM1-1-D-7-14", weight: 2 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-7-14",
+        {
+            node_id: "COM1-1-D-7-14",
+            neighbour: [
+                { node: "COM1-1-D-7-12", weight: 2 },
+                { node: "COM1-1-D-6-16", weight: 2 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-6-16",
+        {
+            node_id: "COM1-1-D-6-16",
+            neighbour: [
+                { node: "COM1-1-D-7-14", weight: 2 },
+                { node: "COM1-1-D-7-18", weight: 2 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-7-18",
+        {
+            node_id: "COM1-1-D-7-18",
+            neighbour: [
+                { node: "COM1-1-D-6-16", weight: 2 },
+                { node: "COM1-1-D-7-20", weight: 2 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-7-20",
+        {
+            node_id: "COM1-1-D-7-20",
+            neighbour: [
+                { node: "COM1-1-D-7-18", weight: 2 },
+                { node: "COM1-1-J-6-21", weight: 2 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-J-7-5",
+        {
+            node_id: "COM1-1-J-7-5",
+            neighbour: [
+                { node: "COM1-1-D-7-7", weight: 2 },
+                { node: "COM1-1-J-6-21", weight: 15 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-J-6-21",
+        {
+            node_id: "COM1-1-J-6-21",
+            neighbour: [
+                { node: "COM1-1-J-7-5", weight: 15 },
+                { node: "COM1-1-D-7-20", weight: 1 },
+                { node: "COM1-1-J-1-21", weight: 4 },
+                { node: "COM1-1-J-6-27", weight: 3 },
+                { node: "COM1-1-D-6-24", weight: 9 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-6-24",
+        {
+            node_id: "COM1-1-D-6-24",
+            neighbour: [
+                { node: "COM1-1-J-6-21", weight: 3 },
+                { node: "COM1-1-J-6-27", weight: 3 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-J-6-27",
+        {
+            node_id: "COM1-1-J-6-27",
+            neighbour: [
+                { node: "COM1-1-J-4-27", weight: 1 },
+                { node: "COM1-1-J-6-30", weight: 3 },
+                { node: "COM1-1-J-6-21", weight: 6 },
+                { node: "COM1-1-D-6-24", weight: 3 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-J-6-30",
+        {
+            node_id: "COM1-1-J-6-30",
+            neighbour: [
+                { node: "COM1-1-J-6-27", weight: 3 }
+            ]
+        }
+    ],
+
+    [
+        "COM1-1-D-17-17",
+        {
+            node_id: "COM1-1-D-17-17",
+            neighbour: []
+        }
+    ]
+]);
+
+
+test("A star tests", () => {
+    expect(Astar(
+        graph,
+        ["COM1-1-D-7-7"],
+        ["COM1-1-D-6-24"],
+        (g, h) => g + h,
+        () => 0,
+        (graph, g, neighbourData) => g + neighbourData.weight,
+        0,
+        (a, b) => a < b,
+        (a, b) => a < b,
+        arr => Math.min(...arr)))
+        .toEqual([
+            "COM1-1-D-7-7",
+            "COM1-1-D-7-10",
+            "COM1-1-D-7-12",
+            "COM1-1-D-7-14",
+            "COM1-1-D-6-16",
+            "COM1-1-D-7-18",
+            "COM1-1-D-7-20",
+            "COM1-1-J-6-21",
+            "COM1-1-D-6-24"]);
+})
