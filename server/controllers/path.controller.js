@@ -81,6 +81,8 @@ const findPath = async (req, res) => {
             optimisation: optimisationLabel,
             path: path,
             totalNodes: path.length,
+            src: src,
+            dst: dst
             //path: enrichedPath,
             //totalNodes: enrichedPath.length,
         });
