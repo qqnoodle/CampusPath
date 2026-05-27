@@ -83,7 +83,8 @@ const findPath = async (req, res) => {
             totalNodes: path.length,
             src: src,
             dst: dst,
-            graph: graph
+            graph: graph,
+            nodeList: nodeList
             //path: enrichedPath,
             //totalNodes: enrichedPath.length,
         });
