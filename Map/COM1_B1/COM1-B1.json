@@ -4,7 +4,7 @@
       "node_id": "COM1-B1-D-6-7",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-J-8-9",
           "weight": 1
@@ -20,7 +20,7 @@
       "node_id": "COM1-B1-J-8-9",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-6-7",
           "weight": 1
@@ -40,7 +40,7 @@
       "node_id": "COM1-B1-D-10-9",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-J-8-9",
           "weight": 1
@@ -60,7 +60,7 @@
       "node_id": "COM1-B1-D-10-15",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-9",
           "weight": 1
@@ -80,7 +80,7 @@
       "node_id": "COM1-B1-D-10-19",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-15",
           "weight": 1
@@ -100,7 +100,7 @@
       "node_id": "COM1-B1-J-10-22",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-19",
           "weight": 1
@@ -120,7 +120,7 @@
       "node_id": "COM1-B1-D-14-22",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-J-10-22",
           "weight": 1
@@ -140,7 +140,7 @@
       "node_id": "COM1-B1-D-21-22",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-14-22",
           "weight": 1
@@ -160,7 +160,7 @@
       "node_id": "COM1-B1-D-28-22",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-21-22",
           "weight": 1
@@ -180,7 +180,7 @@
       "node_id": "COM1-B1-D-28-19",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-28-22",
           "weight": 1
@@ -196,7 +196,7 @@
       "node_id": "COM1-B1-J-10-22",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-26",
           "weight": 1
@@ -212,7 +212,7 @@
       "node_id": "COM1-B1-D-10-26",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-J-10-22",
           "weight": 1
@@ -232,7 +232,7 @@
       "node_id": "COM1-B1-J-10-32",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-26",
           "weight": 1
@@ -252,7 +252,7 @@
       "node_id": "COM1-B1-D-14-32",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-J-10-32",
           "weight": 1
@@ -272,7 +272,7 @@
       "node_id": "COM1-B1-D-21-32",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-14-32",
           "weight": 1
@@ -292,7 +292,7 @@
       "node_id": "COM1-B1-D-28-32",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-21-32",
           "weight": 1
@@ -308,7 +308,7 @@
       "node_id": "COM1-B1-J-10-32",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-35",
           "weight": 1
@@ -324,7 +324,7 @@
       "node_id": "COM1-B1-D-10-35",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-J-10-32",
           "weight": 1
@@ -344,7 +344,7 @@
       "node_id": "COM1-B1-D-10-37",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-35",
           "weight": 1
@@ -364,7 +364,7 @@
       "node_id": "COM1-B1-D-10-39",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-37",
           "weight": 1
@@ -384,7 +384,7 @@
       "node_id": "COM1-B1-D-10-47",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-39",
           "weight": 1
@@ -404,7 +404,7 @@
       "node_id": "COM1-B1-D-10-52",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-47",
           "weight": 1
@@ -424,7 +424,7 @@
       "node_id": "COM1-B1-J-8-51",
       "building": "COM1",
       "floor": 0,
-      "adjacents": [
+      "neighbour": [
         {
           "id": "COM1-B1-D-10-52",
           "weight": 1

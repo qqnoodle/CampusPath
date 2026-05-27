@@ -20,7 +20,7 @@ type Props = {
 
 
 const LocationSearchBar = ({ mainText, defaultSearchText, setOutput }: Props) => {
-    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-git-feature-pathfinding-qqnoodles-projects.vercel.app/api";
     console.log(`API location : ${process.env.EXPO_PUBLIC_API_URL}`);
 
     //States
