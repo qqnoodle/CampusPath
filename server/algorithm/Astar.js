@@ -1,4 +1,4 @@
-const { MinPriorityQueue } = require('@datastructures-js/priority-queue');
+const { PriorityQueue } = require('@datastructures-js/priority-queue');
 /**
  * A* algo to find the shortest path
  * 
@@ -19,7 +19,7 @@ const { MinPriorityQueue } = require('@datastructures-js/priority-queue');
 
 function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator, minHeuristic) {
 
-    let openList = new MinPriorityQueue(Fcomparator);
+    let openList = new PriorityQueue((f1, f2) => Fcomparator(f1.cost, f2.cost) ? -1 : 1);
     let closeList = new Map();
 
     //the real cost of travelling to a node from source
@@ -47,12 +47,9 @@ function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator, min
         let curNode = element.curNode;
         let cost = element.cost;
 
-        console.log(element);
-        console.log(graph.get(curNode));
-
         //lazy deletion
         let curF = F(Gscore.get(curNode), minHeuristic(dst.map((destinationNode) => H(graph, curNode, destinationNode))));
-        if (Fcomparator(curF, cost)) continue;
+        if (Fcomparator(cost, curF)) continue;
         if (destinations.has(curNode)) {
             endNode = curNode;
             break;

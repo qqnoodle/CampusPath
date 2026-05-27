@@ -18,7 +18,7 @@ const findPath = async (req, res) => {
             Gdefault: 0,
             Fcomparator: (f1, f2) => f1 < f2,
             Gcomparator: (g1, g2) => g1 < g2,
-            minHeuristic: (lst) => Math.min(lst)
+            minHeuristic: (lst) => Math.min(...lst)
         },
         1: {
             //TODO modify for optmisation by sheltered
@@ -28,7 +28,7 @@ const findPath = async (req, res) => {
             Gdefault: 0,
             Fcomparator: (f1, f2) => f1 < f2,
             Gcomparator: (g1, g2) => g1 < g2,
-            minHeuristic: (lst) => Math.min(lst)
+            minHeuristic: (lst) => Math.min(...lst)
         },
         2: {
             //TODO modify for optimisation by accessibility
@@ -38,7 +38,7 @@ const findPath = async (req, res) => {
             Gdefault: 0,
             Fcomparator: (f1, f2) => f1 < f2,
             Gcomparator: (g1, g2) => g1 < g2,
-            minHeuristic: (lst) => Math.min(lst)
+            minHeuristic: (lst) => Math.min(...lst)
         },
     }
     try {
