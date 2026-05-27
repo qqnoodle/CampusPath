@@ -10,38 +10,58 @@ const findPath = async (req, res) => {
         1: "Sheltered",
         2: "Accessible"
     };
+    const optimisationFunctions = {
+        0: {
+            F: (g, h) => g + h,
+            H: (graph, n1, n2) => 0,
+            G: (graph, g, neighbourData) => g + neighbourData.weight,
+            Gdefault: 0,
+            Fcomparator: (f1, f2) => f1 < f2,
+            Gcomparator: (g1, g2) => g1 < g2,
+            minHeuristic: (lst) => min(lst)
+        },
+        1: {
+            //TODO modify for optmisation by sheltered
+            F: (g, h) => g + h,
+            H: (graph, n1, n2) => 0,
+            G: (graph, g, neighbourData) => g + neighbourData.weight,
+            Gdefault: 0,
+            Fcomparator: (f1, f2) => f1 < f2,
+            Gcomparator: (g1, g2) => g1 < g2,
+            minHeuristic: (lst) => min(lst)
+        },
+        2: {
+            //TODO modify for optimisation by accessibility
+            F: (g, h) => g + h,
+            H: (graph, n1, n2) => 0,
+            G: (graph, g, neighbourData) => g + neighbourData.weight,
+            Gdefault: 0,
+            Fcomparator: (f1, f2) => f1 < f2,
+            Gcomparator: (g1, g2) => g1 < g2,
+            minHeuristic: (lst) => min(lst)
+        },
+    }
     try {
         const { startLocation, endLocation, optimisation } = req.body;
 
         //TODO Convert information into graphs
+        //Extract out the location information from database
+        const optimisationLabel = optimisationMap[optimisation];
+        const optFunc = optimisationFunctions[optimisation];
 
         const start = await Location.findOne({ roomNumber: startLocation });
         const end = await Location.findOne({ roomNumber: endLocation });
-        // Pick the first door node as src/dst(temp)
-        const srcNodeId = start.doors[0].node_id;
-        const dstNodeId = end.doors[0].node_id;
+
+        //
+        const src = start.doors;
+        const dst = end.doors;
 
         //TODO Run the algorithm
+        const nodeList = await Nodes.find();
+        const graph = graphBuilder(nodeList);
 
-        const graph = await graphBuilder(Nodes);
+        const path = Astar(graph, src, dst, optFunc.F, optFunc.H, optFunc.G, optFunc.Gdefault, optFunc.Fcomparator, optFunc.Gcomparator, optFunc.minHeuristic);
 
-        const H = (graph, n1, n2) => 0; // no heuristic => pure Dijkstra
-
-        const F = (g, h) => g + h;
-
-        const G = (graph, g, child) => {
-            const parentNode = graph.get(child);
-            // sum up edge weights
-            return g + (parentNode?.weight ?? 1);
-        };
-
-        const Gdefault = 0;
-        const Gcomparator = (a, b) => a < b;  // lower g is better
-        const Fcomparator = (a, b) => a < b;  // for MinPriorityQueue
-
-        const optimisationLabel = optimisationMap[optimisation];
-
-        const path = Astar(graph, srcNodeId, dstNodeId, F, H, G, Gdefault, Fcomparator, Gcomparator);
         //TODO Configure the output to fit the needs of frontend
         //
         /*

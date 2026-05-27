@@ -33,7 +33,9 @@ export default function App() {
             }
 
             const data = await response.json();
+            console.log(data);
 
+            /*
             router.push({
                 pathname: "/Path",
                 params: {
@@ -41,6 +43,7 @@ export default function App() {
                     endLocation: endLocation?.roomNumber,
                 }
             });
+            */
         } catch (e: any) {
             console.error("findPath error:", e.message);
         } finally {
