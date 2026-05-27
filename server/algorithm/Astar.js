@@ -62,21 +62,25 @@ function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator, min
 
         //go over the neighbours
         let g = Gscore.get(curNode);
-        graph.get(curNode).neighbour.forEach(neighbourData => {
-            let child = neighbourData.node;
-            if (closeList.has(child)) return;
+        try {
+            graph.get(curNode).neighbour.forEach(neighbourData => {
+                let child = neighbourData.node;
+                if (closeList.has(child)) return;
 
-            //very similar to dijkstra with small modification of this heuristic
-            let gEstimate = G(graph, g, neighbourData);
-            if (!Gscore.has(child) || Gcomparator(gEstimate, Gscore.get(child))) {
-                Gscore.set(child, gEstimate);
-                parentPointer.set(child, curNode);
+                //very similar to dijkstra with small modification of this heuristic
+                let gEstimate = G(graph, g, neighbourData);
+                if (!Gscore.has(child) || Gcomparator(gEstimate, Gscore.get(child))) {
+                    Gscore.set(child, gEstimate);
+                    parentPointer.set(child, curNode);
 
-                let h = minHeuristic(dst.map((destinationNode) => H(graph, child, destinationNode)));
-                let f = F(gEstimate, h);
-                openList.enqueue({ curNode: child, cost: f });
-            }
-        });
+                    let h = minHeuristic(dst.map((destinationNode) => H(graph, child, destinationNode)));
+                    let f = F(gEstimate, h);
+                    openList.enqueue({ curNode: child, cost: f });
+                }
+            });
+        } catch (error) {
+            throw new Error(`Extra context: ${curNode} has no neighbour?`, { cause: error });
+        }
     }
 
     //Safeguard for when place is unreachable
