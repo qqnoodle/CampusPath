@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Button, ActivityIndicator, ScrollView } from 'react-native';
 import OptionSelector from '../components/OptionSelector';
 import LocationSearchBar from '../components/LocationSearchBar';
 import { SearchResultItem } from '../types/SearchResultItem';
 import { router } from 'expo-router';
+import PathDisplay, { PathNode } from '../components/pathDisplay';
 
 export default function App() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-git-feature-pathfinding-qqnoodles-projects.vercel.app/api";
@@ -11,6 +12,14 @@ export default function App() {
     const [endLocation, setEndLocation] = useState<SearchResultItem | null>(null);
     const [selected, setSelected] = useState(0);
     const [isLoading, setLoading] = useState(false);
+
+    // Path result state
+    const [pathResult, setPathResult] = useState<{
+        path: string[];
+        nodeList: PathNode[];
+        optimisation: string;
+        totalNodes: number;
+    } | null>(null);
 
     const findPath = async () => {
         setLoading(true);
@@ -35,15 +44,13 @@ export default function App() {
             const data = await response.json();
             console.log(data);
 
-            /*
-            router.push({
-                pathname: "/Path",
-                params: {
-                    startLocation: startLocation?.roomNumber,
-                    endLocation: endLocation?.roomNumber,
-                }
+            setPathResult({
+                path:         data.path,
+                nodeList:     data.nodeList,
+                optimisation: data.optimisation,
+                totalNodes:   data.totalNodes,
             });
-            */
+
         } catch (e: any) {
             console.error("findPath error:", e.message);
         } finally {
@@ -52,7 +59,7 @@ export default function App() {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.title}> CampusPath Navigator</Text>
             <OptionSelector
                 options={['Fastest', 'Sheltered', 'Accessible']}
@@ -77,7 +84,15 @@ export default function App() {
                 onPress={findPath}
             />
 
-        </View>
+            {/* Path result */}
+            {pathResult && (
+                <PathDisplay
+                    path={pathResult.path}
+                    nodeList={pathResult.nodeList}
+                />
+            )}
+
+        </ScrollView>
     );
 }
 
