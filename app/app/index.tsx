@@ -88,7 +88,7 @@ export default function App() {
             {pathResult && (
                 <PathDisplay
                     path={pathResult.path}
-                    nodeList={pathResult.nodeList}
+                    
                 />
             )}
 

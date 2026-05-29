@@ -5,7 +5,6 @@ import {
     Image,
     StyleSheet,
     LayoutChangeEvent,
-    TouchableOpacity,
     Dimensions
 } from 'react-native';
 import Svg, { Circle, Polyline, G, Line, Text as SvgText } from 'react-native-svg';
@@ -25,14 +24,12 @@ export interface PathNode {
 
 export interface PathDisplayProps {
     path: string[];
-    nodeList: PathNode[];
 }
 
 // Constants 
 
 const GRID_ROWS = 40;
 const GRID_COLS = 50;
-console.log('GRID:', GRID_ROWS, GRID_COLS);
 
 // Helpers 
 
@@ -46,7 +43,6 @@ function parseNodeId(id: string): { row: number; col: number; building: string; 
 }
 
 function toPixel(row: number, col: number, w: number, h: number) {
-    console.log('toPixel called:', row, col, w, h);  // add this
     return {
         x: ((col + 0.5) / GRID_COLS) * w,
         y: ((row + 0.5) / GRID_ROWS) * h,
@@ -111,12 +107,19 @@ const turnIconStyle: Record<TurnType, object> = {
 
 // Component 
 
-export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
+export default function PathDisplay({ path }: PathDisplayProps) {
     const [containerW, setContainerW] = useState(SCREEN.width - 40);
     const [containerH, setContainerH] = useState(260);
-    const [gridVisible, setGridVisible] = useState(true);
 
-    if (!path || path.length === 0) return null;
+    // if (!path || path.length === 0) return null;
+
+    if (!path || path.length === 0 || path[0] == 'Unreachable') {
+        return (
+            <View style={styles.unreachable}>
+                <Text style={styles.unreachableText}>⚠️ Path is unreachable</Text>
+            </View>
+        );
+    }
 
     const { building, floor } = parseNodeId(path[0]);
     const mapImage = getMapImage(building, floor);
@@ -131,48 +134,21 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
         ? path.map(id => { const { row, col } = parseNodeId(id); return toPixel(row, col, containerW, containerH); })
         : [];
     
-    console.log('========== PATH DEBUG ==========');
-    console.log('containerW:', containerW, 'containerH:', containerH, 'pts:', pts.length);
-    console.log('================================');
 
-    // const linePts = pts.length >= 2 ? pts.slice(1, pts.length - 1) : pts;
     const linePts = pts;
     const polylinePoints = linePts.map(p => `${p.x},${p.y}`).join(' ');
     const turns = linePts.length > 1 ? buildTurns(linePts) : [];
     const dotR  = Math.max(4, containerW * 0.007);
-    // const startPt = pts.length >= 2 ? pts[1]              : pts[0];
-    // const endPt   = pts.length >= 2 ? pts[pts.length - 2] : pts[pts.length - 1];
     const startPt = pts[0];
     const endPt   = pts[pts.length - 1];
-
-    // Grid lines — built once, shown whenever gridVisible
-    const verticalLines   = Array.from({ length: GRID_COLS + 1 }, (_, c) => c);
-    const horizontalLines = Array.from({ length: GRID_ROWS + 1 }, (_, r) => r);
-    const colLabels = Array.from({ length: Math.floor(GRID_COLS / 5) + 1 }, (_, i) => i * 5);
-    const rowLabels = Array.from({ length: Math.floor(GRID_ROWS / 5) + 1 }, (_, i) => i * 5);
 
     return (
         <View style={styles.wrapper}>
 
-            {/*  Grid toggle — always visible  */}
-            <TouchableOpacity
-                onPress={() => setGridVisible(v => !v)}
-                style={[styles.gridToggle, gridVisible && styles.gridToggleOn]}
-            >
-                <Text style={[styles.gridToggleText, gridVisible && styles.gridToggleTextOn]}>
-                    {gridVisible ? '⊞  Grid on' : '⊞  Grid off'}
-                </Text>
-            </TouchableOpacity>
-
             {/*  Map + SVG overlay  */}
             <View style={styles.mapContainer} onLayout={onLayout}>
                 {mapImage ? (
-                    <Image 
-                        source={mapImage} 
-                        style={styles.mapImage} 
-                        resizeMode="stretch"
-                        onLoad={(e) => console.log('IMAGE DIMS:', e.nativeEvent.source.width, e.nativeEvent.source.height)}
-                    />
+                    <Image source={mapImage} style={styles.mapImage} resizeMode="stretch" />
                 ) : (
                     <View style={styles.mapFallback}>
                         <Text style={styles.mapFallbackText}>No map for {building} floor {floor}</Text>
@@ -186,44 +162,6 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
                 {containerW > 0 && (
                     <Svg style={StyleSheet.absoluteFill} width={containerW} height={containerH}>
 
-                        {/*  Debug grid  */}
-                        {gridVisible && verticalLines.map(c => (
-                            <Line
-                                key={`v${c}`}
-                                x1={(c / GRID_COLS) * containerW} y1={0}
-                                x2={(c / GRID_COLS) * containerW} y2={containerH}
-                                stroke="rgba(0,0,0,0.5)" strokeWidth={1}
-                            />
-                        ))}
-                        {gridVisible && horizontalLines.map(r => (
-                            <Line
-                                key={`h${r}`}
-                                x1={0}                              y1={(r / GRID_ROWS) * containerH}
-                                x2={containerW}                     y2={(r / GRID_ROWS) * containerH}
-                                stroke="rgba(0,0,0,0.25)" strokeWidth={0.5}
-                            />
-                        ))}
-                        {/* Col labels (blue) along top */}
-                        {gridVisible && colLabels.map(c => (
-                            <SvgText
-                                key={`cl${c}`}
-                                x={(c / GRID_COLS) * containerW + 2}
-                                y={9}
-                                fontSize={7}
-                                fill="rgba(0,0,220,0.85)"
-                            >{c}</SvgText>
-                        ))}
-                        {/* Row labels (red) down left */}
-                        {gridVisible && rowLabels.map(r => (
-                            <SvgText
-                                key={`rl${r}`}
-                                x={2}
-                                y={(r / GRID_ROWS) * containerH + 9}
-                                fontSize={7}
-                                fill="rgba(200,0,0,0.85)"
-                            >{r}</SvgText>
-                        ))}
-
                         {/*  Path (only when pts exist)  */}
                         {pts.length > 1 && (
                             <>
@@ -236,11 +174,13 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
                                     strokeLinecap="round"
                                 />
                                 <G opacity={0.75}>
+                                    <Circle cx={startPt.x} cy={startPt.y} r={dotR * 1.8} fill="none" stroke="#16a34a" strokeWidth={2} />
                                     <Circle cx={startPt.x} cy={startPt.y} r={dotR * 1.5} fill="white" />
                                     <Circle cx={startPt.x} cy={startPt.y} r={dotR}        fill="#16a34a" />
                                     <Circle cx={startPt.x} cy={startPt.y} r={dotR * 0.35} fill="white" />
                                 </G>
                                 <G opacity={0.75}>
+                                    <Circle cx={endPt.x} cy={endPt.y} r={dotR * 1.8} fill="none" stroke="#dc2626" strokeWidth={2} />
                                     <Circle cx={endPt.x} cy={endPt.y} r={dotR * 1.5} fill="white" />
                                     <Circle cx={endPt.x} cy={endPt.y} r={dotR}        fill="#dc2626" />
                                     <Circle cx={endPt.x} cy={endPt.y} r={dotR * 0.35} fill="white" />
@@ -289,18 +229,6 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
 
 const styles = StyleSheet.create({
     wrapper:    { marginTop: 16, gap: 8 },
-    gridToggle: {
-        alignSelf: 'flex-start',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderRadius: 6,
-        borderWidth: 1,
-        borderColor: '#cbd5e1',
-        backgroundColor: '#f8fafc',
-    },
-    gridToggleOn:     { borderColor: '#6366f1', backgroundColor: '#eef2ff' },
-    gridToggleText:   { fontSize: 12, color: '#64748b', fontWeight: '500' },
-    gridToggleTextOn: { color: '#6366f1' },
     mapContainer: {
         width: '100%',
         height: 260,
@@ -330,4 +258,18 @@ const styles = StyleSheet.create({
     turnIcon:     { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: '#e2e8f0' },
     turnIconText: { fontSize: 13 },
     turnLabel:    { fontSize: 14, color: '#334155' },
+    unreachable: {
+        marginTop: 16,
+        padding: 16,
+        borderRadius: 10,
+        backgroundColor: '#fef2f2',
+        borderWidth: 1,
+        borderColor: '#fecaca',
+        alignItems: 'center',
+    },
+    unreachableText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#dc2626',
+    },
 });
