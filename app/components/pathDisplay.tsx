@@ -44,12 +44,12 @@ const GRID_COLS = 60;
  */
 function parseNodeId(id: string): { row: number; col: number; building: string; floor: string } {
     const parts = id.split('-');
-    const col   = parseInt(parts[parts.length - 1], 10);
-    const row   = parseInt(parts[parts.length - 2], 10);
+    const col = parseInt(parts[parts.length - 1], 10);
+    const row = parseInt(parts[parts.length - 2], 10);
     // TYPE is parts[parts.length - 3] ("D" or "J")
     // FLOOR is parts[parts.length - 4]
     // BUILDING is everything before that joined back with "-"
-    const floor    = parts[parts.length - 4] ?? '1';
+    const floor = parts[parts.length - 4] ?? '1';
     const building = parts.slice(0, parts.length - 4).join('-');
     return { row, col, building, floor };
 }
@@ -81,7 +81,7 @@ function angleDeg(dx: number, dy: number): number {
 
 function normalise(deg: number): number {
     let d = deg % 360;
-    if (d > 180)  d -= 360;
+    if (d > 180) d -= 360;
     if (d < -180) d += 360;
     return d;
 }
@@ -118,10 +118,10 @@ function buildTurns(pts: { x: number; y: number }[]): TurnStep[] {
             straightCount++;
         } else {
             flushStraight();
-            if      (diff > 0  && diff <  67) steps.push({ type: 'slight-right', label: 'Bear right' });
-            else if (diff >= 67)              steps.push({ type: 'right',        label: 'Turn right' });
-            else if (diff < 0  && diff > -67) steps.push({ type: 'slight-left',  label: 'Bear left'  });
-            else                              steps.push({ type: 'left',         label: 'Turn left'  });
+            if (diff > 0 && diff < 67) steps.push({ type: 'slight-right', label: 'Bear right' });
+            else if (diff >= 67) steps.push({ type: 'right', label: 'Turn right' });
+            else if (diff < 0 && diff > -67) steps.push({ type: 'slight-left', label: 'Bear left' });
+            else steps.push({ type: 'left', label: 'Turn left' });
             straightCount = 1;
         }
         prevAngle = a;
@@ -133,13 +133,13 @@ function buildTurns(pts: { x: number; y: number }[]): TurnStep[] {
 }
 
 const TURN_ICONS: Record<TurnType, string> = {
-    start:           '▶',
-    end:             '■',
-    forward:         '↑',
-    left:            '←',
-    right:           '→',
-    'slight-left':   '↖',
-    'slight-right':  '↗',
+    start: '▶',
+    end: '■',
+    forward: '↑',
+    left: '←',
+    right: '→',
+    'slight-left': '↖',
+    'slight-right': '↗',
 };
 
 //  Component 
@@ -163,21 +163,21 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
     const pts =
         containerW > 0 && containerH > 0
             ? path.map(id => {
-                  const { row, col } = parseNodeId(id);
-                  return toPixel(row, col, containerW, containerH);
-              })
+                const { row, col } = parseNodeId(id);
+                return toPixel(row, col, containerW, containerH);
+            })
             : [];
 
     const polylinePoints = pts.map(p => `${p.x},${p.y}`).join(' ');
     const turns = pts.length > 1 ? buildTurns(pts) : [];
-    const dotR  = Math.max(6, containerW * 0.012);
+    const dotR = Math.max(6, containerW * 0.012);
 
     return (
         <View style={styles.wrapper}>
             {/*  Map + SVG overlay  */}
             <View style={styles.mapContainer} onLayout={onLayout}>
                 {mapImage ? (
-                    <Image source={mapImage} style={styles.mapImage} resizeMode="contain" />
+                    <Image source={mapImage} style={styles.mapImage} resizeMode="stretch" />
                 ) : (
                     <View style={styles.mapFallback}>
                         <Text style={styles.mapFallbackText}>
@@ -203,14 +203,14 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
                         {/* Start dot — green */}
                         <G>
                             <Circle cx={pts[0].x} cy={pts[0].y} r={dotR * 1.6} fill="white" />
-                            <Circle cx={pts[0].x} cy={pts[0].y} r={dotR}       fill="#16a34a" />
+                            <Circle cx={pts[0].x} cy={pts[0].y} r={dotR} fill="#16a34a" />
                             <Circle cx={pts[0].x} cy={pts[0].y} r={dotR * 0.4} fill="white" />
                         </G>
                         {/* End dot — red */}
                         <G>
-                            <Circle cx={pts[pts.length-1].x} cy={pts[pts.length-1].y} r={dotR * 1.6} fill="white" />
-                            <Circle cx={pts[pts.length-1].x} cy={pts[pts.length-1].y} r={dotR}       fill="#dc2626" />
-                            <Circle cx={pts[pts.length-1].x} cy={pts[pts.length-1].y} r={dotR * 0.4} fill="white" />
+                            <Circle cx={pts[pts.length - 1].x} cy={pts[pts.length - 1].y} r={dotR * 1.6} fill="white" />
+                            <Circle cx={pts[pts.length - 1].x} cy={pts[pts.length - 1].y} r={dotR} fill="#dc2626" />
+                            <Circle cx={pts[pts.length - 1].x} cy={pts[pts.length - 1].y} r={dotR * 0.4} fill="white" />
                         </G>
                     </Svg>
                 )}
@@ -252,12 +252,12 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
 
 // Pulled out of StyleSheet so we can index by TurnType without TS complaints
 const turnIconStyle: Record<TurnType, object> = {
-    start:          { backgroundColor: '#dcfce7' },
-    end:            { backgroundColor: '#fee2e2' },
-    forward:        { backgroundColor: '#f1f5f9' },
-    left:           { backgroundColor: '#dbeafe' },
-    right:          { backgroundColor: '#fef3c7' },
-    'slight-left':  { backgroundColor: '#dbeafe' },
+    start: { backgroundColor: '#dcfce7' },
+    end: { backgroundColor: '#fee2e2' },
+    forward: { backgroundColor: '#f1f5f9' },
+    left: { backgroundColor: '#dbeafe' },
+    right: { backgroundColor: '#fef3c7' },
+    'slight-left': { backgroundColor: '#dbeafe' },
     'slight-right': { backgroundColor: '#fef3c7' },
 };
 
