@@ -6,9 +6,11 @@ import {
     StyleSheet,
     LayoutChangeEvent,
     TouchableOpacity,
+    Dimensions
 } from 'react-native';
 import Svg, { Circle, Polyline, G, Line, Text as SvgText } from 'react-native-svg';
 import { getMapImage } from '../components/mapImages';
+const SCREEN = Dimensions.get('window');
 
 // Types
 
@@ -28,8 +30,9 @@ export interface PathDisplayProps {
 
 // Constants 
 
-const GRID_ROWS = 50;
-const GRID_COLS = 60;
+const GRID_ROWS = 40;
+const GRID_COLS = 50;
+console.log('GRID:', GRID_ROWS, GRID_COLS);
 
 // Helpers 
 
@@ -43,6 +46,7 @@ function parseNodeId(id: string): { row: number; col: number; building: string; 
 }
 
 function toPixel(row: number, col: number, w: number, h: number) {
+    console.log('toPixel called:', row, col, w, h);  // add this
     return {
         x: ((col + 0.5) / GRID_COLS) * w,
         y: ((row + 0.5) / GRID_ROWS) * h,
@@ -108,8 +112,8 @@ const turnIconStyle: Record<TurnType, object> = {
 // Component 
 
 export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
-    const [containerW, setContainerW] = useState(0);
-    const [containerH, setContainerH] = useState(0);
+    const [containerW, setContainerW] = useState(SCREEN.width - 40);
+    const [containerH, setContainerH] = useState(260);
     const [gridVisible, setGridVisible] = useState(true);
 
     if (!path || path.length === 0) return null;
@@ -126,13 +130,20 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
     const pts = containerW > 0 && containerH > 0
         ? path.map(id => { const { row, col } = parseNodeId(id); return toPixel(row, col, containerW, containerH); })
         : [];
+    
+    console.log('========== PATH DEBUG ==========');
+    console.log('containerW:', containerW, 'containerH:', containerH, 'pts:', pts.length);
+    console.log('================================');
 
-    const linePts = pts.length >= 2 ? pts.slice(1, pts.length - 1) : pts;
+    // const linePts = pts.length >= 2 ? pts.slice(1, pts.length - 1) : pts;
+    const linePts = pts;
     const polylinePoints = linePts.map(p => `${p.x},${p.y}`).join(' ');
     const turns = linePts.length > 1 ? buildTurns(linePts) : [];
     const dotR  = Math.max(4, containerW * 0.007);
-    const startPt = pts.length >= 2 ? pts[1]              : pts[0];
-    const endPt   = pts.length >= 2 ? pts[pts.length - 2] : pts[pts.length - 1];
+    // const startPt = pts.length >= 2 ? pts[1]              : pts[0];
+    // const endPt   = pts.length >= 2 ? pts[pts.length - 2] : pts[pts.length - 1];
+    const startPt = pts[0];
+    const endPt   = pts[pts.length - 1];
 
     // Grid lines — built once, shown whenever gridVisible
     const verticalLines   = Array.from({ length: GRID_COLS + 1 }, (_, c) => c);
@@ -156,7 +167,12 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
             {/*  Map + SVG overlay  */}
             <View style={styles.mapContainer} onLayout={onLayout}>
                 {mapImage ? (
-                    <Image source={mapImage} style={styles.mapImage} resizeMode="stretch" />
+                    <Image 
+                        source={mapImage} 
+                        style={styles.mapImage} 
+                        resizeMode="stretch"
+                        onLoad={(e) => console.log('IMAGE DIMS:', e.nativeEvent.source.width, e.nativeEvent.source.height)}
+                    />
                 ) : (
                     <View style={styles.mapFallback}>
                         <Text style={styles.mapFallbackText}>No map for {building} floor {floor}</Text>
@@ -176,7 +192,7 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
                                 key={`v${c}`}
                                 x1={(c / GRID_COLS) * containerW} y1={0}
                                 x2={(c / GRID_COLS) * containerW} y2={containerH}
-                                stroke="rgba(0,0,0,0.25)" strokeWidth={0.5}
+                                stroke="rgba(0,0,0,0.5)" strokeWidth={1}
                             />
                         ))}
                         {gridVisible && horizontalLines.map(r => (
