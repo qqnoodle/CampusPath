@@ -19,10 +19,7 @@ const LocationSchema = mongoose.Schema(
             required: [true, 'Floor level of location required'],
         },
         doors: {
-            type: [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Node'
-            }],
+            type: [String],
             required: [true, 'All location must have doors'],
         }
     },

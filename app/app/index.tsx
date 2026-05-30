@@ -1,54 +1,114 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native';
-import OptionSelector from '../../components/OptionSelector';
-import LocationSearch from "../components/LocationSearch";
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Button, ActivityIndicator, ScrollView } from 'react-native';
+import OptionSelector from '../components/OptionSelector';
+import LocationSearchBar from '../components/LocationSearchBar';
+import { SearchResultItem } from '../types/SearchResultItem';
+import { router } from 'expo-router';
+import PathDisplay, { PathNode } from '../components/pathDisplay';
 
-export default function Index() {
-    return <LocationSearch />;
-}
-
-/*
 export default function App() {
-    //state to manage optionSelector
-    const [selected, updateSelected] = useState(0);
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
+    const [startLocation, setStartLocation] = useState<SearchResultItem | null>(null);
+    const [endLocation, setEndLocation] = useState<SearchResultItem | null>(null);
+    const [selected, setSelected] = useState(0);
+    const [isLoading, setLoading] = useState(false);
+
+    // Path result state
+    const [pathResult, setPathResult] = useState<{
+        path: string[];
+        nodeList: PathNode[];
+        optimisation: string;
+        totalNodes: number;
+    } | null>(null);
+
+    const findPath = async () => {
+        setLoading(true);
+        console.log("Fetching:", `${API}/path/find`);
+        console.log("API env:", API);
+        try {
+            const response = await fetch(`${API}/path/find`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    optimisation: selected,
+                    startLocation: startLocation?.roomNumber,
+                    endLocation: endLocation?.roomNumber,
+                })
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`Server error: ${text}`);
+            }
+
+            const data = await response.json();
+            console.log(data);
+
+            setPathResult({
+                path: data.path,
+                nodeList: data.nodeList,
+                optimisation: data.optimisation,
+                totalNodes: data.totalNodes,
+            });
+
+        } catch (e: any) {
+            console.error("findPath error:", e.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
-        <View style={{ backgroundColor: 'white' }}>
-            <View>
-                <Text> Route Options </Text>
-                <OptionSelector
-                    options={['Fastest', 'Sheltered', 'Accessible']}
-                    selected={selected}
-                    onSelect={updateSelected}
+        <ScrollView style={styles.container}>
+            <Text style={styles.title}> CampusPath Navigator</Text>
+            <OptionSelector
+                options={['Fastest', 'Sheltered', 'Accessible']}
+                selected={selected}
+                onSelect={setSelected}
+            />
+            <LocationSearchBar
+                mainText="Start Location"
+                defaultSearchText="Search Starting...."
+                setOutput={setStartLocation}
+                API={API}
+            />
+            <LocationSearchBar
+                mainText="End Location"
+                defaultSearchText="Search Destination...."
+                setOutput={setEndLocation}
+                API={API}
+            />
+            {isLoading && (
+                <ActivityIndicator size="large" style={{ marginTop: 10 }} />
+            )}
+            <Button
+                title="Find Path"
+                onPress={findPath}
+            />
+
+            {/* Path result */}
+            {pathResult && (
+                <PathDisplay
+                    path={pathResult.path}
+                    nodeList={pathResult.nodeList}
                 />
-            </View >
-            <View style={{ flexDirection: 'row' }}>
-                <Text> Start </Text>
-                <TextInput
-                    placeholder='Search'
-                    clearButtonMode='always'
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    style={styles.searchbar}
-                />
-            </View>
-        </View>
+            )}
+
+        </ScrollView>
     );
 }
-*/
 
-const styles = StyleSheet.create(
-    {
-        searchbar: {
-            marginHorizontal: 20,
-            marginVertical: 10,
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            borderColor: '#c4c8cf',
-            borderRadius: 8,
-            borderWidth: 1,
-            flex: 1,
 
-        },
-    }
-);
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: "#fff",
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: "bold",
+        marginBottom: 24,
+    },
+});
 
