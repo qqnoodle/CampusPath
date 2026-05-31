@@ -57,7 +57,6 @@ CampusPath addresses these limitations by:
 - History page to allow users to quickly refer to their recent searches (Extra feature)
 - Favoriting paths to keep them at the top of history page for quick access (Extra feature)
 - Accounts to sync history and favorites across devices (Extension feature)
-- Visual Map UI for the paths (Extension feature)
 
 ## Userflow
 <img width="3344" height="1508" alt="image" src="https://github.com/user-attachments/assets/c50bd25b-08ec-4eb6-a212-621f87836f28" />
@@ -114,8 +113,8 @@ We thus decided to write a general A* which takes in comparators functions to pr
 | May 1 - 10 | <ul> <li>Setting up environment</li> <li> template code for MERN stack </li> </ul> |  
 | May 11 - 19 | <ul> <li> Vercel Hosting + Location Searching API </li> <li> frontend UI for location search </li> </ul> |
 | May 20 - 31 | <ul> <li> Astar Algorithm </li> <li> Pathfinding capabilities in front end </li> </ul> |
-| June 1 - 7 | <ul> <li> Map data gathering tool </li> <li> Locally cache history </li> <ul> |
-| June 8 - 14 | TBD |
+| June 1 - 7 | <ul> <li> Map data gathering tool </li> <li> Increasing Map data  </li> <li> Testing on mobile devices </li> <ul> |
+| June 8 - 14 | <ul> <li> Sheltered and accessible optimisation </li> <li> Upgrading path displaying </li> <ul>|
 | June 15 - 21 | TBD |
 | June 22 -  28 | TBD |
 | June 29 -  July 5 | TBD |
@@ -130,3 +129,5 @@ To run the app normally after installation
 cd CampusPath/app
 npx expo start
 ```
+click on the link where it says: Web is waiting on http://localhost:
+
