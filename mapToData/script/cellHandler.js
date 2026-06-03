@@ -9,23 +9,28 @@ export function cellClick(cellToNode, cell, panel, nodeInfoContainer) {
     const attribute = Array.from(toolBar.querySelectorAll('input[name="attributeSelector"]:checked')).map(box => box.value);
     switch (action) {
         case "Select":
-            selectNode(cellToNode, panel, cell);
+            selectNode(cellToNode, nodeInfoContainer, cell);
             break;
         case "Delete":
             deleteNode(cellToNode, panel, cell);
             break;
         case "Location":
-            buildNode(cellToNode, panel, cell, "L", attribute);
-            cell.classList.toggle("location");
+            if (!cellToNode.has(cell)) {
+                buildNode(cellToNode, panel, cell, "L", attribute);
+                cell.classList.toggle("location");
+            }
             break;
         case "Junction":
-            buildNode(cellToNode, panel, cell, "J", attribute);
-            cell.classList.toggle("junction");
+            if (!cellToNode.has(cell)) {
+                buildNode(cellToNode, panel, cell, "J", attribute);
+                cell.classList.toggle("junction");
+            }
             break;
         case "Door":
-            buildNode(cellToNode, panel, cell, "D", attribute);
-            cell.classList.toggle("door");
-            
+            if (!cellToNode.has(cell)) {
+                buildNode(cellToNode, panel, cell, "D", attribute);
+                cell.classList.toggle("door");
+            }
             break;
         case "Link":
             break;

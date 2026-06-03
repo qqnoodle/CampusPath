@@ -13,7 +13,7 @@ export class Location {
     roomNumber;
     building;
     floor;
-    doors;
+    doors = [];
 
     Location(cell, name, roomNumber, building, floor) {
         this.cell = cell;

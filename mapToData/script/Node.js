@@ -11,7 +11,9 @@ export class Node {
 
     cell;
     nodeId;
-    neighbour;
+    building;
+    neighbour = [];
+    floor;
     attribute;
     nodeType;
 
@@ -21,7 +23,7 @@ export class Node {
         this.floor = floorLevelMapping(floor);
         this.nodeId = nodeId;
         this.attribute = attribute;
-        this.nodeType = type;
+        this.nodeType = type === "D" ? "door" : "junction";
     }
     
     toJson() {
