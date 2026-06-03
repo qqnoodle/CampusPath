@@ -1,7 +1,9 @@
 import { createPanel } from "./mapPanel.js";
+import { LinkLogic } from "./linkLogic.js";
 
 //Global variables
-let cellToNode = new Map();
+const cellToNode = new Map();
+const linkLogic = new LinkLogic(cellToNode);
 
 //DOM elements
 const toolBar = document.querySelector(".toolBar");
@@ -11,7 +13,7 @@ const jsonOutputContainer = document.querySelector(".jsonOutputContainer");
 console.log("Successfully loaded the script");
 
 
-createPanel(cellToNode, toolBar, mapPanelContainer, nodeInfoContainer, jsonOutputContainer);
-createPanel(cellToNode, toolBar, mapPanelContainer, nodeInfoContainer, jsonOutputContainer);
+createPanel(linkLogic, cellToNode, toolBar, mapPanelContainer, nodeInfoContainer, jsonOutputContainer);
+createPanel(linkLogic, cellToNode, toolBar, mapPanelContainer, nodeInfoContainer, jsonOutputContainer);
 console.log("mapPanel loaded successfully");
 

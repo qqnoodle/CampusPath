@@ -3,7 +3,7 @@ import { deleteNode } from "./deleteNode.js";
 import { buildNode } from "./buildNode.js";
 import { linkNode } from "./linkNode.js";
 
-export function cellClick(cellToNode, cell, panel, nodeInfoContainer) { 
+export function cellClick(linkLogic, cellToNode, cell, panel, nodeInfoContainer) { 
     const toolBar = document.querySelector(".toolBar");
     const action = toolBar.querySelector('input[name="actionSelector"]:checked').value;
     const attribute = Array.from(toolBar.querySelectorAll('input[name="attributeSelector"]:checked')).map(box => box.value);
@@ -33,6 +33,10 @@ export function cellClick(cellToNode, cell, panel, nodeInfoContainer) {
             }
             break;
         case "Link":
+            if (!cellToNode.has(cell)) {
+                return
+            }
+            linkLogic.pushLink(cell);
             break;
         default:
             return;

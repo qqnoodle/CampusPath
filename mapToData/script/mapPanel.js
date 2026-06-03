@@ -1,6 +1,7 @@
+import { makeCell } from "./cell.js";
 import { cellClick } from "./cellHandler.js";
 
-function initMapPanel(cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer) {
+function initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer) {
     const input = panel.querySelector(".imageInput");
     const img = panel.querySelector(".mapImage");
     const closeBtn = panel.querySelector(".closeBtn");
@@ -39,14 +40,7 @@ function initMapPanel(cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputC
 
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
-                const cell = document.createElement("div");
-                cell.classList.add("gridCell");
-                cell.dataset.row = r;
-                cell.dataset.col = c;
-                cell.addEventListener("click", (e) => {
-                    cellClick(cellToNode, e.currentTarget, panel, nodeInfoContainer);
-                    e.stopPropagation();
-                });
+                const cell = makeCell(r, c, linkLogic, cellToNode, panel, nodeInfoContainer);
                 grid.appendChild(cell);
             }
         }
@@ -54,6 +48,9 @@ function initMapPanel(cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputC
 
     closeBtn.addEventListener("click", (e) => {
         e.stopPropagation();
+        for (const child of grid.children) {
+            cellToNode.delete(child);
+        }
         imageLoaded = false;
         imagePending = false;
         img.src = "";
@@ -82,7 +79,7 @@ function initZoom(panel, grid, wrapper) {
     });
 }
 
-export function createPanel(cellToNode, toolBar, container, nodeInfoContainer, jsonOutputContainer) {
+export function createPanel(linkLogic, cellToNode, toolBar, container, nodeInfoContainer, jsonOutputContainer) {
     const panel = document.createElement("div");
     panel.classList.add("mapPanel");
     panel.innerHTML = `
@@ -94,5 +91,5 @@ export function createPanel(cellToNode, toolBar, container, nodeInfoContainer, j
         <button class="closeBtn">Close Map</button>
     `;
     container.appendChild(panel);
-    initMapPanel(cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer);
+    initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer);
 }

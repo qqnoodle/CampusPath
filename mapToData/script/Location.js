@@ -15,7 +15,7 @@ export class Location {
     floor;
     doors = [];
 
-    Location(cell, name, roomNumber, building, floor) {
+    constructor(cell, name, roomNumber, building, floor) {
         this.cell = cell;
         this.name = name;
         this.roomNumber = roomNumber;
