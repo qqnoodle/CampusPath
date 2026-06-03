@@ -1,18 +1,32 @@
-function initMapPanel(panel) {
+import { cellClick } from "./cellHandler.js";
+
+function initMapPanel(cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer) {
     const input = panel.querySelector(".imageInput");
     const img = panel.querySelector(".mapImage");
     const closeBtn = panel.querySelector(".closeBtn");
     const grid = panel.querySelector(".gridOverlay");
     const wrapper = panel.querySelector(".imageWrapper");
     let imageLoaded = false;
+    let imagePending = false;
     const rows = 50;
     const cols = 60;
 
     panel.addEventListener("click", () => {
-        if (!imageLoaded) {
-        input.click();
+        if (imageLoaded || imagePending) {
+            return;
         }
+        let building = prompt("Building Name");
+        let floor = prompt("Floor level");
+        if (!building || !floor) {
+            alert("Please provide both information!!");
+            return;
+        }
+        panel.dataset.building = building;
+        panel.dataset.floor = floor;
+        imagePending = true;
+        input.click();
     });
+
     input.addEventListener("change", () => {
         const file = input.files[0];
         if (!file) return;
@@ -30,8 +44,8 @@ function initMapPanel(panel) {
                 cell.dataset.row = r;
                 cell.dataset.col = c;
                 cell.addEventListener("click", (e) => {
+                    cellClick(cellToNode, e.currentTarget, panel, nodeInfoContainer);
                     e.stopPropagation();
-                    cell.classList.toggle("active");
                 });
                 grid.appendChild(cell);
             }
@@ -41,6 +55,7 @@ function initMapPanel(panel) {
     closeBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         imageLoaded = false;
+        imagePending = false;
         img.src = "";
         input.value = "";
         grid.innerHTML = "";
@@ -67,7 +82,7 @@ function initZoom(panel, grid, wrapper) {
     });
 }
 
-export function createPanel(container) {
+export function createPanel(cellToNode, toolBar, container, nodeInfoContainer, jsonOutputContainer) {
     const panel = document.createElement("div");
     panel.classList.add("mapPanel");
     panel.innerHTML = `
@@ -79,5 +94,5 @@ export function createPanel(container) {
         <button class="closeBtn">Close Map</button>
     `;
     container.appendChild(panel);
-    initMapPanel(panel);
+    initMapPanel(cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer);
 }

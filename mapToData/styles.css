@@ -87,7 +87,6 @@ body {
     border: 1px solid #333;
 }
 
-/* IMAGE */
 .imageWrapper {
     position: absolute;
     inset: 0;
@@ -100,7 +99,6 @@ body {
     object-fit: fill;
 }
 
-/* GRID */
 .gridOverlay {
     position: absolute;
     inset: 0;
@@ -113,17 +111,21 @@ body {
     border: solid 2px black;
 }
 
-/* CELLS */
 .gridCell {
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid black;
     cursor: pointer;
 }
 
-.gridCell.active {
-    background: rgba(0,255,100,0.4);
+.gridCell.location {
+    background: orange;
+}
+.gridCell.junction {
+    background: purple;
+}
+.gridCell.door {
+    background: red;
 }
 
-/* CLOSE BUTTON */
 .closeBtn {
     position: absolute;
     top: 10px;
