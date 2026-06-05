@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 import PathDisplay, { PathNode } from '../components/pathDisplay';
 
 export default function App() {
-    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-git-feature-pathfinding-qqnoodles-projects.vercel.app/api";
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
     const [startLocation, setStartLocation] = useState<SearchResultItem | null>(null);
     const [endLocation, setEndLocation] = useState<SearchResultItem | null>(null);
     const [selected, setSelected] = useState(0);
@@ -45,10 +45,10 @@ export default function App() {
             console.log(data);
 
             setPathResult({
-                path:         data.path,
-                nodeList:     data.nodeList,
+                path: data.path,
+                nodeList: data.nodeList,
                 optimisation: data.optimisation,
-                totalNodes:   data.totalNodes,
+                totalNodes: data.totalNodes,
             });
 
         } catch (e: any) {
@@ -70,11 +70,13 @@ export default function App() {
                 mainText="Start Location"
                 defaultSearchText="Search Starting...."
                 setOutput={setStartLocation}
+                API={API}
             />
             <LocationSearchBar
                 mainText="End Location"
                 defaultSearchText="Search Destination...."
                 setOutput={setEndLocation}
+                API={API}
             />
             {isLoading && (
                 <ActivityIndicator size="large" style={{ marginTop: 10 }} />
