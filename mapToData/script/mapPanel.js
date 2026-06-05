@@ -1,12 +1,17 @@
 import { makeCell } from "./cell.js";
 import { cellClick } from "./cellHandler.js";
+import { Location } from "./Location.js";
+import { Node } from "./Node.js";
 
 function initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer) {
     const input = panel.querySelector(".imageInput");
     const img = panel.querySelector(".mapImage");
     const closeBtn = panel.querySelector(".closeBtn");
+    const importBtn = panel.querySelector(".importBtn");
+    const exportBtn = panel.querySelector(".exportBtn");
     const grid = panel.querySelector(".gridOverlay");
     const wrapper = panel.querySelector(".imageWrapper");
+    const svg = panel.querySelector(".svgOverlay");
     let imageLoaded = false;
     let imagePending = false;
     const rows = 50;
@@ -56,15 +61,46 @@ function initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, 
         img.src = "";
         input.value = "";
         grid.innerHTML = "";
+        svg.innerHTML = "";
     });
 
-    initZoom(panel, grid, wrapper);
+    importBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const locationsInput = prompt("Paste Locations JSON array:");
+        const nodesInput = prompt("Paste Nodes JSON array:");
+        
+        const locationsData = JSON.parse(locationsInput);
+        const nodesData = JSON.parse(nodesInput);
+        
+    });
+
+    exportBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        // BY right I should create a function in a different file but.....
+        let allLocations = [];
+        let allNodes = [];
+        for (const [cell, node] of cellToNode) {
+            let arr = allNodes;
+            if (node instanceof Location) {
+                arr = allLocations;
+            }
+            arr.push(node.toJson());
+        }
+        jsonOutputContainer.innerHTML = `
+        <pre><strong>Locations</strong>\n${JSON.stringify(allLocations, null, 2)}</pre>
+        <pre><strong>Nodes</strong>\n${JSON.stringify(allNodes, null, 2)}</pre>
+    `;
+    });
+
+
+    initZoom(panel, grid, wrapper, svg);
 }
 
-function initZoom(panel, grid, wrapper) {
+function initZoom(panel, grid, wrapper, svg) {
     let scale = 1;
     const minScale = 0.5;
     const maxScale = 5;
+    panel.dataset.scale = scale;
     panel.addEventListener("wheel", (e) => {
         e.preventDefault();
         const zoomSpeed = 0.1;
@@ -76,6 +112,9 @@ function initZoom(panel, grid, wrapper) {
         scale = Math.min(maxScale, Math.max(minScale, scale));
         wrapper.style.transform = `scale(${scale})`;
         grid.style.transform = `scale(${scale})`;
+        svg.style.transform = `scale(${scale})`;
+        //This will let me access the scale for drawing
+        panel.dataset.scale = scale;
     });
 }
 
@@ -87,8 +126,11 @@ export function createPanel(linkLogic, cellToNode, toolBar, container, nodeInfoC
             <img class="mapImage">
         </div>
         <div class="gridOverlay"></div>
+        <svg class="svgOverlay"></svg>
         <input type="file" class="imageInput" accept="image/*" hidden>
         <button class="closeBtn">Close Map</button>
+        <button class="importBtn"> import data </button>
+        <button class="exportBtn"> export data </button>
     `;
     container.appendChild(panel);
     initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer);

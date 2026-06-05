@@ -1,5 +1,6 @@
 import { Node } from "./Node.js";
 import { Location } from "./Location.js";
+import { svgDraw } from "./svgDraw.js";
 
 function calculateWeight(cell1, cell2) {
     const r1 = parseInt(cell1.dataset.row, 10);
@@ -12,8 +13,11 @@ function calculateWeight(cell1, cell2) {
 export class LinkLogic {
 
     pendingLink = [];
+
+    //TODO This is too much work to kill off links I need core functionality anyways
     pendingUnlink = [];
     
+
     //Gotta use this scuff way because I dont wish to create hashing function to hash a pair
     linksFormed = [];
 
@@ -43,7 +47,6 @@ export class LinkLogic {
                 n1.neighbour.push(neighbour1);
                 n2.neighbour.push(neighbour2);
 
-                //TODO Draw link on svg
             } else {
                 //One of them is defo a location
                 if (!(n1 instanceof Location)) {
@@ -55,6 +58,8 @@ export class LinkLogic {
             }
             this.pendingLink.sort();
             this.linksFormed.push(this.pendingLink);
+            svgDraw(cell1, cell2);
+
         } else {
             //HOW SHOULD I HANDLE CROSS plane. I only allow nodes to nodes i guess
             //I cant really visually show the link cause thats too weird to be drawing lines across
@@ -90,9 +95,6 @@ export class LinkLogic {
                     return (elem[0] === this.pendingLink[0] && elem[1] === this.pendingLink[1]) || (elem[0] === this.pendingLink[1] && elem[1] === this.pendingLink[0]);
                 });
 
-            console.log(this.linksFormed);
-            console.log(this.pendingLink);
-            console.log(filterLinks);
             if (filterLinks.length > 0) {
                 this.pendingLink = [];
                 return;

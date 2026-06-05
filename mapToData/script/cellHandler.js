@@ -12,7 +12,7 @@ export function cellClick(linkLogic, cellToNode, cell, panel, nodeInfoContainer)
             selectNode(cellToNode, nodeInfoContainer, cell);
             break;
         case "Delete":
-            deleteNode(cellToNode, panel, cell);
+            deleteNode(linkLogic, cellToNode, panel, cell)
             break;
         case "Location":
             if (!cellToNode.has(cell)) {
