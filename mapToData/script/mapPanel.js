@@ -2,6 +2,7 @@ import { makeCell } from "./cell.js";
 import { cellClick } from "./cellHandler.js";
 import { Location } from "./Location.js";
 import { Node } from "./Node.js";
+import { reconstructPanel } from "./reconstructPanel.js";
 
 function initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, jsonOutputContainer) {
     const input = panel.querySelector(".imageInput");
@@ -66,11 +67,17 @@ function initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, 
 
     importBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        const locationsInput = prompt("Paste Locations JSON array:");
+        //const locationsInput = prompt("Paste Locations JSON array:");
         const nodesInput = prompt("Paste Nodes JSON array:");
         
-        const locationsData = JSON.parse(locationsInput);
+        if (!nodesInput) {
+            alert("Info needed");
+            return;
+        }
+        //const locationsData = JSON.parse(locationsInput);
         const nodesData = JSON.parse(nodesInput);
+
+        reconstructPanel(linkLogic, cellToNode, panel, nodesData);
         
     });
 
