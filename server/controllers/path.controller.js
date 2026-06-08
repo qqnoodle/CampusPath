@@ -22,11 +22,11 @@ const findPath = async (req, res) => {
             minHeuristic: (lst) => Math.min(...lst)
         },
         1: {
-            F: (g, h) => g + h,
+            F: (g, h) => [g[0], g[1] + h],
             H: (graph, n1, n2) => 0,
             G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "sheltered").length > 0 ? 0 : 1), g[1] + neighbourData.weight],
             FLimit: [Infinity, -1],
-            Gdefault: [0,0],
+            Gdefault: [0, 0],
             Fcomparator: (f1, f2) => f1[0] != f2[0] ? f1[0] < f2[0] : f1[1] < f2[1],
             Gcomparator: (g1, g2) => g1[0] != g2[0] ? g1[0] < g2[0] : g1[1] < g2[1],
             minHeuristic: (lst) => Math.min(...lst)
@@ -35,9 +35,9 @@ const findPath = async (req, res) => {
             //TODO modify for optimisation by accessibility
             F: (g, h) => [g[0], g[1] + h],
             H: (graph, n1, n2) => 0,
-            G: (graph, g, neighbourData) => g + neighbourData.weight,
+            G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "stairs").length > 0 ? Infinity : 0), g[1] + neighbourData.weight],
             FLimit: [Infinity, -1],
-            Gdefault: 0,
+            Gdefault: [0, 0],
             Fcomparator: (f1, f2) => f1 < f2,
             Gcomparator: (g1, g2) => g1 < g2,
             minHeuristic: (lst) => Math.min(...lst)
