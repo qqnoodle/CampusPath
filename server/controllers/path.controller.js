@@ -15,26 +15,28 @@ const findPath = async (req, res) => {
             F: (g, h) => g + h,
             H: (graph, n1, n2) => 0,
             G: (graph, g, neighbourData) => g + neighbourData.weight,
+            FLimit: Infinity,
             Gdefault: 0,
             Fcomparator: (f1, f2) => f1 < f2,
             Gcomparator: (g1, g2) => g1 < g2,
             minHeuristic: (lst) => Math.min(...lst)
         },
         1: {
-            //TODO modify for optmisation by sheltered
             F: (g, h) => g + h,
             H: (graph, n1, n2) => 0,
-            G: (graph, g, neighbourData) => g + neighbourData.weight,
-            Gdefault: 0,
-            Fcomparator: (f1, f2) => f1 < f2,
-            Gcomparator: (g1, g2) => g1 < g2,
+            G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "sheltered").length > 0 ? 0 : 1), g[1] + neighbourData.weight],
+            FLimit: [Infinity, -1],
+            Gdefault: [0,0],
+            Fcomparator: (f1, f2) => f1[0] != f2[0] ? f1[0] < f2[0] : f1[1] < f2[1],
+            Gcomparator: (g1, g2) => g1[0] != g2[0] ? g1[0] < g2[0] : g1[1] < g2[1],
             minHeuristic: (lst) => Math.min(...lst)
         },
         2: {
             //TODO modify for optimisation by accessibility
-            F: (g, h) => g + h,
+            F: (g, h) => [g[0], g[1] + h],
             H: (graph, n1, n2) => 0,
             G: (graph, g, neighbourData) => g + neighbourData.weight,
+            FLimit: [Infinity, -1],
             Gdefault: 0,
             Fcomparator: (f1, f2) => f1 < f2,
             Gcomparator: (g1, g2) => g1 < g2,
@@ -60,7 +62,7 @@ const findPath = async (req, res) => {
         const nodeList = await Nodes.find();
         const graph = graphBuilder(nodeList);
 
-        const path = Astar(graph, src, dst, optFunc.F, optFunc.H, optFunc.G, optFunc.Gdefault, optFunc.Fcomparator, optFunc.Gcomparator, optFunc.minHeuristic);
+        const path = Astar(graph, src, dst, optFunc.F, optFunc.H, optFunc.G, optFunc.FLimit, optFunc.Gdefault, optFunc.Fcomparator, optFunc.Gcomparator, optFunc.minHeuristic);
 
         //TODO Configure the output to fit the needs of frontend
         //
