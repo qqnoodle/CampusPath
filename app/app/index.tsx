@@ -44,11 +44,14 @@ export default function App() {
             const data = await response.json();
             console.log(data);
 
-            setPathResult({
-                path: data.path,
-                nodeList: data.nodeList,
-                optimisation: data.optimisation,
-                totalNodes: data.totalNodes,
+            router.push({
+                pathname: '/path-result',
+                params: {
+                    path: JSON.stringify(data.path),
+                    nodeList: JSON.stringify(data.nodeList),
+                    optimisation: data.optimisation,
+                    totalNodes: String(data.totalNodes),
+                },
             });
 
         } catch (e: any) {
@@ -85,15 +88,6 @@ export default function App() {
                 title="Find Path"
                 onPress={findPath}
             />
-
-            {/* Path result */}
-            {pathResult && (
-                <PathDisplay
-                    path={pathResult.path}
-                    nodeList={pathResult.nodeList}
-                />
-            )}
-
         </ScrollView>
     );
 }
