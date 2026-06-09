@@ -87,6 +87,9 @@ function initMapPanel(linkLogic, cellToNode, panel, toolBar, nodeInfoContainer, 
         let allLocations = [];
         let allNodes = [];
         for (const [cell, node] of cellToNode) {
+            if (!panel.contains(cell)) {
+                continue;
+            }
             let arr = allNodes;
             if (node instanceof Location) {
                 arr = allLocations;
