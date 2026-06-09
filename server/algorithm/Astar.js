@@ -8,6 +8,7 @@ const { PriorityQueue } = require('@datastructures-js/priority-queue');
  * @param {Function(g, h) -> type F} F - A function that takes in g and h and computes a value
  * @param {Function(graph, n1, n2) -> type H} H - A function that takes in graph and 2 nodes and return a heuristic value for the 2 nodes.
  * @param {Function(graph, g, neighbourData) -> type g} G - A function that takes in a graph, g and neighbourData a pair {node: .., weight: ..} of String and number. String is node id and weight is number.
+ * @param {F} Flimit - A default value of type F to indicate upper bound of cost.
  * @param {g} Gdefault - A default value of type g used for cost of src nodes.
  * @param {Function(F1, F2) -> boolean} Fcomparator - A function that returns F1 < F2
  * @param {Function(G1, G2) -> boolean} Gcomparator - A function that return G1 < G2
@@ -17,7 +18,7 @@ const { PriorityQueue } = require('@datastructures-js/priority-queue');
  * 
  */
 
-function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator, minHeuristic) {
+function Astar(graph, src, dst, F, H, G, Flimit, Gdefault, Fcomparator, Gcomparator, minHeuristic) {
 
     let openList = new PriorityQueue((f1, f2) => Fcomparator(f1.cost, f2.cost) ? -1 : 1);
     let closeList = new Map();
@@ -49,6 +50,7 @@ function Astar(graph, src, dst, F, H, G, Gdefault, Fcomparator, Gcomparator, min
 
         //lazy deletion
         let curF = F(Gscore.get(curNode), minHeuristic(dst.map((destinationNode) => H(graph, curNode, destinationNode))));
+        if (Fcomparator(Flimit, curF)) continue;
         if (Fcomparator(cost, curF)) continue;
         if (destinations.has(curNode)) {
             endNode = curNode;
