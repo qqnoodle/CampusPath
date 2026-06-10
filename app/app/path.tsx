@@ -1,17 +1,21 @@
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import PathDisplay, { PathNode } from '../components/pathDisplay';
+import MapDisplay from '../components/MapDisplay';
+import PathDirections from '../components/PathDirections';
+import { useState } from 'react';
 
 export default function PathResultPage() {
+
+    const [mapSize, setMapSize] = useState({ w: 0, h: 0 });
+
     const params = useLocalSearchParams<{
         path: string;
-        nodeList: string;
+        // nodeList: string; 
         optimisation: string;
         totalNodes: string;
     }>();
 
     const path: string[] = params.path ? JSON.parse(params.path) : [];
-    const nodeList: PathNode[] = params.nodeList ? JSON.parse(params.nodeList) : [];
     const optimisation = params.optimisation ?? '';
 
     return (
@@ -31,7 +35,19 @@ export default function PathResultPage() {
                 <Text style={styles.metaValue}>{optimisation}</Text>
             </View>
 
-            <PathDisplay path={path} nodeList={nodeList} />
+            {/* Map directions; can be duplicated and show both on a stack */}
+            <MapDisplay
+                path={path}
+                onSizeChange={(w, h) => setMapSize({ w, h })}
+            />
+
+            {/* Path Directions; can be duplicated and show both on a stack */}
+            <PathDirections
+                path={path}
+                containerW={mapSize.w}
+                containerH={mapSize.h}
+            />
+
         </ScrollView>
     );
 }

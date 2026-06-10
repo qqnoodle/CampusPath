@@ -39,7 +39,7 @@ export default function App() {
                 pathname: '/path',
                 params: {
                     path: JSON.stringify(data.path),
-                    nodeList: JSON.stringify(data.nodeList),
+                    // nodeList: JSON.stringify(data.nodeList), // i dont think we make use of this info
                     optimisation: data.optimisation,
                     totalNodes: String(data.totalNodes),
                 },
