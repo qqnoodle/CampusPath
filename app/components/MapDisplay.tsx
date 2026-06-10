@@ -1,10 +1,3 @@
-/*
-
-No Longer using this to display, using MapDisplay and PathDirections.
-
-*/
-
-
 import React, { useState } from 'react';
 import {
     View,
@@ -16,52 +9,34 @@ import {
 import Svg, { Circle, Polyline, G } from 'react-native-svg';
 import { getMapImage } from '../components/mapImages';
 
-//  Types 
-
-export interface PathNode {
-    node_id: string;
-    building: string;
-    floor: number;
-    nodeType: 'door' | 'junction';
-    attribute: string[];
-    neighbour: { node: string; weight: number }[];
-}
+//  Types
 
 export interface PathDisplayProps {
     /** Ordered list of node_id strings returned by the API */
     path: string[];
-    /** Full node list returned by the API */
-    nodeList: PathNode[];
+    onSizeChange?: (w: number, h: number) => void;
 }
 
-//  Constants 
+//  Constants
 
-// Must match the ROWS/COLS used in script.js when the nodes were created
 const GRID_ROWS = 50;
 const GRID_COLS = 60;
 
-//  Helpers 
+//  Helpers
 
 /**
- * Parse a node_id like "BLK-1-D-6-8" → { row: 6, col: 8, building: "BLK", floor: 1 }
- * Format: BUILDING-FLOOR-TYPE-ROW-COL
- * Building names can contain multiple segments (e.g. "SCIS1"), so we always
- * take the last two parts as row/col, second-to-last-3 as floor, everything
- * before the TYPE marker (D or J) as building.
+ * Parse a node_id like "BLK-1-D-6-8" → { row: 6, col: 8, building: "BLK", floor: "1" }
  */
-function parseNodeId(id: string): { row: number; col: number; building: string; floor: string } {
+export function parseNodeId(id: string): { row: number; col: number; building: string; floor: string } {
     const parts = id.split('-');
     const col = parseInt(parts[parts.length - 1], 10);
     const row = parseInt(parts[parts.length - 2], 10);
-    // TYPE is parts[parts.length - 3] ("D" or "J")
-    // FLOOR is parts[parts.length - 4]
-    // BUILDING is everything before that joined back with "-"
     const floor = parts[parts.length - 4] ?? '1';
     const building = parts.slice(0, parts.length - 4).join('-');
     return { row, col, building, floor };
 }
 
-function toPixel(
+export function toPixel(
     row: number,
     col: number,
     containerW: number,
@@ -73,91 +48,14 @@ function toPixel(
     };
 }
 
-//  Turn direction logic 
+//  Component
 
-type TurnType = 'start' | 'end' | 'forward' | 'left' | 'right' | 'slight-left' | 'slight-right';
-
-interface TurnStep {
-    type: TurnType;
-    label: string;
-}
-
-function angleDeg(dx: number, dy: number): number {
-    return (Math.atan2(dy, dx) * 180) / Math.PI;
-}
-
-function normalise(deg: number): number {
-    let d = deg % 360;
-    if (d > 180) d -= 360;
-    if (d < -180) d += 360;
-    return d;
-}
-
-function buildTurns(pts: { x: number; y: number }[]): TurnStep[] {
-    const steps: TurnStep[] = [{ type: 'start', label: 'Start here' }];
-
-    let prevAngle: number | null = null;
-    let straightCount = 0;
-
-    const flushStraight = () => {
-        if (straightCount > 0) {
-            steps.push({ type: 'forward', label: 'Continue straight' });
-            straightCount = 0;
-        }
-    };
-
-    for (let i = 1; i < pts.length; i++) {
-        const dx = pts[i].x - pts[i - 1].x;
-        const dy = pts[i].y - pts[i - 1].y;
-        if (Math.hypot(dx, dy) < 1) continue;
-
-        const a = angleDeg(dx, dy);
-
-        if (prevAngle === null) {
-            prevAngle = a;
-            straightCount = 1;
-            continue;
-        }
-
-        const diff = normalise(a - prevAngle);
-
-        if (Math.abs(diff) < 22) {
-            straightCount++;
-        } else {
-            flushStraight();
-            if (diff > 0 && diff < 67) steps.push({ type: 'slight-right', label: 'Bear right' });
-            else if (diff >= 67) steps.push({ type: 'right', label: 'Turn right' });
-            else if (diff < 0 && diff > -67) steps.push({ type: 'slight-left', label: 'Bear left' });
-            else steps.push({ type: 'left', label: 'Turn left' });
-            straightCount = 1;
-        }
-        prevAngle = a;
-    }
-
-    flushStraight();
-    steps.push({ type: 'end', label: 'Arrive at destination' });
-    return steps;
-}
-
-const TURN_ICONS: Record<TurnType, string> = {
-    start: '▶',
-    end: '■',
-    forward: '↑',
-    left: '←',
-    right: '→',
-    'slight-left': '↖',
-    'slight-right': '↗',
-};
-
-//  Component 
-
-export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
+export default function MapDisplay({ path, onSizeChange }: PathDisplayProps) {
     const [containerW, setContainerW] = useState(0);
     const [containerH, setContainerH] = useState(0);
 
     if (!path || path.length === 0) return null;
 
-    // Derive building + floor from the first node in the path
     const { building, floor } = parseNodeId(path[0]);
     const mapImage = getMapImage(building, floor);
 
@@ -165,6 +63,7 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
         const { width, height } = e.nativeEvent.layout;
         setContainerW(width);
         setContainerH(height);
+        onSizeChange?.(width, height);
     };
 
     const pts =
@@ -176,7 +75,6 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
             : [];
 
     const polylinePoints = pts.map(p => `${p.x},${p.y}`).join(' ');
-    const turns = pts.length > 1 ? buildTurns(pts) : [];
     const dotR = Math.max(6, containerW * 0.012);
 
     return (
@@ -236,37 +134,11 @@ export default function PathDisplay({ path, nodeList }: PathDisplayProps) {
                 <Text style={styles.legendBuildingFloor}>{building} · Floor {floor}</Text>
                 <Text style={styles.legendCount}>{path.length} nodes</Text>
             </View>
-
-            {/*  Turn-by-turn directions  */}
-            {turns.length > 0 && (
-                <View style={styles.turnsCard}>
-                    <Text style={styles.turnsTitle}>Directions</Text>
-                    {turns.map((step, i) => (
-                        <View key={i} style={styles.turnRow}>
-                            <View style={[styles.turnIcon, turnIconStyle[step.type]]}>
-                                <Text style={styles.turnIconText}>{TURN_ICONS[step.type]}</Text>
-                            </View>
-                            <Text style={styles.turnLabel}>{step.label}</Text>
-                        </View>
-                    ))}
-                </View>
-            )}
         </View>
     );
 }
 
-//  Styles 
-
-// Pulled out of StyleSheet so we can index by TurnType without TS complaints
-const turnIconStyle: Record<TurnType, object> = {
-    start: { backgroundColor: '#dcfce7' },
-    end: { backgroundColor: '#fee2e2' },
-    forward: { backgroundColor: '#f1f5f9' },
-    left: { backgroundColor: '#dbeafe' },
-    right: { backgroundColor: '#fef3c7' },
-    'slight-left': { backgroundColor: '#dbeafe' },
-    'slight-right': { backgroundColor: '#fef3c7' },
-};
+//  Styles
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -331,41 +203,5 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         fontSize: 13,
         color: '#94a3b8',
-    },
-    turnsCard: {
-        backgroundColor: '#f8fafc',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#e2e8f0',
-        padding: 12,
-        gap: 6,
-    },
-    turnsTitle: {
-        fontSize: 13,
-        fontWeight: '600',
-        color: '#475569',
-        marginBottom: 4,
-        textTransform: 'uppercase',
-        letterSpacing: 0.5,
-    },
-    turnRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 10,
-    },
-    turnIcon: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#e2e8f0',
-    },
-    turnIconText: {
-        fontSize: 13,
-    },
-    turnLabel: {
-        fontSize: 14,
-        color: '#334155',
     },
 });

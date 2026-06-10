@@ -4,7 +4,6 @@ import OptionSelector from '../components/OptionSelector';
 import LocationSearchBar from '../components/LocationSearchBar';
 import { SearchResultItem } from '../types/SearchResultItem';
 import { router } from 'expo-router';
-import PathDisplay, { PathNode } from '../components/pathDisplay';
 
 export default function App() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
@@ -12,14 +11,6 @@ export default function App() {
     const [endLocation, setEndLocation] = useState<SearchResultItem | null>(null);
     const [selected, setSelected] = useState(0);
     const [isLoading, setLoading] = useState(false);
-
-    // Path result state
-    const [pathResult, setPathResult] = useState<{
-        path: string[];
-        nodeList: PathNode[];
-        optimisation: string;
-        totalNodes: number;
-    } | null>(null);
 
     const findPath = async () => {
         setLoading(true);
@@ -44,11 +35,14 @@ export default function App() {
             const data = await response.json();
             console.log(data);
 
-            setPathResult({
-                path: data.path,
-                nodeList: data.nodeList,
-                optimisation: data.optimisation,
-                totalNodes: data.totalNodes,
+            router.push({
+                pathname: '/path',
+                params: {
+                    path: JSON.stringify(data.path),
+                    // nodeList: JSON.stringify(data.nodeList), // i dont think we make use of this info
+                    optimisation: data.optimisation,
+                    totalNodes: String(data.totalNodes),
+                },
             });
 
         } catch (e: any) {
@@ -85,15 +79,6 @@ export default function App() {
                 title="Find Path"
                 onPress={findPath}
             />
-
-            {/* Path result */}
-            {pathResult && (
-                <PathDisplay
-                    path={pathResult.path}
-                    nodeList={pathResult.nodeList}
-                />
-            )}
-
         </ScrollView>
     );
 }
