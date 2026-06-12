@@ -15,7 +15,7 @@ export default function PathResultPage() {
         totalNodes: string;
     }>();
 
-    const path: string[] = params.path ? JSON.parse(params.path) : [];
+    const path: string[][] = params.path ? JSON.parse(params.path) : [];
     const optimisation = params.optimisation ?? '';
 
     return (
@@ -35,18 +35,19 @@ export default function PathResultPage() {
                 <Text style={styles.metaValue}>{optimisation}</Text>
             </View>
 
-            {/* Map directions; can be duplicated and show both on a stack */}
-            <MapDisplay
-                path={path}
-                onSizeChange={(w, h) => setMapSize({ w, h })}
-            />
-
-            {/* Path Directions; can be duplicated and show both on a stack */}
-            <PathDirections
-                path={path}
-                containerW={mapSize.w}
-                containerH={mapSize.h}
-            />
+            {path.map((pathOnMap, i) => (
+                <View>
+                    <MapDisplay
+                        path={pathOnMap}
+                        onSizeChange={(w, h) => setMapSize({ w, h })}
+                    />
+                    <PathDirections
+                        path={pathOnMap}
+                        containerW={mapSize.w}
+                        containerH={mapSize.h}
+                    />
+                </View>
+            ))}
 
         </ScrollView>
     );
