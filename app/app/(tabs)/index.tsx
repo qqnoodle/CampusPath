@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button, ActivityIndicator, ScrollView } from 'react-native';
-import OptionSelector from '../components/OptionSelector';
-import LocationSearchBar from '../components/LocationSearchBar';
-import { SearchResultItem } from '../types/SearchResultItem';
+import OptionSelector from '../../components/OptionSelector';
+import LocationSearchBar from '../../components/LocationSearchBar';
+import { SearchResultItem } from '../../types/SearchResultItem';
 import { router } from 'expo-router';
+import { saveToHistory } from '../../components/pathHistory';
 
 export default function App() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
@@ -34,6 +35,13 @@ export default function App() {
 
             const data = await response.json();
             console.log(data);
+
+            // Save to history
+            await saveToHistory({
+                path: data.path,
+                optimisation: String(selected),
+                totalNodes: data.totalNodes,
+            });
 
             router.push({
                 pathname: '/path',
