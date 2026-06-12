@@ -69,12 +69,11 @@ const findPath = async (req, res) => {
 
             if (!graph.get(nodeId).attribute.some(attr => filteredType.includes(attr))) return true;
 
-            const currType = graph.get(nodeId)?.attribute;
-            const prevType = graph.get(path[i - 1])?.attribute;
-            const nextType = graph.get(path[i + 1])?.attribute;
+            let curAttr = "Stair";
+            if (!graph.get(nodeId).attribute.includes(curAttr)) curAttr = "Lift";
 
-            const sameAsPrev = prevType?.some(attr => currType.includes(attr));
-            const sameAsNext = nextType?.some(attr => currType.includes(attr));
+            const sameAsPrev = graph.get(path[i - 1])?.attribute.includes(curAttr);
+            const sameAsNext = graph.get(path[i + 1])?.attribute.includes(curAttr);
 
             return !sameAsPrev || !sameAsNext;
         });
