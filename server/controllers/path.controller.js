@@ -91,7 +91,7 @@ const findPath = async (req, res) => {
                 continue;
             }
 
-            const prev = graph.get(slottingArray.at(-1));
+            const prev = slottingArray.at(-1);
 
             if (node.building == prev.building && node.floor == prev.floor) {
                 slottingArray.push(node);
