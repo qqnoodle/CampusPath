@@ -38,8 +38,8 @@ const findPath = async (req, res) => {
             G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "Stair").length > 0 ? Infinity : 0), g[1] + neighbourData.weight],
             FLimit: [Infinity, -1],
             Gdefault: [0, 0],
-            Fcomparator: (f1, f2) => f1 < f2,
-            Gcomparator: (g1, g2) => g1 < g2,
+            Fcomparator: (f1, f2) => f1[0] != f2[0] ? f1[0] < f2[0] : f1[1] < f2[1],
+            Gcomparator: (g1, g2) => g1[0] != g2[0] ? g1[0] < g2[0] : g1[1] < g2[1],
             minHeuristic: (lst) => Math.min(...lst)
         },
     }
@@ -77,25 +77,26 @@ const findPath = async (req, res) => {
 
             return !sameAsPrev || !sameAsNext;
         });
+        //replace all nodeId by actual nodes
+        const nodesInPath = filteredPath.map((nodeId) => graph.get(nodeId));
 
         //segregate paths by Maps
         let segregatedPath = [[]];
         let mapIndex = 0;
-        for (const nodeId of filteredPath) {
+        for (const node of nodesInPath) {
             let slottingArray = segregatedPath[mapIndex];
 
             if (slottingArray.length == 0) {
-                slottingArray.push(nodeId);
+                slottingArray.push(node);
                 continue;
             }
 
-            const node = graph.get(nodeId);
             const prev = graph.get(slottingArray.at(-1));
 
             if (node.building == prev.building && node.floor == prev.floor) {
-                slottingArray.push(nodeId);
+                slottingArray.push(node);
             } else {
-                segregatedPath.push([nodeId]);
+                segregatedPath.push([node]);
                 mapIndex += 1;
             }
         }

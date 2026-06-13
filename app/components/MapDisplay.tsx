@@ -9,11 +9,13 @@ import {
 import Svg, { Circle, Polyline, G } from 'react-native-svg';
 import { getMapImage } from '../components/mapImages';
 
+import { Node } from '../types/Node';
+
 //  Types
 
 export interface PathDisplayProps {
     /** Ordered list of node_id strings returned by the API */
-    path: string[];
+    path: Node[];
     onSizeChange?: (w: number, h: number) => void;
 }
 
@@ -56,7 +58,7 @@ export default function MapDisplay({ path, onSizeChange }: PathDisplayProps) {
 
     if (!path || path.length === 0) return null;
 
-    const { building, floor } = parseNodeId(path[0]);
+    const { building, floor } = parseNodeId(path[0].node_id);
     const mapImage = getMapImage(building, floor);
 
     const onLayout = (e: LayoutChangeEvent) => {
@@ -68,8 +70,8 @@ export default function MapDisplay({ path, onSizeChange }: PathDisplayProps) {
 
     const pts =
         containerW > 0 && containerH > 0
-            ? path.map(id => {
-                const { row, col } = parseNodeId(id);
+            ? path.map(node => {
+                const { row, col } = parseNodeId(node.node_id);
                 return toPixel(row, col, containerW, containerH);
             })
             : [];

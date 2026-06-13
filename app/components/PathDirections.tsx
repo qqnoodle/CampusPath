@@ -2,11 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { toPixel, parseNodeId } from './MapDisplay';
 
+
+import { Node } from '../types/Node';
 //  Types
 
 export interface PathDirectionsProps {
     /** Ordered list of node_id strings returned by the API */
-    path: string[];
+    path: Node[];
     /**
      * The rendered pixel dimensions of the map container, needed to
      * compute turn angles at the same scale used by MapDisplay.
@@ -107,8 +109,8 @@ const turnIconStyle: Record<TurnType, object> = {
 export default function PathDirections({ path, containerW, containerH }: PathDirectionsProps) {
     if (!path || path.length === 0 || containerW === 0 || containerH === 0) return null;
 
-    const pts = path.map(id => {
-        const { row, col } = parseNodeId(id);
+    const pts = path.map(node => {
+        const { row, col } = parseNodeId(node.node_id);
         return toPixel(row, col, containerW, containerH);
     });
 
