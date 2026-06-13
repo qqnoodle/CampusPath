@@ -4,18 +4,19 @@ import MapDisplay from '../components/MapDisplay';
 import PathDirections from '../components/PathDirections';
 import { useState } from 'react';
 
+import { Node } from '../types/Node';
+
 export default function PathResultPage() {
 
     const [mapSize, setMapSize] = useState({ w: 0, h: 0 });
 
     const params = useLocalSearchParams<{
         path: string;
-        // nodeList: string; 
         optimisation: string;
         totalNodes: string;
     }>();
 
-    const path: string[] = params.path ? JSON.parse(params.path) : [];
+    const path: Node[][] = params.path ? JSON.parse(params.path) : [];
     const optimisation = params.optimisation ?? '';
 
     return (
@@ -35,20 +36,24 @@ export default function PathResultPage() {
                 <Text style={styles.metaValue}>{optimisation}</Text>
             </View>
 
-            {/* Map directions; can be duplicated and show both on a stack */}
-            <MapDisplay
-                path={path}
-                onSizeChange={(w, h) => setMapSize({ w, h })}
-            />
+            {path.map((pathOnMap, i) => (
+                <View key={i}>
+                    <MapDisplay
+                        path={pathOnMap}
+                        onSizeChange={(w, h) => setMapSize({ w, h })}
+                    />
+                    <PathDirections
+                        path={pathOnMap}
+                        containerW={mapSize.w}
+                        containerH={mapSize.h}
+                        src={path[0][0]}
+                        dst={path.at(-1)?.at(-1) ?? path[0][0]}
+                    />
+                </View>
+            ))
+            }
 
-            {/* Path Directions; can be duplicated and show both on a stack */}
-            <PathDirections
-                path={path}
-                containerW={mapSize.w}
-                containerH={mapSize.h}
-            />
-
-        </ScrollView>
+        </ScrollView >
     );
 }
 

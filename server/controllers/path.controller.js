@@ -24,7 +24,7 @@ const findPath = async (req, res) => {
         1: {
             F: (g, h) => [g[0], g[1] + h],
             H: (graph, n1, n2) => 0,
-            G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "sheltered").length > 0 ? 0 : 1), g[1] + neighbourData.weight],
+            G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "Sheltered").length > 0 ? 0 : 1), g[1] + neighbourData.weight],
             FLimit: [Infinity, -1],
             Gdefault: [0, 0],
             Fcomparator: (f1, f2) => f1[0] != f2[0] ? f1[0] < f2[0] : f1[1] < f2[1],
@@ -35,11 +35,11 @@ const findPath = async (req, res) => {
             //TODO modify for optimisation by accessibility
             F: (g, h) => [g[0], g[1] + h],
             H: (graph, n1, n2) => 0,
-            G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "stairs").length > 0 ? Infinity : 0), g[1] + neighbourData.weight],
+            G: (graph, g, neighbourData) => [g[0] + (graph.get(neighbourData.node).attribute.filter((a) => a === "Stair").length > 0 ? Infinity : 0), g[1] + neighbourData.weight],
             FLimit: [Infinity, -1],
             Gdefault: [0, 0],
-            Fcomparator: (f1, f2) => f1 < f2,
-            Gcomparator: (g1, g2) => g1 < g2,
+            Fcomparator: (f1, f2) => f1[0] != f2[0] ? f1[0] < f2[0] : f1[1] < f2[1],
+            Gcomparator: (g1, g2) => g1[0] != g2[0] ? g1[0] < g2[0] : g1[1] < g2[1],
             minHeuristic: (lst) => Math.min(...lst)
         },
     }
@@ -61,34 +61,54 @@ const findPath = async (req, res) => {
         //TODO Run the algorithm
         const nodeList = await Nodes.find();
         const graph = graphBuilder(nodeList);
-
         const path = Astar(graph, src, dst, optFunc.F, optFunc.H, optFunc.G, optFunc.FLimit, optFunc.Gdefault, optFunc.Fcomparator, optFunc.Gcomparator, optFunc.minHeuristic);
 
-        //TODO Configure the output to fit the needs of frontend
-        //
-        /*
-        const enrichedPath = path.map(nodeId => {
-            const node = graph.get(nodeId);
-            return {
-                node_id: nodeId,
-                building: node.building,
-                floor: node.floor,
-                attributes: node.attribute,
-            };
+        //Prune off joint stairs/lift chaining
+        const filteredPath = path.filter((nodeId, i) => {
+            const filteredType = ["Stair", "Lift"];
+
+            if (!graph.get(nodeId).attribute.some(attr => filteredType.includes(attr))) return true;
+
+            let curAttr = "Stair";
+            if (!graph.get(nodeId).attribute.includes(curAttr)) curAttr = "Lift";
+
+            const sameAsPrev = graph.get(path[i - 1])?.attribute.includes(curAttr);
+            const sameAsNext = graph.get(path[i + 1])?.attribute.includes(curAttr);
+
+            return !sameAsPrev || !sameAsNext;
         });
-        */
+        //replace all nodeId by actual nodes
+        const nodesInPath = filteredPath.map((nodeId) => graph.get(nodeId));
+
+        //segregate paths by Maps
+        let segregatedPath = [[]];
+        let mapIndex = 0;
+        for (const node of nodesInPath) {
+            let slottingArray = segregatedPath[mapIndex];
+
+            if (slottingArray.length == 0) {
+                slottingArray.push(node);
+                continue;
+            }
+
+            const prev = slottingArray.at(-1);
+
+            if (node.building == prev.building && node.floor == prev.floor) {
+                slottingArray.push(node);
+            } else {
+                segregatedPath.push([node]);
+                mapIndex += 1;
+            }
+        }
+
 
         res.status(200).json({
             success: true,
             optimisation: optimisationLabel,
-            path: path,
+            path: segregatedPath,
             totalNodes: path.length,
             src: src,
             dst: dst,
-            graph: graph,
-            nodeList: nodeList
-            //path: enrichedPath,
-            //totalNodes: enrichedPath.length,
         });
 
         //TODO Handle the history
