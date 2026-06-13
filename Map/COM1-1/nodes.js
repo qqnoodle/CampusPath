@@ -15,8 +15,7 @@
         ],
         "attribute": [
             "Sheltered",
-            "Stair",
-            "Lift"
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -40,8 +39,7 @@
         ],
         "attribute": [
             "Sheltered",
-            "Stair",
-            "Lift"
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -53,7 +51,6 @@
         "attribute": [
             "Sheltered",
             "Stair",
-            "Lift"
         ],
         "nodeType": "junction"
     },
@@ -64,8 +61,7 @@
         "neighbour": [],
         "attribute": [
             "Sheltered",
-            "Stair",
-            "Lift"
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -77,7 +73,6 @@
         "attribute": [
             "Sheltered",
             "Stair",
-            "Lift"
         ],
         "nodeType": "junction"
     },
@@ -89,7 +84,6 @@
         "attribute": [
             "Sheltered",
             "Stair",
-            "Lift"
         ],
         "nodeType": "junction"
     },
@@ -109,8 +103,7 @@
         ],
         "attribute": [
             "Sheltered",
-            "Stair",
-            "Lift"
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -131,7 +124,6 @@
         "attribute": [
             "Sheltered",
             "Stair",
-            "Lift"
         ],
         "nodeType": "junction"
     },
@@ -152,7 +144,6 @@
         "attribute": [
             "Sheltered",
             "Stair",
-            "Lift"
         ],
         "nodeType": "junction"
     },
@@ -173,7 +164,6 @@
         "attribute": [
             "Sheltered",
             "Stair",
-            "Lift"
         ],
         "nodeType": "junction"
     },
@@ -194,7 +184,6 @@
         "attribute": [
             "Sheltered",
             "Stair",
-            "Lift"
         ],
         "nodeType": "junction"
     },
