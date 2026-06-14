@@ -6,16 +6,11 @@ import {
     ScrollView,
     TouchableOpacity,
     Alert,
+    Pressable,
 } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { getHistory, clearHistory, HistoryEntry, formatTimestamp } from '../../components/pathHistory';
-
-const OPTIMISATION_LABELS: Record<string, string> = {
-    '0': 'Fastest',
-    '1': 'Sheltered',
-    '2': 'Accessible',
-};
 
 function parseNodeId(id: string): { building: string; floor: string } {
     const parts = id.split('-');
@@ -24,14 +19,14 @@ function parseNodeId(id: string): { building: string; floor: string } {
     return { building, floor };
 }
 
-function routeSummary(path: string[]): string {
+function routeSummary(startLocation: string, endLocation: string, path: string[]): string {
     if (!path || path.length === 0) return 'Unknown route';
     const start = parseNodeId(path[0]);
     const end = parseNodeId(path[path.length - 1]);
     if (start.building === end.building) {
-        return `${start.building} · Floor ${start.floor} → Floor ${end.floor}`;
+        return `${start.building} · ${startLocation} → ${endLocation}`;
     }
-    return `${start.building} → ${end.building}`;
+    return `${start.building} · ${startLocation} → ${end.building} · ${endLocation}`;
 }
 
 export default function HistoryPage() {
@@ -43,22 +38,9 @@ export default function HistoryPage() {
         }, [])
     );
 
-    const handleClear = () => {
-        Alert.alert(
-            'Clear History',
-            'Remove all saved searches?',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                {
-                    text: 'Clear',
-                    style: 'destructive',
-                    onPress: async () => {
-                        await clearHistory();
-                        setHistory([]);
-                    },
-                },
-            ]
-        );
+    const handleClear = async () => {
+            await clearHistory();
+            setHistory([]);
     };
 
     const handleReplay = (entry: HistoryEntry) => {
@@ -66,6 +48,8 @@ export default function HistoryPage() {
             pathname: '/path',
             params: {
                 path: JSON.stringify(entry.path),
+                startLocation: entry.startLocation,
+                endLocation: entry.endLocation,
                 optimisation: entry.optimisation,
                 totalNodes: String(entry.totalNodes),
             },
@@ -78,9 +62,9 @@ export default function HistoryPage() {
             <View style={styles.header}>
                 <Text style={styles.title}>History</Text>
                 {history.length > 0 && (
-                    <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
+                    <Pressable onPress={handleClear} hitSlop={20}>
                         <Text style={styles.clearText}>Clear all</Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 )}
             </View>
 
@@ -107,13 +91,13 @@ export default function HistoryPage() {
                         <Ionicons name="navigate-outline" size={18} color="#007AFF" />
                     </View>
                     <View style={styles.cardBody}>
-                        <Text style={styles.cardRoute} numberOfLines={1}>
-                            {routeSummary(entry.path)}
+                        <Text style={styles.cardRoute}>
+                            {routeSummary(entry.startLocation, entry.endLocation, entry.path)}
                         </Text>
                         <View style={styles.cardMeta}>
                             <View style={styles.badge}>
                                 <Text style={styles.badgeText}>
-                                    {OPTIMISATION_LABELS[entry.optimisation] ?? entry.optimisation}
+                                    {entry.optimisation}
                                 </Text>
                             </View>
                             <Text style={styles.cardNodes}>{entry.totalNodes} nodes</Text>

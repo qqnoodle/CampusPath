@@ -39,7 +39,9 @@ export default function App() {
             // Save to history
             await saveToHistory({
                 path: data.path,
-                optimisation: String(selected),
+                startLocation: startLocation?.name ?? '',
+                endLocation: endLocation?.name ?? '',
+                optimisation: data.optimisation,
                 totalNodes: data.totalNodes,
             });
 
@@ -47,6 +49,8 @@ export default function App() {
                 pathname: '/path',
                 params: {
                     path: JSON.stringify(data.path),
+                    startLocation: startLocation?.name,
+                    endLocation: endLocation?.name,
                     // nodeList: JSON.stringify(data.nodeList), // i dont think we make use of this info
                     optimisation: data.optimisation,
                     totalNodes: String(data.totalNodes),
