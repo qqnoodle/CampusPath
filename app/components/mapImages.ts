@@ -19,7 +19,10 @@ import { ImageSourcePropType } from 'react-native';
 
 const MAP_IMAGES: Record<string, ImageSourcePropType> = {
     // Add your floor maps here 
-    COM1_1: require('../images/COM1_01.jpg')
+    COM1_B1: require('../images/COM1_B1.jpg'),
+    COM1_1: require('../images/COM1_1.jpg'),
+    COM1_2: require('../images/COM1_2.jpg'),
+    COM1_3: require('../images/COM1_3.jpg'),
 
 };
 

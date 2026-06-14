@@ -2,11 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { toPixel, parseNodeId } from './MapDisplay';
 
+
+import { Node } from '../types/Node';
 //  Types
 
 export interface PathDirectionsProps {
     /** Ordered list of node_id strings returned by the API */
-    path: string[];
+    path: Node[];
     /**
      * The rendered pixel dimensions of the map container, needed to
      * compute turn angles at the same scale used by MapDisplay.
@@ -14,11 +16,13 @@ export interface PathDirectionsProps {
      */
     containerW: number;
     containerH: number;
+    src: Node;
+    dst: Node;
 }
 
 //  Turn direction logic
 
-type TurnType = 'start' | 'end' | 'forward' | 'left' | 'right' | 'slight-left' | 'slight-right';
+type TurnType = 'start' | 'end' | 'forward' | 'left' | 'right' | 'slight-left' | 'slight-right' | 'stair' | `lift`
 
 interface TurnStep {
     type: TurnType;
@@ -36,8 +40,8 @@ function normalise(deg: number): number {
     return d;
 }
 
-function buildTurns(pts: { x: number; y: number }[]): TurnStep[] {
-    const steps: TurnStep[] = [{ type: 'start', label: 'Start here' }];
+function buildTurns(nodes: Node[], containerW: number, containerH: number, src: Node, dst: Node): TurnStep[] {
+    const steps: TurnStep[] = [];
 
     let prevAngle: number | null = null;
     let straightCount = 0;
@@ -49,9 +53,20 @@ function buildTurns(pts: { x: number; y: number }[]): TurnStep[] {
         }
     };
 
-    for (let i = 1; i < pts.length; i++) {
-        const dx = pts[i].x - pts[i - 1].x;
-        const dy = pts[i].y - pts[i - 1].y;
+    for (let i = 1; i < nodes.length; i++) {
+        const curPosition = parseNodeId(nodes[i].node_id);
+        const prevPosition = parseNodeId(nodes[i - 1].node_id);
+
+        const curRow = curPosition.row;
+        const curCol = curPosition.col;
+        const prevRow = prevPosition.row;
+        const prevCol = prevPosition.col;
+
+        const curPixel = toPixel(curRow, curCol, containerW, containerH);
+        const prevPixel = toPixel(prevRow, prevCol, containerW, containerH);
+
+        const dx = curPixel.x - prevPixel.x;
+        const dy = curPixel.y - prevPixel.y;
         if (Math.hypot(dx, dy) < 1) continue;
 
         const a = angleDeg(dx, dy);
@@ -78,7 +93,12 @@ function buildTurns(pts: { x: number; y: number }[]): TurnStep[] {
     }
 
     flushStraight();
-    steps.push({ type: 'end', label: 'Arrive at destination' });
+
+    if (nodes.at(-1)?.attribute.includes('Lift')) steps.push({ type: 'lift', label: 'Take the lift' });
+    if (nodes.at(-1)?.attribute.includes('Stair')) steps.push({ type: 'stair', label: 'Take the stair' });
+
+    if (nodes.includes(src)) steps.unshift({ type: 'start', label: 'Start here' });
+    if (nodes.includes(dst)) steps.push({ type: 'end', label: 'Arrive at destination' });
     return steps;
 }
 
@@ -90,6 +110,8 @@ const TURN_ICONS: Record<TurnType, string> = {
     right: '→',
     'slight-left': '↖',
     'slight-right': '↗',
+    stair: '└┐',
+    lift: '⬆⬇',
 };
 
 const turnIconStyle: Record<TurnType, object> = {
@@ -100,19 +122,16 @@ const turnIconStyle: Record<TurnType, object> = {
     right: { backgroundColor: '#fef3c7' },
     'slight-left': { backgroundColor: '#dbeafe' },
     'slight-right': { backgroundColor: '#fef3c7' },
+    stair: { backgroundColor: '#da8ee7' },
+    lift: { backgroundColor: '#da8ee7' },
 };
 
 //  Component
 
-export default function PathDirections({ path, containerW, containerH }: PathDirectionsProps) {
+export default function PathDirections({ path, containerW, containerH, src, dst }: PathDirectionsProps) {
     if (!path || path.length === 0 || containerW === 0 || containerH === 0) return null;
 
-    const pts = path.map(id => {
-        const { row, col } = parseNodeId(id);
-        return toPixel(row, col, containerW, containerH);
-    });
-
-    const turns = pts.length > 1 ? buildTurns(pts) : [];
+    const turns = path.length > 1 ? buildTurns(path, containerW, containerH, src, dst) : [];
 
     if (turns.length === 0) return null;
 

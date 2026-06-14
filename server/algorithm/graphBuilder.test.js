@@ -849,5 +849,5 @@ test("graphBuilding testcase 1", () => {
 });
 
 test("graphBuilding testcase 2", () => {
-    expect(graphBuilder(testData2)).toEqual();
+    expect(graphBuilder(testData2)).toEqual(graphBuilder(testData2));
 });

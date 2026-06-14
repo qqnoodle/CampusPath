@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Node } from '../types/Node';
 
 const HISTORY_KEY = 'path_history';
 const MAX_HISTORY = 20; // Max number of entries to keep in history
 
 export interface HistoryEntry {
     id: string;
-    path: string[];
+    path: Node[][];
     startLocation: string;
     endLocation: string;
     optimisation: string;   

@@ -5,28 +5,23 @@ import {
     Text,
     ScrollView,
     TouchableOpacity,
-    Alert,
     Pressable,
 } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { getHistory, clearHistory, HistoryEntry, formatTimestamp } from '../../components/pathHistory';
+import { Node } from '../../types/Node';
 
-function parseNodeId(id: string): { building: string; floor: string } {
-    const parts = id.split('-');
-    const floor = parts[parts.length - 4] ?? '1';
-    const building = parts.slice(0, parts.length - 4).join('-');
-    return { building, floor };
-}
-
-function routeSummary(startLocation: string, endLocation: string, path: string[]): string {
+function routeSummary(startLocation: string, endLocation: string, path: Node[][]): string {
     if (!path || path.length === 0) return 'Unknown route';
-    const start = parseNodeId(path[0]);
-    const end = parseNodeId(path[path.length - 1]);
-    if (start.building === end.building) {
-        return `${start.building} · ${startLocation} → ${endLocation}`;
+    const startBuilding = path[0][0]?.building;
+    const lastFloor = path[path.length - 1];
+    const endBuilding = lastFloor[lastFloor.length - 1]?.building;
+
+    if (startBuilding === endBuilding) {
+        return `${startBuilding} · ${startLocation} → ${endLocation}`;
     }
-    return `${start.building} · ${startLocation} → ${end.building} · ${endLocation}`;
+    return `${startBuilding} · ${startLocation} → ${endBuilding} · ${endLocation}`;
 }
 
 export default function HistoryPage() {
