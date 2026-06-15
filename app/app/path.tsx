@@ -11,13 +11,19 @@ export default function PathResultPage() {
     const [mapSize, setMapSize] = useState({ w: 0, h: 0 });
 
     const params = useLocalSearchParams<{
+
         path: string;
+        startLocation: string;
+        endLocation: string;
+        // nodeList: string; 
         optimisation: string;
         totalNodes: string;
     }>();
 
     const path: Node[][] = params.path ? JSON.parse(params.path) : [];
     const optimisation = params.optimisation ?? '';
+    const startLocation = params.startLocation ?? '';
+    const endLocation = params.endLocation ?? '';
 
     return (
         <ScrollView style={styles.container}>
@@ -31,6 +37,14 @@ export default function PathResultPage() {
             </View>
 
             {/* Path details */}
+            <View style={styles.metaRow}>
+                <Text style={styles.metaLabel}>Start Location:</Text>
+                <Text style={styles.metaValue}>{startLocation}</Text>
+            </View>
+            <View style={styles.metaRow}>
+                <Text style={styles.metaLabel}>End Location:</Text>
+                <Text style={styles.metaValue}>{endLocation}</Text>
+            </View>
             <View style={styles.metaRow}>
                 <Text style={styles.metaLabel}>Optimisation:</Text>
                 <Text style={styles.metaValue}>{optimisation}</Text>

@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Button, ActivityIndicator, ScrollView } from 'react-native';
-import OptionSelector from '../components/OptionSelector';
-import LocationSearchBar from '../components/LocationSearchBar';
-import { SearchResultItem } from '../types/SearchResultItem';
+import OptionSelector from '../../components/OptionSelector';
+import LocationSearchBar from '../../components/LocationSearchBar';
+import { SearchResultItem } from '../../types/SearchResultItem';
 import { router } from 'expo-router';
+import {saveToHistory } from '../../components/pathHistory';
 
 export default function App() {
-    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
     const [startLocation, setStartLocation] = useState<SearchResultItem | null>(null);
     const [endLocation, setEndLocation] = useState<SearchResultItem | null>(null);
     const [selected, setSelected] = useState(0);
@@ -35,10 +36,21 @@ export default function App() {
             const data = await response.json();
             console.log(data);
 
+            // Save to history
+            await saveToHistory({
+                path: data.path,
+                startLocation: startLocation?.name ?? '',
+                endLocation: endLocation?.name ?? '',
+                optimisation: data.optimisation,
+                totalNodes: data.totalNodes,
+            });
+
             router.push({
                 pathname: '/path',
                 params: {
                     path: JSON.stringify(data.path),
+                    startLocation: startLocation?.name,
+                    endLocation: endLocation?.name,
                     // nodeList: JSON.stringify(data.nodeList), // i dont think we make use of this info
                     optimisation: data.optimisation,
                     totalNodes: String(data.totalNodes),
