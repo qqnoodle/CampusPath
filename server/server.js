@@ -4,7 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
-const PORT = process.env.PORT ? process.env.PORT : 3000;
+const PORT = process.env.PORT ? process.env.PORT : 5000;
 
 const locationRoute = require("./routes/location.route.js");
 const pathRoute = require("./routes/path.route");
@@ -59,13 +59,21 @@ app.use("/api/path", pathRoute);
 
 
 //Database connection test
-mongoose.connect(process.env.MONGO_URI)
+const MONGO_URI = process.env.NODE_ENV === "development"
+    ? process.env.MONGO_URI_TEST
+    : process.env.MONGO_URI_PROD;
+
+mongoose.connect(MONGO_URI)
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
 
+
 // added listen
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+    app.listen(PORT, () => {
+        console.log(`Server is running on ${PORT}`);
+    });
+}
 
 module.exports = app;
+

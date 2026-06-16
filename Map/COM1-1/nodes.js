@@ -50,7 +50,7 @@
         "neighbour": [],
         "attribute": [
             "Sheltered",
-            "Stair",
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -72,7 +72,7 @@
         "neighbour": [],
         "attribute": [
             "Sheltered",
-            "Stair",
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -83,7 +83,7 @@
         "neighbour": [],
         "attribute": [
             "Sheltered",
-            "Stair",
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -123,7 +123,7 @@
         ],
         "attribute": [
             "Sheltered",
-            "Stair",
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -143,7 +143,7 @@
         ],
         "attribute": [
             "Sheltered",
-            "Stair",
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -163,7 +163,7 @@
         ],
         "attribute": [
             "Sheltered",
-            "Stair",
+            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -183,7 +183,7 @@
         ],
         "attribute": [
             "Sheltered",
-            "Stair",
+            "Stair"
         ],
         "nodeType": "junction"
     },

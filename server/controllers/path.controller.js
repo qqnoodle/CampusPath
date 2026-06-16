@@ -51,8 +51,16 @@ const findPath = async (req, res) => {
         const optimisationLabel = optimisationMap[optimisation];
         const optFunc = optimisationFunctions[optimisation];
 
-        const start = await Location.findOne({ roomNumber: startLocation });
-        const end = await Location.findOne({ roomNumber: endLocation });
+        const start = await Location.findOne({
+            roomNumber: startLocation.roomNumber,
+            building: startLocation.building,
+            floor: startLocation.floor
+        });
+        const end = await Location.findOne({
+            roomNumber: endLocation.roomNumber,
+            building: endLocation.building,
+            floor: endLocation.floor
+        });
 
         //
         const src = start.doors;
