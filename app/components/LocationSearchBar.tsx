@@ -7,6 +7,7 @@ import {
     FlatList,
     StyleSheet,
     ActivityIndicator,
+    ScrollView,
 } from "react-native";
 
 import { SearchResultItem } from '../types/SearchResultItem';
@@ -59,9 +60,10 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput, API }: Prop
         }
     };
 
-    const renderSearchResult = ({ item }: { item: SearchResultItem }) => {
+    const renderSearchResult = (item: SearchResultItem) => {
         return (
             <TouchableOpacity
+                key={item._id}
                 style={styles.resultItem}
                 onPress={() => {
                     setOutput(item);
@@ -93,12 +95,13 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput, API }: Prop
                     setOutput(null);
                 }}
             />
-            <FlatList
-                data={searchResult}
-                keyExtractor={(item) => item._id}
-                renderItem={renderSearchResult}
+            <ScrollView 
                 style={styles.resultsList}
-            />
+                nestedScrollEnabled={true}
+                keyboardShouldPersistTaps="handled"
+            >
+                {searchResult.map((item) => renderSearchResult(item))}
+            </ScrollView>
             {isLoading && (
                 <ActivityIndicator size="large" style={{ marginTop: 10 }} />
             )}
