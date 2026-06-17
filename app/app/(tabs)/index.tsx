@@ -73,7 +73,7 @@ export default function App() {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <Text style={styles.title}> CampusPath Navigator</Text>
             <OptionSelector
                 options={['Fastest', 'Sheltered', 'Accessible']}
