@@ -12,15 +12,17 @@ export interface HistoryEntry {
     optimisation: string;   
     totalNodes: number;
     timestamp: number;
+    favourite: boolean;
 }
 
-export async function saveToHistory(entry: Omit<HistoryEntry, 'id' | 'timestamp'>): Promise<void> {
+export async function saveToHistory(entry: Omit<HistoryEntry, 'id' | 'timestamp' | 'favourite'>): Promise<void> {
     try {
         const existing = await getHistory();
         const newEntry: HistoryEntry = {
             ...entry,
             id: Date.now().toString(),
             timestamp: Date.now(),
+            favourite: false,
         };
         // Prepend newest, trim to max
         const updated = [newEntry, ...existing].slice(0, MAX_HISTORY);
@@ -33,10 +35,31 @@ export async function saveToHistory(entry: Omit<HistoryEntry, 'id' | 'timestamp'
 export async function getHistory(): Promise<HistoryEntry[]> {
     try {
         const raw = await AsyncStorage.getItem(HISTORY_KEY);
-        return raw ? JSON.parse(raw) : [];
+        if (!raw) return [];
+        const entries: HistoryEntry[] = JSON.parse(raw);
+        // return favourites first, only for non-favourites sort by timestamp descending
+        const byNewest = (a: HistoryEntry, b: HistoryEntry) => b.timestamp - a.timestamp;
+        return [
+            ...entries.filter(e => e.favourite),
+            ...entries.filter(e => !e.favourite).sort(byNewest),
+        ];
     } catch (e) {
         console.error('Failed to load history:', e);
         return [];
+    }
+}
+
+export async function toggleFavourite(id: string): Promise<void> {
+    try {
+        const raw = await AsyncStorage.getItem(HISTORY_KEY);
+        if (!raw) return;
+        const entries: HistoryEntry[] = JSON.parse(raw);
+        const updated = entries.map(e => 
+            e.id === id ? { ...e, favourite: !e.favourite } : e
+        );
+        await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+    } catch (e) {
+        console.error('Failed to toggle favourite:', e);
     }
 }
 
@@ -45,6 +68,20 @@ export async function clearHistory(): Promise<void> {
         await AsyncStorage.removeItem(HISTORY_KEY);
     } catch (e) {
         console.error('Failed to clear history:', e);
+    }
+}
+
+export async function updateEntry(id: string): Promise<void> {
+    try {
+        const raw = await AsyncStorage.getItem(HISTORY_KEY);
+        if (!raw) return;
+        const entries: HistoryEntry[] = JSON.parse(raw);
+        const updated = entries.map(e => 
+            e.id === id ? { ...e, timestamp: Date.now() } : e
+        );
+        await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+    } catch (e) {
+        console.error('Failed to update entry:', e);
     }
 }
 

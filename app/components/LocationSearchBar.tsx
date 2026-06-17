@@ -68,7 +68,7 @@ const LocationSearchBar = ({ mainText, defaultSearchText, setOutput, API }: Prop
                     setSelected(true);
                     setQuery(item.name);
                     setSearchResult([]);
-                }
+                    }
                 }
             >
                 <Text style={styles.locationName}>{item.name}</Text>

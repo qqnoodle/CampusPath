@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { getHistory, clearHistory, HistoryEntry, formatTimestamp } from '../../components/pathHistory';
+import { getHistory, clearHistory, HistoryEntry, formatTimestamp, toggleFavourite, updateEntry } from '../../components/pathHistory';
 import { Node } from '../../types/Node';
 
 function routeSummary(startLocation: string, endLocation: string, path: Node[][]): string {
@@ -38,7 +38,14 @@ export default function HistoryPage() {
             setHistory([]);
     };
 
-    const handleReplay = (entry: HistoryEntry) => {
+    const handleToggleFavourite = async (id: string) => {
+        await toggleFavourite(id);
+        const updatedHistory = await getHistory();  
+        setHistory(updatedHistory);
+    };
+
+    const handleReplay = async (entry: HistoryEntry) => {
+        await updateEntry(entry.id);
         router.push({
             pathname: '/path',
             params: {
@@ -99,7 +106,18 @@ export default function HistoryPage() {
                             <Text style={styles.cardTime}>{formatTimestamp(entry.timestamp)}</Text>
                         </View>
                     </View>
-                    <Ionicons name="chevron-forward" size={16} color="#cbd5e1" />
+                    {/* Favourtie button */}
+                    <Pressable 
+                        onPress={() => handleToggleFavourite(entry.id)}
+                        hitSlop={10}
+                        style={styles.starButton}
+                    >
+                        <Ionicons 
+                        name={entry.favourite ? 'star' : 'star-outline'} 
+                        size={20} 
+                        color={entry.favourite ? '#f59e0b' : '#cbd5e1'}
+                        />
+                    </Pressable>
                 </TouchableOpacity>
             ))}
         </ScrollView>
@@ -201,5 +219,8 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#94a3b8',
         marginLeft: 'auto',
+    },
+    starButton: {
+        padding: 4,
     },
 });
