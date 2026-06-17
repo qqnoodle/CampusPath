@@ -4,7 +4,7 @@ import OptionSelector from '../../components/OptionSelector';
 import LocationSearchBar from '../../components/LocationSearchBar';
 import { SearchResultItem } from '../../types/SearchResultItem';
 import { router } from 'expo-router';
-import {saveToHistory } from '../../components/pathHistory';
+import { saveToHistory } from '../../components/pathHistory';
 
 export default function App() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
@@ -23,8 +23,16 @@ export default function App() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     optimisation: selected,
-                    startLocation: startLocation?.roomNumber,
-                    endLocation: endLocation?.roomNumber,
+                    startLocation: {
+                        roomNumber: startLocation?.roomNumber,
+                        building: startLocation?.building,
+                        floor: startLocation?.floor
+                    },
+                    endLocation: {
+                        roomNumber: endLocation?.roomNumber,
+                        building: endLocation?.building,
+                        floor: endLocation?.floor
+                    }
                 })
             });
 

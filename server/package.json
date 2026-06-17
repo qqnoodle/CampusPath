@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
-    "start": "node server"
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
+    "start": "cross-env NODE_ENV=production node server",
+    "dev": "cross-env NODE_ENV=development node server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +15,17 @@
   "dependencies": {
     "@datastructures-js/priority-queue": "^6.3.5",
     "cors": "^2.8.6",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "express": "^4.22.2",
     "jest": "^30.4.2",
-    "mongoose": "^9.6.1"
+    "mongoose": "^9.6.1",
+    "supertest": "^7.2.2"
+  },
+  "jest": {
+    "testMatch": [
+      "**/tests/unit/*.test.js",
+      "**/tests/integration/*.test.js"
+    ]
   }
 }
