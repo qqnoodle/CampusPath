@@ -14,11 +14,13 @@
   "type": "commonjs",
   "dependencies": {
     "@datastructures-js/priority-queue": "^6.3.5",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "express": "^4.22.2",
     "jest": "^30.4.2",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.1",
     "supertest": "^7.2.2"
   },
