@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="styles.css">
+        <script type="module" src="./script/main.js" defer></script>
+    </head>
+    <body>
+        <div class="toolBar">
+            <div>
+                <Label> Nodes </Label>
+                <label class="tool-option"> 
+                    Select 
+                    <input type="radio" name="actionSelector" value="Select" checked>
+                </label>
+                <label class="tool-option"> 
+                    Delete 
+                    <input type="radio" name="actionSelector" value="Delete">
+                </label>
+                <label class="tool-option"> 
+                    Location 
+                    <input type="radio" name="actionSelector" value="Location">
+                </label>
+                <label class="tool-option"> 
+                    Junction 
+                    <input type="radio" name="actionSelector" value="Junction">
+                </label>
+                <label class="tool-option"> 
+                    Door 
+                    <input type="radio" name="actionSelector" value="Door">
+                </label>
+                <label class="tool-option">
+                    Link 
+                    <input type="radio" name="actionSelector" value="Link">
+                </label>
+            </div>
+            <div>
+                <label> Attributes </label>
+                <label class="tool-option"> 
+                    Walk 
+                    <input type="checkbox" name="attributeSelector" value="Walk">
+                </label>
+                <label class="tool-option"> 
+                    Sheltered 
+                    <input type="checkbox" name="attributeSelector" value="Sheltered">
+                </label>
+                <label class="tool-option"> 
+                    Lift 
+                    <input type="checkbox" name="attributeSelector" value="Lift">
+                </label>
+                <label class="tool-option"> 
+                    Stair 
+                    <input type="checkbox" name="attributeSelector" value="Stair">
+                </label>
+                <label class="tool-option"> 
+                    Ramp 
+                    <input type="checkbox" name="attributeSelector" value="Ramp">
+                </label>
+            </div>
+        </div>
+        <div class="mainContainer">
+            <div class="mapPanelContainer">
+            </div>
+            <div class="nodeInfoContainer"></div>
+        </div>
+        <div class="jsonOutputContainer"></div>
+    </body>
+</html>

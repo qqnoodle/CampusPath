@@ -1,3 +1,10 @@
+/*
+
+No Longer using this to display, using MapDisplay and PathDirections.
+
+*/
+
+
 import React, { useState } from 'react';
 import {
     View,
