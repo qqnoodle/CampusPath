@@ -54,6 +54,7 @@ export default function App() {
                     // nodeList: JSON.stringify(data.nodeList), // i dont think we make use of this info
                     optimisation: data.optimisation,
                     totalNodes: String(data.totalNodes),
+                    from: 'index',
                 },
             });
 

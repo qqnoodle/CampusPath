@@ -18,18 +18,26 @@ export default function PathResultPage() {
         // nodeList: string; 
         optimisation: string;
         totalNodes: string;
+        from: string;
     }>();
 
     const path: Node[][] = params.path ? JSON.parse(params.path) : [];
     const optimisation = params.optimisation ?? '';
     const startLocation = params.startLocation ?? '';
     const endLocation = params.endLocation ?? '';
+    const handleBack = () => {
+        if (params.from === 'history') {
+            router.push('/(tabs)/history');
+        } else {
+            router.push('/(tabs)/index');
+        }
+    };
 
     return (
         <ScrollView style={styles.container}>
             {/* Header with back arrow */}
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                <TouchableOpacity onPress={handleBack} style={styles.backButton}>
                     <Text style={styles.backArrow}>←</Text>
                     <Text style={styles.backText}>Back</Text>
                 </TouchableOpacity>
