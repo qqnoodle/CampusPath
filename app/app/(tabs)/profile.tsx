@@ -10,7 +10,7 @@ export default function ProfilePage() {
     const verifyLoggedIn = async () => {
         const jwtToken = await SecureStore.getItemAsync("jwtToken");
         const response = await fetch(
-            `${API}/login/verify`,
+            `${API}/auth/verifyToken`,
             {
                 method: 'POST',
                 headers: {

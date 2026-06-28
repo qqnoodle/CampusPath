@@ -14,7 +14,7 @@ export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boole
     const redirectToSignUp = () => {
         router.push(
             {
-                pathname: '/SignUp'
+                pathname: '/signUp'
             }
         )
     };
@@ -29,7 +29,7 @@ export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boole
         });
 
         const response = await fetch(
-            `${API}/login`,
+            `${API}/auth/login`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

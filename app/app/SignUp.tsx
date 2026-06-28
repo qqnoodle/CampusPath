@@ -23,7 +23,7 @@ export default function SignUpPage() {
         });
 
         const response = await fetch(
-            `${API}/signup`,
+            `${API}/auth/signUp`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

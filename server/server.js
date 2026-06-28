@@ -8,8 +8,7 @@ const PORT = process.env.PORT ? process.env.PORT : 5000;
 
 const locationRoute = require("./routes/location.route.js");
 const pathRoute = require("./routes/path.route");
-const signUpRoute = require("./routes/signUp.route.js");
-const loginRoute = require("./routes/login.route.js");
+const authRoute = require("./routes/auth.route");
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -58,8 +57,7 @@ app.get("/debug", (req, res) => {
 //routes
 app.use("/api/locations", locationRoute);
 app.use("/api/path", pathRoute);
-app.use("/api/signup", signUpRoute);
-app.use("/api/login", loginRoute);
+app.use("/api/auth", authRoute);
 
 
 //Database connection test
