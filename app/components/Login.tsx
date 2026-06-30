@@ -21,7 +21,7 @@ export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boole
 
     const verifyLoginDetail = async () => {
         if (!username) return alert("Empty Username");
-        if (!password) return alert("Empty Username");
+        if (!password) return alert("Empty Password");
 
         const user = JSON.stringify({
             username: username,
@@ -43,7 +43,23 @@ export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boole
             setLoggedIn(true);
             return
         }
-        return alert(await response.text());
+
+        const message: string = await response.text();
+
+        //If account is not verified, we should redirect them to verification
+        if (message === "Account not activated") {
+            router.push(
+                {
+                    pathname: '/otpScreen',
+                    params: {
+                        username: username,
+                        purpose: "ACCOUNT-ACTIVATION"
+                    }
+                }
+            );
+            return;
+        }
+        return alert(message);
     };
 
     return (

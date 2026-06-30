@@ -1,11 +1,32 @@
-
 require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
+const { sendOTPEmail } = require('../brevo/sendOTPEmail.js');
+
 const Users = require("../models/users.model.js");
 const SALT = 12; //FOR bcrypt seed
+
+const generateOTP = (expireIn) => {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpExpiry = new Date(Date.now() + expireIn * 60 * 1000)
+    return {
+        otp: otp,
+        otpExpiry: otpExpiry
+    };
+}
+
+const createJwtToken = (id, username) => {
+    return jwt.sign(
+        {
+            id: id,
+            username: username
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "30d" }
+    );
+}
 
 const handleLogin = async (req, res) => {
     try {
@@ -19,15 +40,9 @@ const handleLogin = async (req, res) => {
         const validPassword = await bcrypt.compare(password, existingUser.password);
         if (!validPassword) return res.status(401).send("Invalid Password");
 
+        if (!existingUser.isVerified) return res.status(401).send("Account not activated");
         //Return JWT Token
-        const jwtToken = jwt.sign(
-            {
-                id: existingUser._id,
-                username: existingUser.username,
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: "30d" }
-        );
+        const jwtToken = createJwtToken(existingUser._id, existingUser.username);
         return res.status(200).json({ jwtToken });
     } catch (error) {
         console.log(error);
@@ -125,10 +140,15 @@ const handleSignUp = async (req, res) => {
         if (!isStrong) return res.status(400).send(warnings);
 
         const encryptedPassword = await bcrypt.hash(password, SALT);
+
+        const { otp, otpExpiry } = generateOTP(5);
+
         await Users.create({
             username: username,
             email: email,
-            password: encryptedPassword
+            password: encryptedPassword,
+            otp: otp,
+            otpExpiry: otpExpiry
         });
 
         res.status(201).send("Your account has been created");
@@ -140,8 +160,66 @@ const handleSignUp = async (req, res) => {
 };
 
 
+const refreshOTP = async (req, res) => {
+    try {
+        const { username } = req.body;
+
+        //validate prescence
+        const existingUser = await Users.findOne({ username: username });
+        if (!existingUser) return res.status(400).send("Username does not exist");
+
+        //make new otp
+        const { otp, otpExpiry } = generateOTP(5);
+        existingUser.otp = otp;
+        existingUser.otpExpiry = otpExpiry;
+        await existingUser.save();
+
+        //send email
+        const response = await sendOTPEmail(existingUser.email, otp)
+        if (response.success) return res.status(201).send("OTP refreshed");
+        return res.status(500).send(response.message);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
+    }
+}
+
+const verifyOTP = async (req, res) => {
+    try {
+        const { username, otp, purpose } = req.body;
+        if (!otp) return res.status(400).send("Invalid OTP");
+
+        const existingUser = await Users.findOne({
+            username: username,
+        });
+
+        if (!existingUser) return res.status(401).send("User does not exist");
+        if (existingUser.otp !== otp) return res.status(400).send("Invalid OTP");
+        if (existingUser.otpExpiry < Date.now()) return res.status(400).send("OTP expired");
+
+        const jwtToken = createJwtToken(existingUser._id, existingUser.username);
+
+        switch (purpose) {
+            case 'ACCOUNT-ACTIVATION':
+                existingUser.isVerified = true;
+                await existingUser.save();
+                break;
+            case 'PASSWORD-RESET':
+                break;
+        }
+        return res.status(200).json({ success: true, message: "OTP verified", jwtToken: jwtToken })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
+    }
+}
+
 module.exports = {
     handleLogin,
     verifyToken,
-    handleSignUp
+    handleSignUp,
+    refreshOTP,
+    verifyOTP
 };

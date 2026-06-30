@@ -11,8 +11,8 @@ export default function SignUpPage() {
 
     const handleSignUp = async () => {
         if (!username) return alert("Empty Username");
-        if (!email) return alert("Empty Username");
-        if (!password) return alert("Empty Username");
+        if (!email) return alert("Empty Email");
+        if (!password) return alert("Empty Password");
 
         const SUCCESS = 201;
 
@@ -32,8 +32,13 @@ export default function SignUpPage() {
         );
 
         if (response.status == SUCCESS) {
-            alert("Sign Up Successful");
-            router.navigate(`/(tabs)/profile`)
+            router.push({
+                pathname: `/otpScreen`,
+                params: {
+                    username: username,
+                    purpose: "ACCOUNT-ACTIVATION"
+                }
+            });
             return;
         }
         alert(await response.text());
