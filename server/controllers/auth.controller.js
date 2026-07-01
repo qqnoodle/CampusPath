@@ -8,6 +8,12 @@ const { sendOTPEmail } = require('../brevo/sendOTPEmail.js');
 const Users = require("../models/users.model.js");
 const SALT = 12; //FOR bcrypt seed
 
+
+/*
+ * @param {number} expiresIn - time in which jwt Token expires eg. '15m', '30d'
+ *
+ * @returns {{otp : number , otpExpiry : Date}}
+ */
 const generateOTP = (expireIn) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     const otpExpiry = new Date(Date.now() + expireIn * 60 * 1000)
@@ -17,16 +23,24 @@ const generateOTP = (expireIn) => {
     };
 }
 
-const createJwtToken = (id, username) => {
+
+/*
+ * @param {string} id - default _id mongoID of any entry
+ * @param {string} username - username of the user, self explanatory
+ * @param {string} expiresIn - time in which jwt Token expires eg. '15m', '30d'
+ *
+ * @returns {string} signed JWT token
+ */
+const createJwtToken = (id, username, expiresIn) => {
     return jwt.sign(
         {
             id: id,
             username: username
         },
         process.env.JWT_SECRET,
-        { expiresIn: "30d" }
+        { expiresIn: expiresIn }
     );
-}
+};
 
 const handleLogin = async (req, res) => {
     try {
@@ -42,7 +56,7 @@ const handleLogin = async (req, res) => {
 
         if (!existingUser.isVerified) return res.status(401).send("Account not activated");
         //Return JWT Token
-        const jwtToken = createJwtToken(existingUser._id, existingUser.username);
+        const jwtToken = createJwtToken(existingUser._id, existingUser.username, '30d');
         return res.status(200).json({ jwtToken });
     } catch (error) {
         console.log(error);
@@ -92,7 +106,7 @@ const verifyToken = async (req, res) => {
             }
         );
     }
-}
+};
 
 
 const passwordStrength = (password) => {
@@ -183,9 +197,15 @@ const refreshOTP = async (req, res) => {
         console.log(error);
         res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
     }
-}
+};
 
 const verifyOTP = async (req, res) => {
+
+    const OtpType = {
+        ACCOUNT_ACTIVATION: 'ACCOUNT-ACTIVATION',
+        PASSWORD_RESET: 'PASSWORD-RESET'
+    };
+
     try {
         const { username, otp, purpose } = req.body;
         if (!otp) return res.status(400).send("Invalid OTP");
@@ -194,32 +214,91 @@ const verifyOTP = async (req, res) => {
             username: username,
         });
 
+        //OTP Verification under here
         if (!existingUser) return res.status(401).send("User does not exist");
+        if (!existingUser.otp) return res.status(400).send("Why you trying to hack us");
         if (existingUser.otp !== otp) return res.status(400).send("Invalid OTP");
         if (existingUser.otpExpiry < Date.now()) return res.status(400).send("OTP expired");
 
-        const jwtToken = createJwtToken(existingUser._id, existingUser.username);
+        //clean off OTP
+        existingUser.otp = null;
+        existingUser.otpExpiry = null;
 
+        let jwtToken = null;
         switch (purpose) {
-            case 'ACCOUNT-ACTIVATION':
+            case OtpType.ACCOUNT_ACTIVATION:
+                jwtToken = createJwtToken(existingUser._id, existingUser.username, '30d');
                 existingUser.isVerified = true;
-                await existingUser.save();
                 break;
-            case 'PASSWORD-RESET':
+            case OtpType.PASSWORD_RESET:
+                jwtToken = createJwtToken(existingUser._id, existingUser.username, '5m');
                 break;
         }
+
+        await existingUser.save();
         return res.status(200).json({ success: true, message: "OTP verified", jwtToken: jwtToken })
 
     } catch (error) {
         console.log(error);
         res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
     }
-}
+};
+
+const resetPassword = async (req, res) => {
+    try {
+        const { username, newPassword } = req.body;
+        const resetToken = req.headers.authorization?.split(' ')[1];
+        if (!username || !newPassword || !resetToken) return res.status(400).json({ success: false, message: "Bad request" });
+
+        const payload = jwt.verify(resetToken, process.env.JWT_SECRET);
+        if (payload.username !== username) return res.status(401).json({ success: false, message: "Verification Failed" });
+
+        const { isStrong, warnings } = passwordStrength(newPassword);
+        if (!isStrong) return res.status(400).json({ success: false, message: warnings });
+
+        const existingUser = await Users.findOne({
+            username: username,
+        });
+        if (!existingUser) return res.status(400).json({ success: false, message: "Invalid username" });
+
+        const encryptedPassword = await bcrypt.hash(newPassword, SALT);
+        existingUser.password = encryptedPassword;
+        await existingUser.save();
+
+        return res.status(200).json({ success: true, message: "Reset Successful" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
+    }
+};
+
+const forgotPassword = async (req, res) => {
+    try {
+        const { userIdentifier } = req.body;
+        if (!userIdentifier) return res.status(400).json({ success: false, message: "No identifier given" });
+        const existingUser = await Users.findOne({
+            $or: [
+                { username: userIdentifier },
+                { email: userIdentifier }
+            ]
+        });
+        if (!existingUser) return res.status(400).json({ success: false, message: "No such username or email exist" });
+        return res.status(200).json({ success: true, message: "User Info found", username: existingUser.username });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
+    }
+
+};
 
 module.exports = {
     handleLogin,
     verifyToken,
     handleSignUp,
     refreshOTP,
-    verifyOTP
+    verifyOTP,
+    resetPassword,
+    forgotPassword
 };

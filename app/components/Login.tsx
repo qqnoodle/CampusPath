@@ -82,6 +82,13 @@ export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boole
                 title="SignUp"
                 onPress={redirectToSignUp}
             />
+
+            <Button
+                title="Forgot password"
+                onPress={() => {
+                    router.navigate('/forgotPasswordScreen')
+                }}
+            />
         </View>
     );
 }

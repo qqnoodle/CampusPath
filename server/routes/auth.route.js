@@ -2,10 +2,11 @@ const express = require("express");
 const {
     handleLogin,
     handleSignUp,
-    resetPassword,
     verifyToken,
     refreshOTP,
-    verifyOTP
+    verifyOTP,
+    resetPassword,
+    forgotPassword
 } = require("../controllers/auth.controller");
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.post("/signUp", handleSignUp);
 router.post("/verifyToken", verifyToken);
 router.post("/otp/refresh", refreshOTP);
 router.post("/otp/verify", verifyOTP);
-//router.post("/resetPassword", resetPassword);
+router.post("/resetPassword", resetPassword);
+router.post("/forgotPassword", forgotPassword);
 module.exports = router;

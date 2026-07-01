@@ -29,13 +29,24 @@ export default function OTPScreen() {
                 })
             }
         );
-        if (response.status == 200) {
-            const { jwtToken } = await response.json();
-            await SecureStore.setItemAsync("jwtToken", jwtToken);
-            router.navigate('/(tabs)/profile');
-            return;
+        if (response.status !== 200) return alert(await response.text());
+        const { jwtToken } = await response.json();
+        switch (purpose) {
+            case 'ACCOUNT-ACTIVATION':
+                await SecureStore.setItemAsync("jwtToken", jwtToken);
+                router.navigate('/(tabs)/profile');
+                break;
+            case 'PASSWORD-RESET':
+                await SecureStore.setItemAsync("resetToken", jwtToken);
+                router.push({
+                    pathname: `/resetPasswordScreen`,
+                    params: {
+                        username: username
+                    }
+                });
+                break;
         }
-        return alert(await response.text());
+        return;
     }
 
     const refreshOTP = async () => {
