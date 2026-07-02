@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import HistoryPage from '../app/(tabs)/history';
 
-// ─── Mock expo-router ────────────────────────────────────────────────────────
+// create mock expo-router 
 jest.mock('expo-router', () => ({
     router: { push: jest.fn() },
     useFocusEffect: (cb: () => void) => {
@@ -12,7 +12,7 @@ jest.mock('expo-router', () => ({
     },
 }));
 
-// ─── Mock @expo/vector-icons ─────────────────────────────────────────────────
+//  create mock @expo/vector-icons 
 jest.mock('@expo/vector-icons', () => {
     const React = require('react');
     const { View } = require('react-native');
@@ -22,7 +22,7 @@ jest.mock('@expo/vector-icons', () => {
     };
 });
 
-// ─── Mock pathHistory ────────────────────────────────────────────────────────
+// create mock pathHistory 
 jest.mock('../components/pathHistory', () => ({
     getHistory: jest.fn(),
     clearHistory: jest.fn(),
@@ -45,7 +45,7 @@ const mockClearHistory = clearHistory as jest.Mock;
 const mockToggleFavourite = toggleFavourite as jest.Mock;
 const mockUpdateEntry = updateEntry as jest.Mock;
 
-// ─── Fixtures ────────────────────────────────────────────────────────────────
+// constants
 
 const SAME_BUILDING_ENTRY = {
     id: 'entry-1',
@@ -72,7 +72,7 @@ const CROSS_BUILDING_ENTRY = {
     favourite: true,
 };
 
-// ─── Setup / teardown ────────────────────────────────────────────────────────
+//  Setup and teardown 
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -86,11 +86,11 @@ afterEach(async () => {
     cleanup();
 });
 
-// ─── Tests ───────────────────────────────────────────────────────────────────
+//  Tests 
 
 describe('HistoryPage — history.tsx', () => {
 
-    // ── Empty state ───────────────────────────────────────────────────────────
+    //  Empty state 
 
     it('shows empty state when there is no history', async () => {
         mockGetHistory.mockResolvedValue([]);
@@ -112,7 +112,7 @@ describe('HistoryPage — history.tsx', () => {
         expect(queryByText('LT1')).toBeNull();
     });
 
-    // ── Populated state ───────────────────────────────────────────────────────
+    //  Populated state 
 
     it('shows history cards when history has entries', async () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
@@ -142,7 +142,7 @@ describe('HistoryPage — history.tsx', () => {
         expect(getByText('Clear all')).toBeTruthy();
     });
 
-    // ── routeSummary ──────────────────────────────────────────────────────────
+    //  routeSummary 
 
     it('shows same-building summary when start and end are in the same building', async () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
@@ -174,7 +174,7 @@ describe('HistoryPage — history.tsx', () => {
         expect(getByText('Unknown route')).toBeTruthy();
     });
 
-    // ── Clear all ─────────────────────────────────────────────────────────────
+    //  Clear all 
 
     it('calls clearHistory and empties list when Clear all is pressed', async () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
@@ -195,7 +195,7 @@ describe('HistoryPage — history.tsx', () => {
         expect(getByText('No searches yet')).toBeTruthy();
     });
 
-    // ── Favourite toggle ──────────────────────────────────────────────────────
+    //  Favourite toggle 
 
     it('calls toggleFavourite with the correct id when star is pressed', async () => {
         mockGetHistory
@@ -230,7 +230,7 @@ describe('HistoryPage — history.tsx', () => {
         expect(mockGetHistory).toHaveBeenCalledTimes(2);
     });
 
-    // ── Replay ────────────────────────────────────────────────────────────────
+    //  Replay 
 
     it('calls updateEntry and navigates to /path when a card is pressed', async () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
@@ -277,7 +277,7 @@ describe('HistoryPage — history.tsx', () => {
         });
     });
 
-    // ── Multiple entries ──────────────────────────────────────────────────────
+    //  Multiple entries 
 
     it('renders multiple history entries', async () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY, CROSS_BUILDING_ENTRY]);
