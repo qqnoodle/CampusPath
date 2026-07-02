@@ -93,7 +93,10 @@ export default function App() {
                 API={API}
             />
             {isLoading && (
-                <ActivityIndicator size="large" style={{ marginTop: 10 }} />
+                <ActivityIndicator 
+                    testID="activity-indicator"
+                    size="large"
+                    style={{ marginTop: 10 }} />
             )}
             <Button
                 title="Find Path"
