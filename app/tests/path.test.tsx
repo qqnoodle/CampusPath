@@ -2,13 +2,13 @@ import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import PathResultPage from '../app/path';
 
-// ─── Mock expo-router ────────────────────────────────────────────────────────
+//   create mock expo-router 
 jest.mock('expo-router', () => ({
     router: { back: jest.fn() },
     useLocalSearchParams: jest.fn(),
 }));
 
-// ─── Mock child components ───────────────────────────────────────────────────
+//   create mock child components 
 jest.mock('../components/MapDisplay', () => {
     const React = require('react');
     const { View } = require('react-native');
@@ -28,12 +28,12 @@ jest.mock('../components/PathDirections', () => {
         });
 });
 
-// ─── Get mock references ──────────────────────────────────────────────────────
+//   create Get mock references
 import { router, useLocalSearchParams } from 'expo-router';
 const mockBack = router.back as jest.Mock;
 const mockUseLocalSearchParams = useLocalSearchParams as jest.Mock;
 
-// ─── Fixtures ────────────────────────────────────────────────────────────────
+// constants
 
 const NODE_A = { id: 'n1', building: 'COM1' };
 const NODE_B = { id: 'n2', building: 'COM1' };
@@ -53,7 +53,7 @@ function mockParams(overrides = {}) {
     });
 }
 
-// ─── Setup / teardown ────────────────────────────────────────────────────────
+//   Setup and teardown 
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -64,11 +64,11 @@ afterEach(async () => {
     cleanup();
 });
 
-// ─── Tests ───────────────────────────────────────────────────────────────────
+//   Tests 
 
 describe('PathResultPage — path.tsx', () => {
 
-    // ── Rendering ─────────────────────────────────────────────────────────────
+    // Basic Rendering 
 
     it('renders the Route title', async () => {
         mockParams();
@@ -118,7 +118,7 @@ describe('PathResultPage — path.tsx', () => {
         expect(getByText('Optimisation:')).toBeTruthy();
     });
 
-    // ── Path rendering ────────────────────────────────────────────────────────
+    // Path rendering 
 
     it('renders one MapDisplay per path segment', async () => {
         mockParams({ path: JSON.stringify(MULTI_FLOOR_PATH) });
@@ -144,7 +144,7 @@ describe('PathResultPage — path.tsx', () => {
         expect(queryByTestId('map-display')).toBeNull();
     });
 
-    // ── src / dst calculation ─────────────────────────────────────────────────
+    //src / dst calculation
 
     it('passes correct src (first node of first segment) to PathDirections', async () => {
         mockParams();
@@ -161,7 +161,7 @@ describe('PathResultPage — path.tsx', () => {
         expect(directions[directions.length - 1].props.testID).toBe('path-directions-n1-n3');
     });
 
-    // ── Back button ───────────────────────────────────────────────────────────
+    // Back button 
 
     it('calls router.back() when Back button is pressed', async () => {
         mockParams();
@@ -174,7 +174,7 @@ describe('PathResultPage — path.tsx', () => {
         expect(mockBack).toHaveBeenCalledTimes(1);
     });
 
-    // ── Edge cases ────────────────────────────────────────────────────────────
+    //  Edge cases
 
     it('renders without crashing when startLocation param is missing', async () => {
         mockParams({ startLocation: undefined });
