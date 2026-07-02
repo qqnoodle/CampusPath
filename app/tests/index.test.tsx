@@ -2,17 +2,17 @@ import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import App from '../app/(tabs)/index';
 
-// ─── Mock expo-router ────────────────────────────────────────────────────────
+// create mock expo-router 
 jest.mock('expo-router', () => ({
     router: { push: jest.fn() },
 }));
 
-// ─── Mock pathHistory ────────────────────────────────────────────────────────
+// creat mock pathHistory 
 jest.mock('../components/pathHistory', () => ({
     saveToHistory: jest.fn(),
 }));
 
-// ─── Mock child components ───────────────────────────────────────────────────
+// create mock child components 
 jest.mock('../components/OptionSelector', () => {
     const React = require('react');
     const { TouchableOpacity, Text } = require('react-native');
@@ -43,17 +43,17 @@ jest.mock('../components/LocationSearchBar', () => {
         });
 });
 
-// ─── Get mock references AFTER jest.mock calls ───────────────────────────────
+// create Get mock references AFTER jest.mock calls 
 import { router } from 'expo-router';
 import { saveToHistory } from '../components/pathHistory';
 const mockPush = router.push as jest.Mock;
 const mockSaveToHistory = saveToHistory as jest.Mock;
 
-// ─── Mock fetch globally ─────────────────────────────────────────────────────
+//  Mock fetch globally 
 const mockFetch = jest.fn();
 (global as any).fetch = mockFetch;
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+//  Helpers 
 const FAKE_RESPONSE = {
     path: [[{ id: 'n1', building: 'A' }]],
     optimisation: 'Fastest',
@@ -76,7 +76,7 @@ function buildFetchError(status = 500, body = 'Internal Server Error') {
     });
 }
 
-// ─── Setup / teardown ────────────────────────────────────────────────────────
+//  Setup and teardown 
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -88,11 +88,11 @@ afterEach(async () => {
     cleanup();
 });
 
-// ─── Tests ───────────────────────────────────────────────────────────────────
+//  Tests 
 
 describe('App — index.tsx', () => {
 
-    // ── Rendering ─────────────────────────────────────────────────────────────
+    // Basic Rendering 
 
     it('renders the title', async () => {
         const { getByText } = await render(<App />);
@@ -122,7 +122,7 @@ describe('App — index.tsx', () => {
         expect(getByText('Accessible')).toBeTruthy();
     });
 
-    // ── Happy path ────────────────────────────────────────────────────────────
+    //  successful path 
 
     it('calls fetch with correct body on success', async () => {
         mockFetch.mockReturnValueOnce(buildFetchSuccess());
@@ -183,9 +183,8 @@ describe('App — index.tsx', () => {
         });
     });
 
-    // ── Loading state ─────────────────────────────────────────────────────────
+    //  Loading state
 
-    // NOTE: This test requires testID="activity-indicator" on your ActivityIndicator in index.tsx
     it('shows ActivityIndicator while fetch is in-flight', async () => {
         let resolveFetch!: (v: any) => void;
         const pendingFetch = new Promise((res) => { resolveFetch = res; });
@@ -199,7 +198,7 @@ describe('App — index.tsx', () => {
         // Press button and flush the synchronous setLoading(true) state update
         await act(async () => { fireEvent.press(getByText('Find Path')); });
 
-        // Fetch is still pending — spinner should now be visible after re-render
+        // Fetch is still pending, so spinner should now be visible after re-render
         expect(queryByTestId('activity-indicator')).toBeTruthy();
 
         // Resolve fetch to clean up so this test doesn't leak into the next one
@@ -219,7 +218,7 @@ describe('App — index.tsx', () => {
         expect(queryByTestId('activity-indicator')).toBeNull();
     });
 
-    // ── Error path ────────────────────────────────────────────────────────────
+    //  Error path 
 
     it('does NOT navigate or save history when server returns an error', async () => {
         mockFetch.mockReturnValueOnce(buildFetchError(500, 'Server exploded'));
@@ -256,7 +255,7 @@ describe('App — index.tsx', () => {
         expect(mockSaveToHistory).not.toHaveBeenCalled();
     });
 
-    // ── Optimisation selection ────────────────────────────────────────────────
+    // Optimisation selection 
 
     it('defaults to optimisation index 0 (Fastest) in the request body', async () => {
         mockFetch.mockReturnValueOnce(buildFetchSuccess());
