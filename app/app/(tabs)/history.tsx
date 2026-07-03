@@ -85,6 +85,7 @@ export default function HistoryPage() {
             {history.map((entry) => (
                 <TouchableOpacity
                     key={entry.id}
+                    testID={`card-${entry.id}`}
                     style={styles.card}
                     onPress={() => handleReplay(entry)}
                     activeOpacity={0.7}
@@ -109,6 +110,7 @@ export default function HistoryPage() {
                     {/* Favourtie button */}
                     <Pressable 
                         onPress={() => handleToggleFavourite(entry.id)}
+                        testID={`star-${entry.id}`}
                         hitSlop={10}
                         style={styles.starButton}
                     >
