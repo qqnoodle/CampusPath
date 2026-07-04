@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
+import { authStyles } from '../components/authStyles';
 
 export default function ResetPasswordScreen() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
@@ -39,26 +40,29 @@ export default function ResetPasswordScreen() {
         });
         return;
     }
+
     return (
-        <View>
-            <Button
-                title="Return"
-                onPress={() => router.navigate('/(tabs)/profile')}
-            />
-            <Text> {username} </Text>
-            <TextInput
-                placeholder="Your new Password"
-                onChangeText={(text) => setNewPassword(text)}
-            />
-            <Button
-                title="Reset"
-                onPress={resetPassword}
-            />
+        <View style={authStyles.container}>
+            <TouchableOpacity onPress={() => router.navigate('/(tabs)/profile')}>
+                <Text style={authStyles.returnText}>← Return</Text>
+            </TouchableOpacity>
+
+            <Text style={authStyles.title}>Reset Password</Text>
+            <Text style={authStyles.subtitle}>{username}</Text>
+
+            <View style={authStyles.section}>
+                <Text style={authStyles.label}>New Password</Text>
+                <TextInput
+                    style={authStyles.input}
+                    placeholder="Your new Password"
+                    secureTextEntry
+                    onChangeText={(text) => setNewPassword(text)}
+                />
+            </View>
+
+            <TouchableOpacity style={authStyles.primaryButton} onPress={resetPassword}>
+                <Text style={authStyles.primaryButtonText}>Reset</Text>
+            </TouchableOpacity>
         </View>
     );
 }
-
-
-const style = StyleSheet.create({
-
-});

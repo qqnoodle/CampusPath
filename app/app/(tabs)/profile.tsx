@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import LoginPage from '../../components/Login';
+import { authStyles } from '../../components/authStyles';
 
 export default function ProfilePage() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
@@ -50,15 +51,10 @@ function Profile({ setLoggedIn }: { setLoggedIn: (status: boolean) => void }) {
         setLoggedIn(false)
     };
     return (
-        <View>
-            <Button
-                title="SignOut"
-                onPress={signOut}
-            />
+        <View style={authStyles.container}>
+            <TouchableOpacity style={authStyles.secondaryButton} onPress={signOut}>
+                <Text style={authStyles.secondaryButtonText}>Sign Out</Text>
+            </TouchableOpacity>
         </View>
     );
 }
-
-const style = StyleSheet.create({
-
-});

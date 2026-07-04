@@ -1,9 +1,10 @@
 
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { OtpInput } from 'react-native-otp-entry';
+import { authStyles } from '../components/authStyles';
 
 import { OtpType } from "../types/OtpTypes";
 
@@ -70,24 +71,41 @@ export default function OTPScreen() {
 
 
     return (
-        <View>
-            <Button
-                title="Return"
-                onPress={() => router.navigate('/signUp')}
-            />
-            <OtpInput
-                numberOfDigits={6}
-                onFilled={(text) => verifyOTP(text)}
-            />
-            <Button
-                title="Refresh OTP"
-                onPress={refreshOTP}
-            />
+        <View style={authStyles.container}>
+            <TouchableOpacity onPress={() => router.navigate('/signUp')}>
+                <Text style={authStyles.returnText}>← Return</Text>
+            </TouchableOpacity>
+
+            <Text style={authStyles.title}>Verify Code</Text>
+            <Text style={authStyles.subtitle}>Enter the 6-digit code sent to you</Text>
+
+            <View style={authStyles.otpWrapper}>
+                <OtpInput
+                    numberOfDigits={6}
+                    onFilled={(text) => verifyOTP(text)}
+                    theme={{
+                        containerStyle: { marginBottom: 8 },
+                        pinCodeContainerStyle: {
+                            borderWidth: 1,
+                            borderColor: "#ccc",
+                            borderRadius: 12,
+                            backgroundColor: "#fafafa",
+                        },
+                        pinCodeTextStyle: {
+                            fontSize: 20,
+                            fontWeight: "600",
+                        },
+                        focusedPinCodeContainerStyle: {
+                            borderColor: "#000",
+                        },
+                    }}
+                />
+            </View>
+
+            <TouchableOpacity style={authStyles.secondaryButton} onPress={refreshOTP}>
+                <Text style={authStyles.secondaryButtonText}>Refresh OTP</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
-
-const style = StyleSheet.create({
-
-});

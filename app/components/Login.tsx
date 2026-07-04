@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
+import { authStyles } from './authStyles';
 
 export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boolean) => void }) {
 
@@ -63,37 +64,43 @@ export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boole
     };
 
     return (
-        <View>
-            <TextInput
-                placeholder="Your Username"
-                onChangeText={(text) => setUsername(text)}
-            >
-            </TextInput>
-            <TextInput
-                placeholder="Your Password"
-                onChangeText={(text) => setPassword(text)}
-            >
-            </TextInput>
-            <Button
-                title="Login"
-                onPress={verifyLoginDetail}
-            />
-            <Button
-                title="SignUp"
-                onPress={redirectToSignUp}
-            />
+        <View style={authStyles.container}>
+            <Text style={authStyles.title}>Welcome Back</Text>
 
-            <Button
-                title="Forgot password"
-                onPress={() => {
-                    router.navigate('/forgotPasswordScreen')
-                }}
-            />
+            <View style={authStyles.section}>
+                <Text style={authStyles.label}>Username</Text>
+                <TextInput
+                    style={authStyles.input}
+                    placeholder="Your Username"
+                    autoCapitalize="none"
+                    onChangeText={(text) => setUsername(text)}
+                />
+            </View>
+
+            <View style={authStyles.section}>
+                <Text style={authStyles.label}>Password</Text>
+                <TextInput
+                    style={authStyles.input}
+                    placeholder="Your Password"
+                    secureTextEntry
+                    onChangeText={(text) => setPassword(text)}
+                />
+            </View>
+
+            <TouchableOpacity style={authStyles.primaryButton} onPress={verifyLoginDetail}>
+                <Text style={authStyles.primaryButtonText}>Login</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={authStyles.secondaryButton} onPress={redirectToSignUp}>
+                <Text style={authStyles.secondaryButtonText}>Sign Up</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={authStyles.linkButton}
+                onPress={() => router.navigate('/forgotPasswordScreen')}
+            >
+                <Text style={authStyles.linkText}>Forgot password?</Text>
+            </TouchableOpacity>
         </View>
     );
 }
-
-
-const style = StyleSheet.create({
-
-});
