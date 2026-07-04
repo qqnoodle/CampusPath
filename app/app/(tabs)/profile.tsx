@@ -33,7 +33,7 @@ export default function ProfilePage() {
     }, []);
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             {!loggedIn
                 ? (<LoginPage
                     setLoggedIn={setLoggedIn}

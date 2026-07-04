@@ -72,7 +72,7 @@ export default function OTPScreen() {
 
     return (
         <View style={authStyles.container}>
-            <TouchableOpacity onPress={() => router.navigate('/signUp')}>
+            <TouchableOpacity onPress={() => router.navigate('/SignUp')}>
                 <Text style={authStyles.returnText}>← Return</Text>
             </TouchableOpacity>
 
