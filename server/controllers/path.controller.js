@@ -10,6 +10,14 @@ const findPath = async (req, res) => {
         1: "Sheltered",
         2: "Accessible"
     };
+
+    //Convert cost at the rate of 1 unit to 0.75 seconds
+    const costToTimeConversion = {
+        0: (cost) => Math.round(cost * 0.75),
+        1: (cost) => Math.round(cost[1] * 0.75),
+        2: (cost) => Math.round(cost[1] * 0.75)
+    };
+
     const optimisationFunctions = {
         0: {
             F: (g, h) => g + h,
@@ -19,7 +27,7 @@ const findPath = async (req, res) => {
             Gdefault: 0,
             Fcomparator: (f1, f2) => f1 < f2,
             Gcomparator: (g1, g2) => g1 < g2,
-            minHeuristic: (lst) => Math.min(...lst)
+            minHeuristic: (lst) => Math.min(...lst),
         },
         1: {
             F: (g, h) => [g[0], g[1] + h],
@@ -50,6 +58,7 @@ const findPath = async (req, res) => {
         //Extract out the location information from database
         const optimisationLabel = optimisationMap[optimisation];
         const optFunc = optimisationFunctions[optimisation];
+        const costToTime = costToTimeConversion[optimisation];
 
         const start = await Location.findOne({
             roomNumber: startLocation.roomNumber,
@@ -69,7 +78,8 @@ const findPath = async (req, res) => {
         //TODO Run the algorithm
         const nodeList = await Nodes.find();
         const graph = graphBuilder(nodeList);
-        const path = Astar(graph, src, dst, optFunc.F, optFunc.H, optFunc.G, optFunc.FLimit, optFunc.Gdefault, optFunc.Fcomparator, optFunc.Gcomparator, optFunc.minHeuristic);
+        const { cost, path } = Astar(graph, src, dst, optFunc.F, optFunc.H, optFunc.G, optFunc.FLimit, optFunc.Gdefault, optFunc.Fcomparator, optFunc.Gcomparator, optFunc.minHeuristic);
+        const time = costToTime(cost);
 
         //Prune off joint stairs/lift chaining
         const filteredPath = path.filter((nodeId, i) => {
@@ -114,12 +124,12 @@ const findPath = async (req, res) => {
             success: true,
             optimisation: optimisationLabel,
             path: segregatedPath,
+            time: time,
             totalNodes: path.length,
             src: src,
             dst: dst,
         });
 
-        //TODO Handle the history
     } catch (error) {
         res.header("Access-Control-Allow-Origin", "*");
         res.status(500).json({ success: false, error: error.message });

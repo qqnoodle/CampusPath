@@ -47,6 +47,7 @@ export default function App() {
             // Save to history
             await saveToHistory({
                 path: data.path,
+                estimatedTime: data.time,
                 startLocation: startLocation?.name ?? '',
                 endLocation: endLocation?.name ?? '',
                 optimisation: data.optimisation,
@@ -57,9 +58,9 @@ export default function App() {
                 pathname: '/path',
                 params: {
                     path: JSON.stringify(data.path),
+                    estimatedTime: data.time,
                     startLocation: startLocation?.name,
                     endLocation: endLocation?.name,
-                    // nodeList: JSON.stringify(data.nodeList), // i dont think we make use of this info
                     optimisation: data.optimisation,
                     totalNodes: String(data.totalNodes),
                 },
@@ -93,7 +94,7 @@ export default function App() {
                 API={API}
             />
             {isLoading && (
-                <ActivityIndicator 
+                <ActivityIndicator
                     testID="activity-indicator"
                     size="large"
                     style={{ marginTop: 10 }} />

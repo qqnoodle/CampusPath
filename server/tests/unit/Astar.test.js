@@ -22,11 +22,14 @@ describe("A* pathfinding algo", () => {
             (a, b) => a < b,
             (a, b) => a < b,
             arr => Math.min(...arr)))
-            .toEqual([
-                "COM1-1-D-0-0",
-                "COM1-1-D-0-1",
-                "COM1-1-D-0-2",
-            ]);
+            .toEqual({
+                cost: 2,
+                path: [
+                    "COM1-1-D-0-0",
+                    "COM1-1-D-0-1",
+                    "COM1-1-D-0-2",
+                ]
+            });
     })
 
 
@@ -48,9 +51,12 @@ describe("A* pathfinding algo", () => {
             (a, b) => a < b,
             (a, b) => a < b,
             arr => Math.min(...arr)))
-            .toEqual([
-                "Unreachable"
-            ]);
+            .toEqual({
+                cost: null,
+                path: [
+                    "Unreachable"
+                ]
+            });
     })
 
     const test3 = graphBuilder([
@@ -73,11 +79,14 @@ describe("A* pathfinding algo", () => {
             (a, b) => a < b,
             (a, b) => a < b,
             arr => Math.min(...arr)))
-            .toEqual([
-                "COM1-1-D-0-0",
-                "COM1-1-D-0-1",
-                "COM1-1-D-0-3"
-            ]);
+            .toEqual({
+                cost: 2,
+                path: [
+                    "COM1-1-D-0-0",
+                    "COM1-1-D-0-1",
+                    "COM1-1-D-0-3"
+                ]
+            });
     })
 
 
@@ -106,11 +115,14 @@ describe("A* pathfinding algo", () => {
                 return a[1] < b[1];
             },
             arr => Math.min(...arr)))
-            .toEqual([
-                "COM1-1-D-0-0",
-                "COM1-1-D-0-2",
-                "COM1-1-D-0-3"
-            ]);
+            .toEqual({
+                cost: [1, 11],
+                path: [
+                    "COM1-1-D-0-0",
+                    "COM1-1-D-0-2",
+                    "COM1-1-D-0-3"
+                ]
+            });
     })
 
     const test5 = graphBuilder([
@@ -138,11 +150,14 @@ describe("A* pathfinding algo", () => {
                 return a[1] < b[1];
             },
             arr => Math.min(...arr)))
-            .toEqual([
-                "COM1-1-D-0-0",
-                "COM1-1-D-0-1",
-                "COM1-1-D-0-3"
-            ]);
+            .toEqual({
+                cost: [2, 2],
+                path: [
+                    "COM1-1-D-0-0",
+                    "COM1-1-D-0-1",
+                    "COM1-1-D-0-3"
+                ]
+            });
     })
 
     const test6 = graphBuilder([
@@ -175,13 +190,16 @@ describe("A* pathfinding algo", () => {
                 return a[1] < b[1];
             },
             arr => Math.min(...arr)))
-            .toEqual([
-                "COM1-1-D-0-0",
-                "COM1-1-D-0-1",
-                "COM1-1-D-0-3",
-                "COM1-1-D-0-5",
-                "COM1-1-D-0-7"
-            ]);
+            .toEqual({
+                cost: [1, 4],
+                path: [
+                    "COM1-1-D-0-0",
+                    "COM1-1-D-0-1",
+                    "COM1-1-D-0-3",
+                    "COM1-1-D-0-5",
+                    "COM1-1-D-0-7"
+                ]
+            });
     })
 
     const test7 = graphBuilder([
@@ -209,11 +227,14 @@ describe("A* pathfinding algo", () => {
                 return a[1] < b[1];
             },
             arr => Math.min(...arr)))
-            .toEqual([
-                "COM1-1-D-0-0",
-                "COM1-1-D-0-2",
-                "COM1-1-D-0-3"
-            ]);
+            .toEqual({
+                cost: [0, 11],
+                path: [
+                    "COM1-1-D-0-0",
+                    "COM1-1-D-0-2",
+                    "COM1-1-D-0-3"
+                ]
+            });
     })
 
     const test8 = graphBuilder([
@@ -241,8 +262,11 @@ describe("A* pathfinding algo", () => {
                 return a[1] < b[1];
             },
             arr => Math.min(...arr)))
-            .toEqual([
-                "Unreachable"
-            ]);
+            .toEqual({
+                cost: null,
+                path: [
+                    "Unreachable"
+                ]
+            });
     })
 });
