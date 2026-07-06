@@ -5,12 +5,12 @@ export function reconstructPanel(linkLogic, cellToNode, panel, nodesData) {
     //1. Run through and create every node
     //2. Creates the links, ignore links that dont exist;
     //3. Overwrite neighbour because not all neighbours can be drawn.
-    
+
 
     //build cellToNode
     for (const node of nodesData) {
         //Retrieve the node_id to calculate the cell position
-        const nodeId= node.node_id;
+        const nodeId = node.node_id;
         const metaData = nodeId.split("-");
         const type = metaData[2];
         const row = metaData[3];
@@ -29,7 +29,7 @@ export function reconstructPanel(linkLogic, cellToNode, panel, nodesData) {
     //build the links 
     for (const node of nodesData) {
         //Retrieve the node_id to calculate the cell position
-        const nodeId= node.node_id;
+        const nodeId = node.node_id;
         const metaData = nodeId.split("-");
         const type = metaData[2];
         const row = metaData[3];
@@ -41,7 +41,7 @@ export function reconstructPanel(linkLogic, cellToNode, panel, nodesData) {
             const nmetaData = neighbour.split("-");
             const nrow = nmetaData[3];
             const ncol = nmetaData[4];
-            if (nmetaData[0] != metaData[0] || metaData[1] != metaData[1]) {
+            if (nmetaData[0] !== metaData[0] || nmetaData[1] !== metaData[1]) {
                 continue;
             }
             const ncell = cells.filter((c) => c.dataset.row === String(nrow) && c.dataset.col === String(ncol))[0];
@@ -53,7 +53,7 @@ export function reconstructPanel(linkLogic, cellToNode, panel, nodesData) {
     //Force replace neighbour
     for (const node of nodesData) {
         //Retrieve the node_id to calculate the cell position
-        const nodeId= node.node_id;
+        const nodeId = node.node_id;
         const metaData = nodeId.split("-");
         const row = metaData[3];
         const col = metaData[4];

@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { Node } from '../types/Node';
+
+const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
 
 const HISTORY_KEY = 'path_history';
 const MAX_HISTORY = 20; // Max number of entries to keep in history
@@ -9,7 +12,7 @@ export interface HistoryEntry {
     path: Node[][];
     startLocation: string;
     endLocation: string;
-    optimisation: string;   
+    optimisation: string;
     totalNodes: number;
     timestamp: number;
     favourite: boolean;
@@ -17,16 +20,35 @@ export interface HistoryEntry {
 
 export async function saveToHistory(entry: Omit<HistoryEntry, 'id' | 'timestamp' | 'favourite'>): Promise<void> {
     try {
-        const existing = await getHistory();
         const newEntry: HistoryEntry = {
             ...entry,
             id: Date.now().toString(),
             timestamp: Date.now(),
             favourite: false,
         };
-        // Prepend newest, trim to max
-        const updated = [newEntry, ...existing].slice(0, MAX_HISTORY);
-        await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+
+        //Cross device syncing with prescence of account
+        const jwtToken = await SecureStore.getItemAsync('jwtToken');
+        if (jwtToken) {
+            const response = await fetch(
+                `${API}/user/history`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${jwtToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newEntry)
+                }
+            );
+        } else {
+            //Local Storage system
+            // Prepend newest, trim to max
+            const existing = await getHistory();
+            const updated = [newEntry, ...existing].slice(0, MAX_HISTORY);
+            await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+        }
+
     } catch (e) {
         console.error('Failed to save history:', e);
     }
@@ -34,9 +56,25 @@ export async function saveToHistory(entry: Omit<HistoryEntry, 'id' | 'timestamp'
 
 export async function getHistory(): Promise<HistoryEntry[]> {
     try {
-        const raw = await AsyncStorage.getItem(HISTORY_KEY);
-        if (!raw) return [];
-        const entries: HistoryEntry[] = JSON.parse(raw);
+        let entries: HistoryEntry[] = [];
+        const jwtToken = await SecureStore.getItemAsync('jwtToken');
+
+        if (jwtToken) {
+            const response = await fetch(
+                `${API}/user/history`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                }
+            );
+            entries = await response.json();
+        } else {
+            const raw = await AsyncStorage.getItem(HISTORY_KEY);
+            if (!raw) return [];
+            entries = JSON.parse(raw);
+        }
         // return favourites first, only for non-favourites sort by timestamp descending
         const byNewest = (a: HistoryEntry, b: HistoryEntry) => b.timestamp - a.timestamp;
         return [
@@ -51,13 +89,29 @@ export async function getHistory(): Promise<HistoryEntry[]> {
 
 export async function toggleFavourite(id: string): Promise<void> {
     try {
-        const raw = await AsyncStorage.getItem(HISTORY_KEY);
-        if (!raw) return;
-        const entries: HistoryEntry[] = JSON.parse(raw);
-        const updated = entries.map(e => 
-            e.id === id ? { ...e, favourite: !e.favourite } : e
-        );
-        await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+        const jwtToken = await SecureStore.getItemAsync('jwtToken');
+        //Cross device syncing 
+        if (jwtToken) {
+            const response = await fetch(
+                `${API}/user/history/favourite`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ id: id })
+                }
+            );
+        } else {
+            const raw = await AsyncStorage.getItem(HISTORY_KEY);
+            if (!raw) return;
+            const entries: HistoryEntry[] = JSON.parse(raw);
+            const updated = entries.map(e =>
+                e.id === id ? { ...e, favourite: !e.favourite } : e
+            );
+            await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+        }
     } catch (e) {
         console.error('Failed to toggle favourite:', e);
     }
@@ -65,7 +119,23 @@ export async function toggleFavourite(id: string): Promise<void> {
 
 export async function clearHistory(): Promise<void> {
     try {
-        await AsyncStorage.removeItem(HISTORY_KEY);
+
+        //Cross device syncing in prescence of account
+        const jwtToken = await SecureStore.getItemAsync('jwtToken');
+        if (jwtToken) {
+            const response = await fetch(
+                `${API}/user/history`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                }
+            );
+
+        } else {
+            await AsyncStorage.removeItem(HISTORY_KEY);
+        }
     } catch (e) {
         console.error('Failed to clear history:', e);
     }
@@ -73,13 +143,29 @@ export async function clearHistory(): Promise<void> {
 
 export async function updateEntry(id: string): Promise<void> {
     try {
-        const raw = await AsyncStorage.getItem(HISTORY_KEY);
-        if (!raw) return;
-        const entries: HistoryEntry[] = JSON.parse(raw);
-        const updated = entries.map(e => 
-            e.id === id ? { ...e, timestamp: Date.now() } : e
-        );
-        await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+        const TIME = Date.now();
+        const jwtToken = await SecureStore.getItemAsync('jwtToken');
+        if (jwtToken) {
+            const response = await fetch(
+                `${API}/user/history`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ id: id, time: TIME })
+                }
+            );
+        } else {
+            const raw = await AsyncStorage.getItem(HISTORY_KEY);
+            if (!raw) return;
+            const entries: HistoryEntry[] = JSON.parse(raw);
+            const updated = entries.map(e =>
+                e.id === id ? { ...e, timestamp: TIME } : e
+            );
+            await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+        }
     } catch (e) {
         console.error('Failed to update entry:', e);
     }
