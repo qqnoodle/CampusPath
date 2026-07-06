@@ -14,7 +14,7 @@ export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boole
     const redirectToSignUp = () => {
         router.push(
             {
-                pathname: '/signUp'
+                pathname: '/SignUp'
             }
         )
     };
