@@ -1,6 +1,7 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
+import { authStyles } from '@/components/authStyles';
 
 export default function SignUpPage() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
@@ -46,35 +47,48 @@ export default function SignUpPage() {
     };
 
     return (
-        <View>
-            <Button
-                title="Return"
-                onPress={() => router.navigate('/(tabs)/profile')}
-            />
-            <TextInput
-                placeholder="Your Username"
-                onChangeText={(text) => setUsername(text)}
-            >
-            </TextInput>
-            <TextInput
-                placeholder="Your Email"
-                onChangeText={(text) => setEmail(text)}
-            >
-            </TextInput>
-            <TextInput
-                placeholder="Your Password"
-                onChangeText={(text) => setPassword(text)}
-            >
-            </TextInput>
-            <Button
-                title="Sign Up"
-                onPress={handleSignUp}
-            />
+        <View style={authStyles.container}>
+            <TouchableOpacity onPress={() => router.navigate('/(tabs)/profile')}>
+                <Text style={authStyles.returnText}>← Return</Text>
+            </TouchableOpacity>
+
+            <Text style={authStyles.title}>Create Account</Text>
+
+            <View style={authStyles.section}>
+                <Text style={authStyles.label}>Username</Text>
+                <TextInput
+                    style={authStyles.input}
+                    placeholder="Your Username"
+                    onChangeText={(text) => setUsername(text)}
+                />
+            </View>
+
+            <View style={authStyles.section}>
+                <Text style={authStyles.label}>Email</Text>
+                <TextInput
+                    style={authStyles.input}
+                    placeholder="Your Email"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    onChangeText={(text) => setEmail(text)}
+                />
+            </View>
+
+            <View style={authStyles.section}>
+                <Text style={authStyles.label}>Password</Text>
+                <TextInput
+                    style={authStyles.input}
+                    placeholder="Your Password"
+                    secureTextEntry
+                    onChangeText={(text) => setPassword(text)}
+                />
+            </View>
+
+            <TouchableOpacity style={authStyles.primaryButton} onPress={handleSignUp}>
+                <Text style={authStyles.primaryButtonText}>Sign Up</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
 
-const style = StyleSheet.create({
-
-});

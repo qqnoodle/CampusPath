@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
+import { authStyles } from '../components/authStyles';
 
 import { OtpType } from '../types/OtpTypes';
 
@@ -35,24 +36,26 @@ export default function ForgotPasswordScreen() {
     };
 
     return (
-        <View>
-            <Button
-                title="Return"
-                onPress={() => router.navigate('/(tabs)/profile')}
-            />
-            <TextInput
-                placeholder="Your email or username"
-                onChangeText={(text) => setUserIdentifier(text)}
-            />
-            <Button
-                title="Reset"
-                onPress={resetPassword}
-            />
+        <View style={authStyles.container}>
+            <TouchableOpacity onPress={() => router.navigate('/(tabs)/profile')}>
+                <Text style={authStyles.returnText}>← Return</Text>
+            </TouchableOpacity>
+
+            <Text style={authStyles.title}>Forgot Password</Text>
+
+            <View style={authStyles.section}>
+                <Text style={authStyles.label}>Email or Username</Text>
+                <TextInput
+                    style={authStyles.input}
+                    placeholder="Your email or username"
+                    autoCapitalize="none"
+                    onChangeText={(text) => setUserIdentifier(text)}
+                />
+            </View>
+
+            <TouchableOpacity style={authStyles.primaryButton} onPress={resetPassword}>
+                <Text style={authStyles.primaryButtonText}>Reset</Text>
+            </TouchableOpacity>
         </View>
     );
 };
-
-
-const style = StyleSheet.create({
-
-});
