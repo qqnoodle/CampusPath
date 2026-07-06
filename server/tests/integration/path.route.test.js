@@ -25,13 +25,14 @@ describe("POST /api/path/find", () => {
                 },
                 optimisation: 0,
             });
-        const { success, optimisation, src, dst, path, totalNodes } = response.body;
+        const { success, optimisation, src, dst, path, time, totalNodes } = response.body;
         expect(response.status).toBe(200);
         expect(success).toEqual(true);
         expect(optimisation).toEqual("Shortest");
         expect(src).toEqual(["COM1-1-D-7-7"]);
         expect(dst).toEqual(["COM1-1-D-7-12"]);
         expect(totalNodes).toEqual(3);
+        expect(time).toEqual(4);
     });
 
     test("Single map test 2", async () => {
@@ -50,13 +51,14 @@ describe("POST /api/path/find", () => {
                 },
                 optimisation: 0,
             });
-        const { success, optimisation, src, dst, path, totalNodes } = response.body;
+        const { success, optimisation, src, dst, path, time, totalNodes } = response.body;
         expect(response.status).toBe(200);
         expect(success).toEqual(true);
         expect(optimisation).toEqual("Shortest");
         expect(src).toEqual(["COM1-1-D-7-7"]);
         expect(dst).toEqual(["COM1-1-D-6-48"]);
         expect(totalNodes).toEqual(14);
+        expect(time).toEqual(31);
     });
 
     test("Cross map test", async () => {
@@ -75,13 +77,14 @@ describe("POST /api/path/find", () => {
                 },
                 optimisation: 0,
             });
-        const { success, optimisation, src, dst, path, totalNodes } = response.body;
+        const { success, optimisation, src, dst, path, time, totalNodes } = response.body;
         expect(response.status).toBe(200);
         expect(success).toEqual(true);
         expect(optimisation).toEqual("Shortest");
         expect(src).toEqual(["COM1-1-D-7-7"]);
         expect(dst).toEqual(["COM1-3-D-22-31"]);
         expect(totalNodes).toEqual(23);
+        expect(time).toEqual(45);
     });
 
     test("Invalid Input -> Empty locations", async () => {

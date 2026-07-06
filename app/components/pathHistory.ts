@@ -10,6 +10,7 @@ const MAX_HISTORY = 20; // Max number of entries to keep in history
 export interface HistoryEntry {
     id: string;
     path: Node[][];
+    estimatedTime: number;
     startLocation: string;
     endLocation: string;
     optimisation: string;

@@ -12,6 +12,10 @@ const HistorySchema = mongoose.Schema(
             type: [[Object]],
             required: true
         },
+        estimatedTime: {
+            type: Number,
+            required: true
+        },
         startLocation: {
             type: String,
             required: true

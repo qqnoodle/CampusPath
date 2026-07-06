@@ -14,7 +14,7 @@ const { PriorityQueue } = require('@datastructures-js/priority-queue');
  * @param {Function(G1, G2) -> boolean} Gcomparator - A function that return G1 < G2
  * @param {Function([h]) -> type h} minHeuristic - A function that return min H from a list of H
  *
- * @returns {[String]} - An array of String which are ordered list of node_id of the shortest path
+ * @returns { {number} cost, [String] } - An Object containing cost and An array of String which are ordered list of node_id of the shortest path
  * 
  */
 
@@ -84,7 +84,7 @@ function Astar(graph, src, dst, F, H, G, Flimit, Gdefault, Fcomparator, Gcompara
 
     //Safeguard for when place is unreachable
     if (endNode === null) {
-        return ["Unreachable"];
+        return { cost: null, path: ["Unreachable"] };
     }
 
     //path reconstruction
@@ -95,7 +95,7 @@ function Astar(graph, src, dst, F, H, G, Flimit, Gdefault, Fcomparator, Gcompara
         node = parentPointer.get(node);
     }
     path.push(node);
-    return path.reverse();
+    return { cost: Gscore.get(endNode), path: path.reverse() };
 };
 
 module.exports = { Astar };
