@@ -11,16 +11,23 @@ export default function PathResultPage() {
     const [mapSize, setMapSize] = useState({ w: 0, h: 0 });
 
     const params = useLocalSearchParams<{
-
         path: string;
+        estimatedTime: string;
         startLocation: string;
         endLocation: string;
-        // nodeList: string; 
         optimisation: string;
         totalNodes: string;
     }>();
 
+    const formatTime = (timeInSeconds: number): string => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+
+        return `${minutes} minutes ${seconds} seconds`;
+    };
+
     const path: Node[][] = params.path ? JSON.parse(params.path) : [];
+    const estimatedTime: number = parseInt(params.estimatedTime);
     const optimisation = params.optimisation ?? '';
     const startLocation = params.startLocation ?? '';
     const endLocation = params.endLocation ?? '';
@@ -48,6 +55,10 @@ export default function PathResultPage() {
             <View style={styles.metaRow}>
                 <Text style={styles.metaLabel}>Optimisation:</Text>
                 <Text style={styles.metaValue}>{optimisation}</Text>
+            </View>
+            <View style={styles.metaRow}>
+                <Text style={styles.metaLabel}>Estimated time:</Text>
+                <Text style={styles.metaValue}>{formatTime(estimatedTime)}</Text>
             </View>
 
             {path.map((pathOnMap, i) => (
