@@ -21,7 +21,7 @@ export const authStyles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: 'bold',
-        marginTop: 12,
+        marginTop: 15,
         marginBottom: 24,
     },
     subtitle: {
@@ -33,6 +33,7 @@ export const authStyles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         color: colors.text,
+        marginTop: 12,
     },
     section: {
         marginBottom: 20,
