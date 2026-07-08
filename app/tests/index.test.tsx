@@ -124,6 +124,7 @@ describe('App — index.tsx', () => {
 
     //  successful path 
 
+    
     it('calls fetch with correct body on success', async () => {
         mockFetch.mockReturnValueOnce(buildFetchSuccess());
         const { getByTestId, getByText } = await render(<App />);
@@ -139,11 +140,12 @@ describe('App — index.tsx', () => {
         const body = JSON.parse(options.body);
         expect(body).toMatchObject({
             optimisation: 1,
-            startLocation: 'LT1-room',
-            endLocation: 'SR1-room',
+            startLocation: { roomNumber: 'LT1-room' },
+            endLocation: { roomNumber: 'SR1-room' },
         });
     });
-
+    
+    
     it('saves to history with correct fields after a successful fetch', async () => {
         mockFetch.mockReturnValueOnce(buildFetchSuccess());
         const { getByTestId, getByText } = await render(<App />);
@@ -158,6 +160,7 @@ describe('App — index.tsx', () => {
             startLocation: 'LT1',
             endLocation: 'SR1',
             optimisation: FAKE_RESPONSE.optimisation,
+            estimatedTime: undefined,
             totalNodes: FAKE_RESPONSE.totalNodes,
         });
     });

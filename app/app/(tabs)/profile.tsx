@@ -5,7 +5,7 @@ import LoginPage from '../../components/Login';
 import { authStyles } from '../../components/authStyles';
 
 export default function ProfilePage() {
-    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-git-dev-qqnoodles-projects.vercel.app/api";
     const [loggedIn, setLoggedIn] = useState(false);
 
     const verifyLoggedIn = async () => {
