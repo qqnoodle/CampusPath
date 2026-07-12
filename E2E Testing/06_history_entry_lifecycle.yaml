@@ -1,0 +1,37 @@
+appId: com.currycurry11.myapp
+---
+# History
+- launchApp:
+    clearState: true
+- tapOn: "Search Starting...."
+- inputText: "staff"
+- tapOn: "Technical Staff Office 1, COM1 • 01-01"
+- tapOn: "Search Destination...."
+- inputText: "programming lab"
+- tapOn: "Programming Lab 1, COM1 • B-12"
+- tapOn: "Find Path"
+- assertVisible: "Route"
+- back
+
+- tapOn: "History" 
+- assertVisible: ", COM1 · Technical Staff Office 1 → Programming Lab 1, Shortest, Estimated 0 minutes 26 seconds, Just now"
+- assertVisible: "Clear all"
+
+# Favourite
+- tapOn:
+    id: "star-.*"
+    index: 0
+- assertVisible:
+    id: "star-.*"
+
+# Replay
+- tapOn:
+    id: "card-.*"
+    index: 0
+- assertVisible: "Route"
+- back
+
+# Clear all
+- tapOn: "History"
+- tapOn: "Clear all"
+- assertVisible: "No searches yet"

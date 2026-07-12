@@ -1,0 +1,26 @@
+appId: com.currycurry11.myapp
+---
+# Navigate to the result screen, then verify all pieces of info + navigation back
+- launchApp:
+    clearState: true
+- tapOn: "Search Starting...."
+- inputText: "staff"
+- tapOn: "Technical Staff Office 1, COM1 • 01-01"
+- tapOn: "Search Destination...."
+- inputText: "programming lab"
+- tapOn: "Programming Lab 1, COM1 • B-12"
+- tapOn: "Find Path"
+
+- assertVisible: "Route"
+- assertVisible: "Start Location:"
+- assertVisible: "End Location:"
+- assertVisible: "Optimisation:"
+- assertVisible: "Estimated time:"
+
+# Map + directions render for each floor segment of the path
+- scrollUntilVisible:
+    element: "Arrive at destination"
+
+# Back button returns to home screen
+- back
+- assertVisible: "FIND PATH"

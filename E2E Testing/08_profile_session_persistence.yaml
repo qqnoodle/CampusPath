@@ -1,0 +1,18 @@
+appId: com.currycurry11.myapp
+---
+# Sign In and should remained signed in
+- launchApp:
+    clearState: true
+- tapOn: "Profile"
+- tapOn: "Your Username"
+- inputText: "FOOL"
+- tapOn: "Your Password"    
+- inputText: "123Ab!"
+- tapOn: "Login"
+- assertVisible: "Sign Out"
+
+# Relaunch WITHOUT clearing state
+- launchApp:
+    clearState: false
+- tapOn: "Profile"
+- assertVisible: "Sign Out"
