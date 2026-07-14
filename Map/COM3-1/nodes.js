@@ -443,6 +443,10 @@
             {
                 "node": "COM3-1-J-11-41",
                 "weight": 2
+            },
+            {
+                "node": "COM4-2-J-42-5",
+                "weight": 10
             }
         ],
         "attribute": [
@@ -979,6 +983,10 @@
             {
                 "node": "COM3-1-J-33-23",
                 "weight": 2
+            },
+            {
+                "node": "COM2-1-J-6-8",
+                "weight": 2
             }
         ],
         "attribute": [
@@ -1017,16 +1025,16 @@
         "floor": 1,
         "neighbour": [
             {
+                "node": "COM3-1-D-42-27",
+                "weight": 2
+            },
+            {
                 "node": "COM3-1-J-42-23",
                 "weight": 2
             },
             {
                 "node": "COM3-1-J-44-28",
                 "weight": 3
-            },
-            {
-                "node": "COM3-1-D-42-27",
-                "weight": 2
             }
         ],
         "attribute": [
@@ -1041,15 +1049,15 @@
         "floor": 1,
         "neighbour": [
             {
+                "node": "COM3-1-D-42-27",
+                "weight": 2
+            },
+            {
                 "node": "COM3-1-J-42-25",
                 "weight": 3
             },
             {
                 "node": "COM3-1-J-45-30",
-                "weight": 2
-            },
-            {
-                "node": "COM3-1-D-42-27",
                 "weight": 2
             }
         ],
@@ -1441,6 +1449,10 @@
         "floor": 1,
         "neighbour": [
             {
+                "node": "COM3-1-D-25-28",
+                "weight": 1
+            },
+            {
                 "node": "COM3-1-J-30-28",
                 "weight": 5
             },
@@ -1451,10 +1463,6 @@
             {
                 "node": "COM3-1-J-22-26",
                 "weight": 3
-            },
-            {
-                "node": "COM3-1-D-25-28",
-                "weight": 1
             }
         ],
         "attribute": [
@@ -1517,20 +1525,12 @@
         "floor": 1,
         "neighbour": [
             {
-                "node": "COM3-1-J-30-28",
-                "weight": 3
-            },
-            {
                 "node": "COM3-1-J-29-29",
                 "weight": 2
             },
             {
-                "node": "COM3-B1-J-29-26",
-                "weight": 5
-            },
-            {
-                "node": "COM3-2-J-27-28",
-                "weight": 5
+                "node": "COM3-1-J-30-28",
+                "weight": 3
             }
         ],
         "attribute": [
@@ -1547,14 +1547,6 @@
             {
                 "node": "COM3-1-J-12-21",
                 "weight": 1
-            },
-            {
-                "node": "COM3-B1-J-13-13",
-                "weight": 5
-            },
-            {
-                "node": "COM3-2-J-11-18",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1575,14 +1567,6 @@
             {
                 "node": "COM3-1-J-16-29",
                 "weight": 2
-            },
-            {
-                "node": "COM3-B1-J-20-26",
-                "weight": 5
-            },
-            {
-                "node": "COM3-2-J-18-28",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1599,14 +1583,6 @@
             {
                 "node": "COM3-1-J-11-41",
                 "weight": 2
-            },
-            {
-                "node": "COM3-B1-J-10-37",
-                "weight": 5
-            },
-            {
-                "node": "COM3-2-J-9-38",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1621,11 +1597,15 @@
         "floor": 1,
         "neighbour": [
             {
+                "node": "COM3-1-D-46-32",
+                "weight": 2
+            },
+            {
                 "node": "COM3-1-J-48-35",
                 "weight": 2
             },
             {
-                "node": "COM3-1-D-46-32",
+                "node": "COM2-1-J-3-35",
                 "weight": 2
             }
         ],
@@ -1641,12 +1621,12 @@
         "floor": 1,
         "neighbour": [
             {
-                "node": "COM3-1-J-45-37",
-                "weight": 3
-            },
-            {
                 "node": "COM3-1-J-48-33",
                 "weight": 2
+            },
+            {
+                "node": "COM3-1-J-45-37",
+                "weight": 3
             }
         ],
         "attribute": [
@@ -1661,11 +1641,11 @@
         "floor": 1,
         "neighbour": [
             {
-                "node": "COM3-1-J-42-39",
+                "node": "COM3-1-J-48-35",
                 "weight": 3
             },
             {
-                "node": "COM3-1-J-48-35",
+                "node": "COM3-1-J-42-39",
                 "weight": 3
             },
             {
@@ -1687,10 +1667,6 @@
             {
                 "node": "COM3-1-J-45-37",
                 "weight": 3
-            },
-            {
-                "node": "COM3-B1-J-46-37",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1749,11 +1725,11 @@
         "floor": 1,
         "neighbour": [
             {
-                "node": "COM3-1-J-42-36",
+                "node": "COM3-1-D-46-32",
                 "weight": 2
             },
             {
-                "node": "COM3-1-D-46-32",
+                "node": "COM3-1-J-42-36",
                 "weight": 2
             },
             {
@@ -1775,14 +1751,6 @@
             {
                 "node": "COM3-1-J-11-41",
                 "weight": 1
-            },
-            {
-                "node": "COM3-B1-J-11-36",
-                "weight": 2
-            },
-            {
-                "node": "COM3-2-J-11-38",
-                "weight": 2
             }
         ],
         "attribute": [
@@ -1799,10 +1767,6 @@
             {
                 "node": "COM3-1-J-42-36",
                 "weight": 1
-            },
-            {
-                "node": "COM3-2-J-40-33",
-                "weight": 2
             }
         ],
         "attribute": [
@@ -1897,11 +1861,11 @@
         "floor": 1,
         "neighbour": [
             {
-                "node": "COM3-1-J-32-25",
+                "node": "COM3-1-J-35-23",
                 "weight": 2
             },
             {
-                "node": "COM3-1-J-35-23",
+                "node": "COM3-1-J-32-25",
                 "weight": 2
             }
         ],
@@ -1919,10 +1883,6 @@
             {
                 "node": "COM3-1-J-24-26",
                 "weight": 2
-            },
-            {
-                "node": "COM3-B1-J-19-13",
-                "weight": 1
             }
         ],
         "attribute": [
@@ -1937,16 +1897,12 @@
         "floor": 1,
         "neighbour": [
             {
-                "node": "COM3-1-J-44-34",
-                "weight": 1
-            },
-            {
                 "node": "COM3-1-J-45-37",
                 "weight": 2
             },
             {
-                "node": "COM3-2-J-44-34",
-                "weight": 5
+                "node": "COM3-1-J-44-34",
+                "weight": 1
             }
         ],
         "attribute": [

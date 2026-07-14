@@ -1007,10 +1007,6 @@
             {
                 "node": "COM3-B1-J-11-37",
                 "weight": 1
-            },
-            {
-                "node": "COM3-1-J-11-40",
-                "weight": 2
             }
         ],
         "attribute": [
@@ -1067,10 +1063,6 @@
             {
                 "node": "COM3-B1-J-30-24",
                 "weight": 2
-            },
-            {
-                "node": "COM3-1-J-27-29",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1088,10 +1080,6 @@
             {
                 "node": "COM3-B1-J-18-28",
                 "weight": 2
-            },
-            {
-                "node": "COM3-1-J-18-29",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1138,10 +1126,6 @@
             {
                 "node": "COM3-B1-J-15-13",
                 "weight": 2
-            },
-            {
-                "node": "COM3-1-J-11-20",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1199,10 +1183,6 @@
             {
                 "node": "COM3-B1-J-18-12",
                 "weight": 1
-            },
-            {
-                "node": "COM3-1-J-22-24",
-                "weight": 1
             }
         ],
         "attribute": [
@@ -1247,6 +1227,10 @@
             {
                 "node": "COM3-B1-J-15-11",
                 "weight": 2
+            },
+            {
+                "node": "COM1-B1-J-1-22",
+                "weight": 2
             }
         ],
         "attribute": [
@@ -1262,10 +1246,6 @@
             {
                 "node": "COM3-B1-J-11-36",
                 "weight": 1
-            },
-            {
-                "node": "COM3-1-J-9-40",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1282,10 +1262,6 @@
             {
                 "node": "COM3-B1-J-43-37",
                 "weight": 3
-            },
-            {
-                "node": "COM3-1-J-42-39",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -1319,12 +1295,12 @@
         "floor": 0,
         "neighbour": [
             {
-                "node": "COM3-B1-J-39-36",
-                "weight": 4
-            },
-            {
                 "node": "COM3-B1-J-46-37",
                 "weight": 3
+            },
+            {
+                "node": "COM3-B1-J-39-36",
+                "weight": 4
             }
         ],
         "attribute": [

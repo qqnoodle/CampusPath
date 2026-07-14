@@ -7,6 +7,10 @@
             {
                 "node": "COM2-1-D-17-35",
                 "weight": 12
+            },
+            {
+                "node": "COM2-1-J-3-35",
+                "weight": 2
             }
         ],
         "attribute": [
@@ -242,6 +246,10 @@
             },
             {
                 "node": "COM2-1-J-4-6",
+                "weight": 2
+            },
+            {
+                "node": "COM3-1-J-35-23",
                 "weight": 2
             }
         ],
@@ -537,10 +545,6 @@
             {
                 "node": "COM2-1-J-22-19",
                 "weight": 7
-            },
-            {
-                "node": "COM2-2-J-15-27",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -558,10 +562,6 @@
             {
                 "node": "COM2-1-J-19-44",
                 "weight": 3
-            },
-            {
-                "node": "COM2-2-J-15-45",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -579,10 +579,6 @@
             {
                 "node": "COM2-1-J-22-54",
                 "weight": 7
-            },
-            {
-                "node": "COM2-2-J-33-59",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -600,10 +596,6 @@
             {
                 "node": "COM2-1-J-6-8",
                 "weight": 2
-            },
-            {
-                "node": "COM2-2-J-1-7",
-                "weight": 5
             }
         ],
         "attribute": [
@@ -706,10 +698,6 @@
             {
                 "node": "COM2-1-J-19-44",
                 "weight": 1
-            },
-            {
-                "node": "COM2-2-J-20-46",
-                "weight": 2
             }
         ],
         "attribute": [
@@ -735,6 +723,26 @@
             {
                 "node": "COM2-1-J-20-43",
                 "weight": 1
+            }
+        ],
+        "attribute": [
+            "Walk",
+            "Sheltered"
+        ],
+        "nodeType": "junction"
+    },
+    {
+        "node_id": "COM2-1-J-3-35",
+        "building": "COM2",
+        "floor": 1,
+        "neighbour": [
+            {
+                "node": "COM2-1-D-5-35",
+                "weight": 2
+            },
+            {
+                "node": "COM3-1-J-48-33",
+                "weight": 2
             }
         ],
         "attribute": [
