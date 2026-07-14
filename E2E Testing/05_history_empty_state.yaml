@@ -1,0 +1,9 @@
+appId: com.currycurry11.myapp
+---
+# On a fresh install, history tab should show the empty state (no "Clear all" link)
+- launchApp:
+    clearState: true
+- tapOn: "History"   # adjust to match your tab bar label/testID
+- assertVisible: "No searches yet"
+- assertVisible: "Your recent routes will appear here."
+- assertNotVisible: "Clear all"

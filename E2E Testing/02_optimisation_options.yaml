@@ -1,0 +1,29 @@
+appId: com.currycurry11.myapp
+---
+# Verify each optimisation option can be selected and is reflected on the result screen
+- launchApp:
+    clearState: true
+- tapOn: "Search Starting...."
+- inputText: "staff"
+- tapOn: "Technical Staff Office 1, COM1 • 01-01"
+- tapOn: "Search Destination...."
+- inputText: "programming lab"
+- tapOn: "Programming Lab 1, COM1 • B-12"
+
+# Sheltered
+- tapOn: " Sheltered "
+- tapOn: "FIND PATH"
+- assertVisible: "Sheltered"
+- back
+- assertVisible: "FIND PATH"
+
+# Accessible
+- tapOn: " Accessible "
+- tapOn: "Search Starting...."
+- inputText: "staff"
+- tapOn: "Technical Staff Office 1, COM1 • 01-01"
+- tapOn: "Search Destination...."
+- inputText: "programming lab"
+- tapOn: "Programming Lab 1, COM1 • B-12"
+- tapOn: "FIND PATH"
+- assertVisible: "Accessible"

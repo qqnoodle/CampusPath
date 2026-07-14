@@ -1,0 +1,17 @@
+appId: com.currycurry11.myapp
+---
+# Basic Find Path
+- launchApp:
+    clearState: true
+- tapOn: "Search Starting...."
+- inputText: "staff"
+- tapOn: "Technical Staff Office 1, COM1 • 01-01"
+- tapOn: "Search Destination...."
+- inputText: "programming lab"
+- tapOn: "Programming Lab 1, COM1 • B-12"
+- tapOn: "Find Path"
+- assertVisible:
+    id: "activity-indicator"
+- assertVisible: "Route"
+- assertVisible: "Start Location:"
+- assertVisible: "End Location:"
