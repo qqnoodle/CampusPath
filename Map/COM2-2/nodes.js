@@ -507,6 +507,14 @@
             {
                 "node": "COM2-2-J-19-48",
                 "weight": 5
+            },
+            {
+                "node": "COM2-1-J-16-42",
+                "weight": 5
+            },
+            {
+                "node": "COM2-3-J-18-50",
+                "weight": 5
             }
         ],
         "attribute": [
@@ -524,6 +532,14 @@
             {
                 "node": "COM2-2-J-18-26",
                 "weight": 3
+            },
+            {
+                "node": "COM2-1-J-15-22",
+                "weight": 5
+            },
+            {
+                "node": "COM2-3-J-15-25",
+                "weight": 5
             }
         ],
         "attribute": [
@@ -541,6 +557,10 @@
             {
                 "node": "COM2-2-J-4-5",
                 "weight": 3
+            },
+            {
+                "node": "COM2-1-J-4-6",
+                "weight": 5
             }
         ],
         "attribute": [
@@ -558,6 +578,10 @@
             {
                 "node": "COM2-2-J-30-58",
                 "weight": 3
+            },
+            {
+                "node": "COM2-1-J-29-55",
+                "weight": 5
             }
         ],
         "attribute": [
@@ -574,6 +598,14 @@
         "neighbour": [
             {
                 "node": "COM2-2-J-19-48",
+                "weight": 2
+            },
+            {
+                "node": "COM2-1-J-20-43",
+                "weight": 2
+            },
+            {
+                "node": "COM2-3-J-21-51",
                 "weight": 2
             }
         ],
@@ -616,10 +648,6 @@
             {
                 "node": "COM2-2-D-6-8",
                 "weight": 3
-            },
-            {
-                "node": "COM1-2-J-19-49",
-                "weight": 2
             }
         ],
         "attribute": [
