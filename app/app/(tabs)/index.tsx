@@ -36,13 +36,9 @@ export default function App() {
                 })
             });
 
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(`Server error: ${text}`);
-            }
-
             const data = await response.json();
             console.log(data);
+            if (!data.success) return alert("No available path to destination");
 
             // Save to history
             await saveToHistory({
