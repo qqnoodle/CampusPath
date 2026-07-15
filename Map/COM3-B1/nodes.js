@@ -1125,7 +1125,7 @@
         ],
         "attribute": [
             "Walk",
-            "Sheltered",
+            "Sheltered"
         ],
         "nodeType": "junction"
     },
