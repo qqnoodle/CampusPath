@@ -59,6 +59,6 @@ export function reconstructPanel(linkLogic, cellToNode, panel, nodesData) {
         const col = metaData[4];
         const cells = Array.from(panel.querySelectorAll(".gridCell"));
         const cell = cells.filter((c) => c.dataset.row === String(row) && c.dataset.col === String(col))[0];
-        cellToNode[cell].neighbour = node.neighbour;
+        cellToNode.get(cell).neighbour = node.neighbour;
     }
 }

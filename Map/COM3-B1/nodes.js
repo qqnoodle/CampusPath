@@ -1126,7 +1126,6 @@
         "attribute": [
             "Walk",
             "Sheltered",
-            "Stair"
         ],
         "nodeType": "junction"
     },
@@ -1246,6 +1245,10 @@
         "neighbour": [
             {
                 "node": "COM3-B1-J-15-11",
+                "weight": 2
+            },
+            {
+                "node": "COM1-B1-J-1-22",
                 "weight": 2
             }
         ],

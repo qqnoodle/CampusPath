@@ -648,6 +648,10 @@
             {
                 "node": "COM2-2-D-6-8",
                 "weight": 3
+            },
+            {
+                "node": "COM1-2-J-19-49",
+                "weight": 2
             }
         ],
         "attribute": [
