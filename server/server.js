@@ -63,9 +63,9 @@ app.use("/api/user", userRoute);
 
 
 //Database connection test
-const MONGO_URI = process.env.NODE_ENV === "development"
-    ? process.env.MONGO_URI_TEST
-    : process.env.MONGO_URI_PROD;
+const MONGO_URI = process.env.NODE_ENV === "production"
+    ? process.env.MONGO_URI_PROD
+    : process.env.MONGO_URI_TEST;
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log("MongoDB connected"))

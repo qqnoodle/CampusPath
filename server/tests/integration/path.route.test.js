@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 describe("POST /api/path/find", () => {
     beforeAll(async () => {
+        await app.dbConnection;
     });
     afterAll(async () => {
         await mongoose.connection.close();

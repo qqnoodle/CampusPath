@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 describe("GET api/locations", () => {
     beforeAll(async () => {
+        await app.dbConnection;
     });
 
     afterAll(async () => {
@@ -25,7 +26,7 @@ describe("GET api/locations", () => {
     test("GET api/locations?q=Programming", async () => {
         const response = await request(app).get("/api/locations?q=Programming");
         expect(response.status).toBe(200);
-        expect(response.body.length).toEqual(6);
+        expect(response.body.length).toEqual(7);
     });
 
     test("No matches in database", async () => {

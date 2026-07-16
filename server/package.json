@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
-    "start": "cross-env NODE_ENV=production node server",
+    "start": "cross-env NODE_ENV=production node server.js",
     "dev": "cross-env NODE_ENV=development node server.js"
   },
   "keywords": [],
