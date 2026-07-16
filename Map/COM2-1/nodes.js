@@ -7,6 +7,10 @@
             {
                 "node": "COM2-1-D-17-35",
                 "weight": 12
+            },
+            {
+                "node": "COM3-1-J-48-33",
+                "weight": 2
             }
         ],
         "attribute": [
@@ -242,6 +246,10 @@
             },
             {
                 "node": "COM2-1-J-4-6",
+                "weight": 2
+            },
+            {
+                "node": "COM3-1-J-35-23",
                 "weight": 2
             }
         ],
@@ -604,6 +612,10 @@
             {
                 "node": "COM2-2-J-1-7",
                 "weight": 5
+            },
+            {
+                "node": "COM1-2-J-19-51",
+                "weight": 2
             }
         ],
         "attribute": [
