@@ -79,7 +79,7 @@ describe('PathResultPage — path.tsx', () => {
     it('renders the Back button', async () => {
         mockParams();
         const { getByText } = await render(<PathResultPage />);
-        expect(getByText('Back')).toBeTruthy();
+        expect(getByText('← Back')).toBeTruthy();
     });
 
     it('renders startLocation from params', async () => {
@@ -168,7 +168,7 @@ describe('PathResultPage — path.tsx', () => {
         const { getByText } = await render(<PathResultPage />);
 
         await act(async () => {
-            fireEvent.press(getByText('Back'));
+            fireEvent.press(getByText('← Back'));
         });
 
         expect(mockBack).toHaveBeenCalledTimes(1);
