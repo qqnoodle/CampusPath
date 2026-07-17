@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import SignUpPage from '../app/SignUp';
 
-// ─── Mocks ───────────────────────────────────────────────────────────────────
+//  Mocks 
 
 jest.mock('expo-router', () => ({
     router: { push: jest.fn(), navigate: jest.fn() },
@@ -26,7 +26,7 @@ const mockNavigate = router.navigate as jest.Mock;
 const mockFetch = jest.fn();
 (global as any).fetch = mockFetch;
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+//  Helpers 
 
 function buildFetchSuccess(status = 201) {
     return Promise.resolve({
@@ -50,16 +50,16 @@ async function fillForm(getByPlaceholderText: any, username = 'alice', email = '
     await act(async () => { fireEvent.changeText(getByPlaceholderText('Your Password'), password); });
 }
 
-// ─── Setup / teardown ────────────────────────────────────────────────────────
+//  Setup / teardown 
 
 beforeEach(() => { jest.clearAllMocks(); });
 afterEach(async () => { await act(async () => {}); cleanup(); });
 
-// ─── Tests ───────────────────────────────────────────────────────────────────
+//  Tests 
 
 describe('SignUpPage — SignUp.tsx', () => {
 
-    // ── Rendering ─────────────────────────────────────────────────────────────
+    //  Rendering 
 
     it('renders the Create Account title', async () => {
         const { getByText } = await render(<SignUpPage />);
@@ -83,7 +83,7 @@ describe('SignUpPage — SignUp.tsx', () => {
         expect(getByText('Sign Up')).toBeTruthy();
     });
 
-    // ── Validation alerts ─────────────────────────────────────────────────────
+    //  Validation alerts 
 
     it('alerts when username is empty', async () => {
         const { getByText } = await render(<SignUpPage />);
@@ -109,7 +109,7 @@ describe('SignUpPage — SignUp.tsx', () => {
         expect(mockFetch).not.toHaveBeenCalled();
     });
 
-    // ── Happy path ────────────────────────────────────────────────────────────
+    //  Correct path 
 
     it('calls fetch with correct body on sign up', async () => {
         mockFetch.mockReturnValueOnce(buildFetchSuccess());
@@ -139,7 +139,7 @@ describe('SignUpPage — SignUp.tsx', () => {
         });
     });
 
-    // ── Error path ────────────────────────────────────────────────────────────
+    //  Error path 
 
     it('shows alert and does not navigate when server returns error', async () => {
         mockFetch.mockReturnValueOnce(buildFetchError('Email already in use'));
@@ -151,7 +151,7 @@ describe('SignUpPage — SignUp.tsx', () => {
         expect(mockPush).not.toHaveBeenCalled();
     });
 
-    // ── Navigation ────────────────────────────────────────────────────────────
+    //  Navigation 
 
     it('navigates back to profile when Return is pressed', async () => {
         const { getByText } = await render(<SignUpPage />);
