@@ -100,4 +100,42 @@ describe("POST /api/path/find", () => {
             });
         expect(response.status).toBe(500);
     });
+
+    test("No paths", async () => {
+        const response = await request(app)
+            .post("/api/path/find")
+            .send({
+                startLocation: {
+                    roomNumber: "B-AHU2",
+                    building: "COM1",
+                    floor: 0
+                },
+                endLocation: {
+                    roomNumber: "B-09",
+                    building: "COM1",
+                    floor: 0
+                },
+                optimisation: 0,
+            });
+        expect(response.status).toBe(500);
+    });
+
+    test("Src == Dst", async () => {
+        const response = await request(app)
+            .post("/api/path/find")
+            .send({
+                startLocation: {
+                    roomNumber: "B-09",
+                    building: "COM1",
+                    floor: 0
+                },
+                endLocation: {
+                    roomNumber: "B-09",
+                    building: "COM1",
+                    floor: 0
+                },
+                optimisation: 0,
+            });
+        expect(response.status).toBe(200);
+    });
 });

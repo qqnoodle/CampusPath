@@ -17,7 +17,6 @@ const getHistories = async (req, res) => {
         ).select("-username"); //Select is a mongoose function that helps us remove username from all the objects without manually filtering
         res.status(200).json(userHistories);
     } catch (error) {
-        console.error(error);
         res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
     }
 }
@@ -66,7 +65,6 @@ const addHistory = async (req, res) => {
         });
         res.status(200).json({ success: true, message: "History Entry added" });
     } catch (error) {
-        console.error(error);
         res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
     }
 }
@@ -90,7 +88,6 @@ const toggleFavouriteHistory = async (req, res) => {
         await existingHistoryEntry.save();
         res.status(200).json({ success: true, message: "entry favorited" });
     } catch (error) {
-        console.error(error);
         res.status(500).send(`something unexpected went wrong\n ${error.message}`);
     }
 };
@@ -103,6 +100,8 @@ const updateHistory = async (req, res) => {
         const username = payload.username;
 
         const { id, time } = req.body;
+        if (!id || !time) return res.status(400).json({ success: false, message: "Missing time or id" });
+
         const existingHistoryEntry = await Histories.findOne(
             {
                 username: username,
@@ -115,7 +114,6 @@ const updateHistory = async (req, res) => {
         await existingHistoryEntry.save();
         res.status(201).json({ success: true, message: "entry updated" });
     } catch (error) {
-        console.error(error);
         res.status(500).send(`something unexpected went wrong\n ${error.message}`);
     }
 }
@@ -133,7 +131,6 @@ const deleteHistories = async (req, res) => {
         );
         res.status(200).json({ success: true, message: "History cleared" });
     } catch (error) {
-        console.error(error);
         res.status(500).send(`Something unexpected went wrong\n ${error.message}`);
     }
 }
