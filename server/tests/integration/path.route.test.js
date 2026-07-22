@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 describe("POST /api/path/find", () => {
     beforeAll(async () => {
+        await app.dbConnection;
     });
     afterAll(async () => {
         await mongoose.connection.close();
@@ -98,5 +99,43 @@ describe("POST /api/path/find", () => {
                 optimisation: 0,
             });
         expect(response.status).toBe(500);
+    });
+
+    test("No paths", async () => {
+        const response = await request(app)
+            .post("/api/path/find")
+            .send({
+                startLocation: {
+                    roomNumber: "B-AHU2",
+                    building: "COM1",
+                    floor: 0
+                },
+                endLocation: {
+                    roomNumber: "B-09",
+                    building: "COM1",
+                    floor: 0
+                },
+                optimisation: 0,
+            });
+        expect(response.status).toBe(500);
+    });
+
+    test("Src == Dst", async () => {
+        const response = await request(app)
+            .post("/api/path/find")
+            .send({
+                startLocation: {
+                    roomNumber: "B-09",
+                    building: "COM1",
+                    floor: 0
+                },
+                endLocation: {
+                    roomNumber: "B-09",
+                    building: "COM1",
+                    floor: 0
+                },
+                optimisation: 0,
+            });
+        expect(response.status).toBe(200);
     });
 });

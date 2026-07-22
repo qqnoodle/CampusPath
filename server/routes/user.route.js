@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/history", getHistories);
 router.post("/history", addHistory);
-router.post("/history", updateHistory);
+router.patch("/history", updateHistory);
 router.delete("/history", deleteHistories);
 
 router.post("/history/favourite", toggleFavouriteHistory);
