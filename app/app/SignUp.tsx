@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { authStyles } from '@/components/authStyles';
 
 export default function SignUpPage() {
-    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
 
     const [username, setUsername] = useState<string | null>();
     const [email, setEmail] = useState<string | null>();

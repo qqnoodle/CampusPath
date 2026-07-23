@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 
 export default function LoginPage({ setLoggedIn }: { setLoggedIn: (status: boolean) => void }) {
 
-    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
 
     const [username, setUsername] = useState<string | null>();
     const [password, setPassword] = useState<string | null>();

@@ -7,7 +7,7 @@ import { authStyles } from '../components/authStyles';
 import { OtpType } from '../types/OtpTypes';
 
 export default function ForgotPasswordScreen() {
-    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path-ixv0fv9ps-qqnoodles-projects.vercel.app/api";
+    const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
 
     const [userIdentifier, setUserIdentifier] = useState<string | null>();
 
