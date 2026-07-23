@@ -1,6 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { toPixel, parseNodeId } from './MapDisplay';
+import Svg, { Path } from 'react-native-svg';
+import {
+    ArrowUp,
+    ArrowLeft,
+    ArrowRight,
+    ArrowUpLeft,
+    ArrowUpRight,
+    ArrowUpDown,
+    Play,
+    Square,
+    LucideIcon,
+} from 'lucide-react-native';
 
 
 import { Node } from '../types/Node';
@@ -102,16 +114,33 @@ function buildTurns(nodes: Node[], containerW: number, containerH: number, src: 
     return steps;
 }
 
-const TURN_ICONS: Record<TurnType, string> = {
-    start: '▶',
-    end: '■',
-    forward: '↑',
-    left: '←',
-    right: '→',
-    'slight-left': '↖',
-    'slight-right': '↗',
-    stair: '└┐',
-    lift: '⬆⬇',
+const StairsIcon = ({ size = 16, color = '#334155' }: { size?: number; color?: string }) => (
+    <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <Path d="M4 20h4v-4h4v-4h4v-4h4" />
+    </Svg>
+);
+
+type IconComponent = LucideIcon | typeof StairsIcon;
+
+const TURN_ICONS: Record<TurnType, IconComponent> = {
+  start: Play,
+  end: Square,
+  forward: ArrowUp,
+  left: ArrowLeft,
+  right: ArrowRight,
+  'slight-left': ArrowUpLeft,
+  'slight-right': ArrowUpRight,
+  stair: StairsIcon, // custom SVG, see below
+  lift: ArrowUpDown,
 };
 
 const turnIconStyle: Record<TurnType, object> = {
@@ -126,6 +155,18 @@ const turnIconStyle: Record<TurnType, object> = {
     lift: { backgroundColor: '#da8ee7' },
 };
 
+const turnIconColor: Record<TurnType, string> = {
+    start: '#16a34a',
+    end: '#dc2626',
+    forward: '#334155',
+    left: '#2563eb',
+    right: '#b45309',
+    'slight-left': '#2563eb',
+    'slight-right': '#b45309',
+    stair: '#7e22ce',
+    lift: '#7e22ce',
+};
+
 //  Component
 
 export default function PathDirections({ path, containerW, containerH, src, dst }: PathDirectionsProps) {
@@ -138,14 +179,17 @@ export default function PathDirections({ path, containerW, containerH, src, dst 
     return (
         <View style={styles.turnsCard}>
             <Text style={styles.turnsTitle}>Directions</Text>
-            {turns.map((step, i) => (
-                <View key={i} style={styles.turnRow}>
-                    <View style={[styles.turnIcon, turnIconStyle[step.type]]}>
-                        <Text style={styles.turnIconText}>{TURN_ICONS[step.type]}</Text>
+            {turns.map((step, i) => {
+                const Icon = TURN_ICONS[step.type];
+                return (
+                    <View key={i} style={styles.turnRow}>
+                        <View style={[styles.turnIcon, turnIconStyle[step.type]]}>
+                            <Icon size={16} color={turnIconColor[step.type]} />
+                        </View>
+                        <Text style={styles.turnLabel}>{step.label}</Text>
                     </View>
-                    <Text style={styles.turnLabel}>{step.label}</Text>
-                </View>
-            ))}
+                );
+            })}
         </View>
     );
 }
