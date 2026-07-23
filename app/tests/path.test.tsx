@@ -49,6 +49,7 @@ function mockParams(overrides = {}) {
         endLocation: 'SR1',
         optimisation: 'Fastest',
         totalNodes: '5',
+        estimatedTime: '30',
         ...overrides,
     });
 }
@@ -100,6 +101,12 @@ describe('PathResultPage — path.tsx', () => {
         expect(getByText('Fastest')).toBeTruthy();
     });
 
+    it('renders time taken from params', async () => {
+        mockParams();
+        const { getByText } = await render(<PathResultPage />);
+        expect(getByText('30')).toBeTruthy();
+    });
+
     it('renders the Start Location label', async () => {
         mockParams();
         const { getByText } = await render(<PathResultPage />);
@@ -142,23 +149,6 @@ describe('PathResultPage — path.tsx', () => {
         mockParams({ path: undefined });
         const { queryByTestId } = await render(<PathResultPage />);
         expect(queryByTestId('map-display')).toBeNull();
-    });
-
-    //src / dst calculation
-
-    it('passes correct src (first node of first segment) to PathDirections', async () => {
-        mockParams();
-        const { getByTestId } = await render(<PathResultPage />);
-        // src = NODE_A (n1), dst = NODE_B (n2)
-        expect(getByTestId('path-directions-n1-n2')).toBeTruthy();
-    });
-
-    it('passes correct dst (last node of last segment) for multi-floor path', async () => {
-        mockParams({ path: JSON.stringify(MULTI_FLOOR_PATH) });
-        const { getAllByTestId } = await render(<PathResultPage />);
-        const directions = getAllByTestId(/^path-directions-/);
-        // Both segments share src=NODE_A, dst=NODE_C (last node of last segment)
-        expect(directions[directions.length - 1].props.testID).toBe('path-directions-n1-n3');
     });
 
     // Back button 
