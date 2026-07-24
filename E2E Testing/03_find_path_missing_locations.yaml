@@ -1,0 +1,8 @@
+appId: com.currycurry11.myapp
+---
+
+- launchApp:
+    clearState: true
+- tapOn: "Find Path"
+# App should not crash; loading indicator may flash then disappear on error.
+- assertVisible: "FIND PATH"

@@ -1,0 +1,1 @@
+export type OtpType = "ACCOUNT-ACTIVATION" | "PASSWORD-RESET"

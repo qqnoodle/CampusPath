@@ -23,6 +23,18 @@ const MAP_IMAGES: Record<string, ImageSourcePropType> = {
     COM1_1: require('../images/COM1_1.jpg'),
     COM1_2: require('../images/COM1_2.jpg'),
     COM1_3: require('../images/COM1_3.jpg'),
+    COM2_B1: require('../images/COM2_B1.jpg'),
+    COM2_1: require('../images/COM2_1.jpg'),
+    COM2_2: require('../images/COM2_2.jpg'),
+    COM2_3: require('../images/COM2_3.jpg'),
+    COM2_4: require('../images/COM2_4.jpg'),
+    COM3_B1: require('../images/COM3_B1.jpg'),
+    COM3_1: require('../images/COM3_1.jpg'),
+    COM3_2: require('../images/COM3_2.jpg'),
+    COM4_2: require('../images/COM4_2.jpg'),
+    COM4_3: require('../images/COM4_3.jpg'),
+    COM4_4: require('../images/COM4_4.jpg'),
+    COM4_5: require('../images/COM4_5.jpg'),
 
 };
 

@@ -1,0 +1,20 @@
+appId: com.currycurry11.myapp
+---
+
+- launchApp:
+    clearState: true
+- tapOn: "Profile"
+
+# Not logged in 
+- assertVisible: "Welcome Back"
+
+- tapOn: "Your Username"
+- inputText: "FOOL"
+- tapOn: "Your Password"    
+- inputText: "123Ab!"
+- tapOn: "Login"
+
+# Logged in -> Sign Out button should now be visible
+- assertVisible: "Sign Out"
+- tapOn: "Sign Out"
+- assertVisible: "Welcome Back"

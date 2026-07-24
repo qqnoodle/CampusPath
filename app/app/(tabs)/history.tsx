@@ -12,6 +12,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { getHistory, clearHistory, HistoryEntry, formatTimestamp, toggleFavourite, updateEntry } from '../../components/pathHistory';
 import { Node } from '../../types/Node';
 
+
+const formatTime = (timeInSeconds: number): string => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+
+    return `${minutes} minutes ${seconds} seconds`;
+};
+
 function routeSummary(startLocation: string, endLocation: string, path: Node[][]): string {
     if (!path || path.length === 0) return 'Unknown route';
     const startBuilding = path[0][0]?.building;
@@ -34,13 +42,13 @@ export default function HistoryPage() {
     );
 
     const handleClear = async () => {
-            await clearHistory();
-            setHistory([]);
+        await clearHistory();
+        setHistory([]);
     };
 
     const handleToggleFavourite = async (id: string) => {
         await toggleFavourite(id);
-        const updatedHistory = await getHistory();  
+        const updatedHistory = await getHistory();
         setHistory(updatedHistory);
     };
 
@@ -50,6 +58,7 @@ export default function HistoryPage() {
             pathname: '/path',
             params: {
                 path: JSON.stringify(entry.path),
+                estimatedTime: entry.estimatedTime,
                 startLocation: entry.startLocation,
                 endLocation: entry.endLocation,
                 optimisation: entry.optimisation,
@@ -85,6 +94,7 @@ export default function HistoryPage() {
             {history.map((entry) => (
                 <TouchableOpacity
                     key={entry.id}
+                    testID={`card-${entry.id}`}
                     style={styles.card}
                     onPress={() => handleReplay(entry)}
                     activeOpacity={0.7}
@@ -102,20 +112,21 @@ export default function HistoryPage() {
                                     {entry.optimisation}
                                 </Text>
                             </View>
-                            <Text style={styles.cardNodes}>{entry.totalNodes} nodes</Text>
+                            <Text style={styles.cardNodes}>Estimated {formatTime(entry.estimatedTime)}</Text>
                             <Text style={styles.cardTime}>{formatTimestamp(entry.timestamp)}</Text>
                         </View>
                     </View>
                     {/* Favourtie button */}
-                    <Pressable 
+                    <Pressable
                         onPress={() => handleToggleFavourite(entry.id)}
+                        testID={`star-${entry.id}`}
                         hitSlop={10}
                         style={styles.starButton}
                     >
-                        <Ionicons 
-                        name={entry.favourite ? 'star' : 'star-outline'} 
-                        size={20} 
-                        color={entry.favourite ? '#f59e0b' : '#cbd5e1'}
+                        <Ionicons
+                            name={entry.favourite ? 'star' : 'star-outline'}
+                            size={20}
+                            color={entry.favourite ? '#f59e0b' : '#cbd5e1'}
                         />
                     </Pressable>
                 </TouchableOpacity>
@@ -137,6 +148,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        marginTop: 15,
         marginBottom: 20,
     },
     title: {
