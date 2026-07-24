@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import ResetPasswordScreen from '../app/resetPasswordScreen';
-import { jest, expect, it, beforeEach, afterEach, describe } from '@jest/globals';
 
 //  Mocks 
 
@@ -56,7 +55,7 @@ beforeEach(() => {
     mockGetItem.mockResolvedValue('reset-token-abc');
     mockDeleteItem.mockResolvedValue(undefined);
 });
-afterEach(async () => { await act(async () => { }); cleanup(); });
+afterEach(async () => { await act(async () => {}); cleanup(); });
 
 //  Tests 
 

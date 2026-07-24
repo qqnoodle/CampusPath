@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import HistoryPage from '../app/(tabs)/history';
-import { jest, expect, it, beforeEach, afterEach, describe } from '@jest/globals';
 
 // create mock expo-router 
 jest.mock('expo-router', () => ({
@@ -83,7 +82,7 @@ beforeEach(() => {
 });
 
 afterEach(async () => {
-    await act(async () => { });
+    await act(async () => {});
     cleanup();
 });
 
@@ -97,7 +96,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([]);
         const { getByText, queryByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         expect(getByText('No searches yet')).toBeTruthy();
         expect(getByText('Your recent routes will appear here.')).toBeTruthy();
@@ -108,7 +107,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([]);
         const { queryByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         expect(queryByText('LT1')).toBeNull();
     });
@@ -131,7 +130,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
         const { queryByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         expect(queryByText('No searches yet')).toBeNull();
     });
@@ -140,7 +139,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
         const { getByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         expect(getByText('Clear all')).toBeTruthy();
     });
@@ -151,7 +150,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
         const { getByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         // same building: "COM1 · LT1 → SR1"
         expect(getByText('COM1 · LT1 → SR1')).toBeTruthy();
@@ -161,7 +160,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([CROSS_BUILDING_ENTRY]);
         const { getByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         // cross building: "COM1 · LT2 → COM2 · SR2"
         expect(getByText('COM1 · LT2 → COM2 · SR2')).toBeTruthy();
@@ -172,7 +171,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([emptyPathEntry]);
         const { getByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         expect(getByText('Unknown route')).toBeTruthy();
     });
@@ -183,7 +182,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
         const { getByText, queryByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
         expect(getByText('Clear all')).toBeTruthy();
 
         await act(async () => {
@@ -191,7 +190,7 @@ describe('HistoryPage — history.tsx', () => {
         });
 
         // Flush remaining state updates
-        await act(async () => { });
+        await act(async () => {});
 
         expect(mockClearHistory).toHaveBeenCalledTimes(1);
         expect(queryByText('Clear all')).toBeNull();
@@ -207,7 +206,7 @@ describe('HistoryPage — history.tsx', () => {
 
         const { getByTestId } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         await act(async () => {
             fireEvent.press(getByTestId('star-entry-1'));
@@ -223,7 +222,7 @@ describe('HistoryPage — history.tsx', () => {
 
         const { getByTestId } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         await act(async () => {
             fireEvent.press(getByTestId('star-entry-1'));
@@ -239,7 +238,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY]);
         const { getByTestId } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         await act(async () => {
             fireEvent.press(getByTestId('card-entry-1'));
@@ -262,7 +261,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([CROSS_BUILDING_ENTRY]);
         const { getByTestId } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         await act(async () => {
             fireEvent.press(getByTestId('card-entry-2'));
@@ -286,7 +285,7 @@ describe('HistoryPage — history.tsx', () => {
         mockGetHistory.mockResolvedValue([SAME_BUILDING_ENTRY, CROSS_BUILDING_ENTRY]);
         const { getByText } = await render(<HistoryPage />);
 
-        await act(async () => { });
+        await act(async () => {});
 
         expect(getByText('COM1 · LT1 → SR1')).toBeTruthy();
         expect(getByText('COM1 · LT2 → COM2 · SR2')).toBeTruthy();
