@@ -104,7 +104,7 @@ describe('PathResultPage — path.tsx', () => {
     it('renders time taken from params', async () => {
         mockParams();
         const { getByText } = await render(<PathResultPage />);
-        expect(getByText('30')).toBeTruthy();
+        expect(getByText('0 minutes 30 seconds')).toBeTruthy();
     });
 
     it('renders the Start Location label', async () => {
