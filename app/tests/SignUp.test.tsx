@@ -2,6 +2,8 @@ import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import SignUpPage from '../app/SignUp';
 
+import { jest, expect, it, beforeEach, afterEach, describe } from '@jest/globals';
+
 //  Mocks 
 
 jest.mock('expo-router', () => ({
@@ -53,7 +55,7 @@ async function fillForm(getByPlaceholderText: any, username = 'alice', email = '
 //  Setup / teardown 
 
 beforeEach(() => { jest.clearAllMocks(); });
-afterEach(async () => { await act(async () => {}); cleanup(); });
+afterEach(async () => { await act(async () => { }); cleanup(); });
 
 //  Tests 
 

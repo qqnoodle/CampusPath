@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import ForgotPasswordScreen from '../app/forgotPasswordScreen';
+import { jest, expect, it, beforeEach, afterEach, describe } from '@jest/globals';
 
 //  Mocks 
 
@@ -48,7 +49,7 @@ function buildFetchFailure(message = 'User not found') {
 //  Setup / teardown 
 
 beforeEach(() => { jest.clearAllMocks(); });
-afterEach(async () => { await act(async () => {}); cleanup(); });
+afterEach(async () => { await act(async () => { }); cleanup(); });
 
 //  Tests 
 

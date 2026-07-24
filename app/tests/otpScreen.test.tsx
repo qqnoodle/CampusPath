@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import OTPScreen from '../app/otpScreen';
+import { jest, expect, it, beforeEach, afterEach, describe } from '@jest/globals';
 
 //  Mocks 
 
@@ -75,7 +76,7 @@ function buildRefreshSuccess() {
 //  Setup / teardown 
 
 beforeEach(() => { jest.clearAllMocks(); });
-afterEach(async () => { await act(async () => {}); cleanup(); });
+afterEach(async () => { await act(async () => { }); cleanup(); });
 
 //  Tests 
 
@@ -87,7 +88,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
         setupParams('ACCOUNT-ACTIVATION');
         mockFetch.mockReturnValueOnce(buildRefreshSuccess());
         const { getByText } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
         expect(getByText('Verify Code')).toBeTruthy();
     });
 
@@ -95,7 +96,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
         setupParams('ACCOUNT-ACTIVATION');
         mockFetch.mockReturnValueOnce(buildRefreshSuccess());
         const { getByText } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
         expect(getByText('Enter the 6-digit code sent to you')).toBeTruthy();
     });
 
@@ -103,7 +104,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
         setupParams('ACCOUNT-ACTIVATION');
         mockFetch.mockReturnValueOnce(buildRefreshSuccess());
         const { getByText } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
         expect(getByText('← Return')).toBeTruthy();
     });
 
@@ -111,7 +112,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
         setupParams('ACCOUNT-ACTIVATION');
         mockFetch.mockReturnValueOnce(buildRefreshSuccess());
         const { getByText } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
         expect(getByText('Refresh OTP')).toBeTruthy();
     });
 
@@ -121,7 +122,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
         setupParams('ACCOUNT-ACTIVATION');
         mockFetch.mockReturnValueOnce(buildRefreshSuccess());
         await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
 
         expect(mockFetch).toHaveBeenCalledTimes(1);
         expect(mockFetch.mock.calls[0][0]).toContain('/auth/otp/refresh');
@@ -131,7 +132,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
         setupParams('ACCOUNT-ACTIVATION');
         mockFetch.mockReturnValueOnce(buildRefreshSuccess());
         await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
 
         expect(mockAlert).toHaveBeenCalledWith('OTP sent successfully');
     });
@@ -145,7 +146,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
             .mockReturnValueOnce(buildRefreshSuccess()); // button press
 
         const { getByText } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
 
         await act(async () => { fireEvent.press(getByText('Refresh OTP')); });
 
@@ -162,7 +163,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
             .mockReturnValueOnce(buildVerifySuccess());
 
         const { getByTestId } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
 
         await act(async () => { fireEvent.changeText(getByTestId('otp-input'), '123456'); });
 
@@ -182,7 +183,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
             .mockReturnValueOnce(buildVerifySuccess('tok-abc'));
 
         const { getByTestId } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
         await act(async () => { fireEvent.changeText(getByTestId('otp-input'), '123456'); });
 
         expect(mockSetItem).toHaveBeenCalledWith('jwtToken', 'tok-abc');
@@ -198,7 +199,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
             .mockReturnValueOnce(buildVerifySuccess('reset-tok'));
 
         const { getByTestId } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
         await act(async () => { fireEvent.changeText(getByTestId('otp-input'), '123456'); });
 
         expect(mockSetItem).toHaveBeenCalledWith('resetToken', 'reset-tok');
@@ -217,7 +218,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
             .mockReturnValueOnce(buildVerifyFailure('Invalid OTP'));
 
         const { getByTestId } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
         await act(async () => { fireEvent.changeText(getByTestId('otp-input'), '000000'); });
 
         expect(mockAlert).toHaveBeenCalledWith('Invalid OTP');
@@ -231,7 +232,7 @@ describe('OTPScreen — otpScreen.tsx', () => {
         setupParams('ACCOUNT-ACTIVATION');
         mockFetch.mockReturnValueOnce(buildRefreshSuccess());
         const { getByText } = await render(<OTPScreen />);
-        await act(async () => {});
+        await act(async () => { });
 
         await act(async () => { fireEvent.press(getByText('← Return')); });
         expect(mockNavigate).toHaveBeenCalledWith('/SignUp');

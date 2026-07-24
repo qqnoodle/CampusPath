@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import PathResultPage from '../app/path';
+import { jest, expect, it, beforeEach, afterEach, describe } from '@jest/globals';
 
 //   create mock expo-router 
 jest.mock('expo-router', () => ({
@@ -61,7 +62,7 @@ beforeEach(() => {
 });
 
 afterEach(async () => {
-    await act(async () => {});
+    await act(async () => { });
     cleanup();
 });
 

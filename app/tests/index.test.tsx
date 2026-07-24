@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, act, cleanup } from '@testing-library/react-native';
 import App from '../app/(tabs)/index';
+import { jest, expect, it, beforeEach, afterEach, describe } from '@jest/globals';
 
 jest.mock('../components/pathHistory', () => ({
     saveToHistory: jest.fn().mockResolvedValue(undefined),
@@ -92,7 +93,7 @@ beforeEach(() => {
     jest.clearAllMocks();
     mockSaveToHistory.mockResolvedValue(undefined);
     (global as any).alert = jest.fn();
-    
+
     // Default fetch mock — override per test as needed
     mockFetch.mockImplementation(() => Promise.resolve({
         ok: true,
@@ -103,7 +104,7 @@ beforeEach(() => {
 
 afterEach(async () => {
     // Wait for any pending state updates before unmounting
-    await act(async () => {});
+    await act(async () => { });
     cleanup();
 });
 
@@ -143,7 +144,7 @@ describe('App — index.tsx', () => {
 
     //  successful path 
 
-    
+
     it('calls fetch with correct body on success', async () => {
         mockFetch.mockReturnValueOnce(buildFetchSuccess());
         const { getByTestId, getByText } = await render(<App />);
@@ -163,7 +164,7 @@ describe('App — index.tsx', () => {
             endLocation: { roomNumber: 'SR1-room' },
         });
     });
-    
+
     /* not working because of secure storage
     it('saves to history with correct fields after a successful fetch', async () => {
         mockFetch.mockReturnValueOnce(buildFetchSuccess());
