@@ -17,6 +17,7 @@ export default function PathResultPage() {
         endLocation: string;
         optimisation: string;
         totalNodes: string;
+        from: string;
     }>();
 
     const formatTime = (timeInSeconds: number): string => {
@@ -24,6 +25,14 @@ export default function PathResultPage() {
         const seconds = timeInSeconds % 60;
 
         return `${minutes} minutes ${seconds} seconds`;
+    };
+
+    const handleBack = () => {
+        if (params.from === 'history') {
+            router.replace('/history');
+        } else {
+            router.replace('/'); 
+        }
     };
 
     const path: Node[][] = params.path ? JSON.parse(params.path) : [];
@@ -36,7 +45,7 @@ export default function PathResultPage() {
         <ScrollView style={styles.container}>
             {/* Header with back arrow */}
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()}>
+                <TouchableOpacity onPress={handleBack}>
                     <Text style={styles.backText}>← Back</Text>
                 </TouchableOpacity>
                 <Text style={styles.title}>Route</Text>
