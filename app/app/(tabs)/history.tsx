@@ -6,6 +6,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Pressable,
+    ActivityIndicator
 } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -35,6 +36,8 @@ function routeSummary(startLocation: string, endLocation: string, path: Node[][]
 export default function HistoryPage() {
     const [history, setHistory] = useState<HistoryEntry[]>([]);
 
+    const [isLoading, setLoading] = useState(false);
+
     useFocusEffect(
         useCallback(() => {
             getHistory().then(setHistory);
@@ -53,18 +56,26 @@ export default function HistoryPage() {
     };
 
     const handleReplay = async (entry: HistoryEntry) => {
-        await updateEntry(entry.id);
-        router.push({
-            pathname: '/path',
-            params: {
-                path: JSON.stringify(entry.path),
-                estimatedTime: entry.estimatedTime,
-                startLocation: entry.startLocation,
-                endLocation: entry.endLocation,
-                optimisation: entry.optimisation,
-                totalNodes: String(entry.totalNodes),
-            },
-        });
+        if (isLoading) return;
+        try {
+            setLoading(true);
+            await updateEntry(entry.id);
+            router.push({
+                pathname: '/path',
+                params: {
+                    path: JSON.stringify(entry.path),
+                    estimatedTime: entry.estimatedTime,
+                    startLocation: entry.startLocation,
+                    endLocation: entry.endLocation,
+                    optimisation: entry.optimisation,
+                    totalNodes: String(entry.totalNodes),
+                },
+            });
+        } catch (e: any) {
+            console.log("Something unexpected happened : ", e.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -131,6 +142,13 @@ export default function HistoryPage() {
                     </Pressable>
                 </TouchableOpacity>
             ))}
+
+            {isLoading && (
+                <ActivityIndicator
+                    testID="activity-indicator"
+                    size="large"
+                    style={{ marginTop: 10 }} />
+            )}
         </ScrollView>
     );
 }
