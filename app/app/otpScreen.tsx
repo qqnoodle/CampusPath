@@ -1,5 +1,5 @@
 
-import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
@@ -11,43 +11,53 @@ import { OtpType } from "../types/OtpTypes";
 export default function OTPScreen() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
 
+    const [isLoading, setLoading] = useState(false);
+
     const { username, purpose } = useLocalSearchParams<{
         username: string,
         purpose: OtpType
     }>();
 
     const verifyOTP = async (otp: string) => {
-        const OTP: number = Number(otp);
-        const response = await fetch(
-            `${API}/auth/otp/verify`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: username,
-                    otp: OTP,
-                    purpose: purpose
-                })
+        if (isLoading) return;
+        try {
+            setLoading(true);
+            const OTP: number = Number(otp);
+            const response = await fetch(
+                `${API}/auth/otp/verify`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: username,
+                        otp: OTP,
+                        purpose: purpose
+                    })
+                }
+            );
+            if (response.status !== 200) return alert(await response.text());
+            const { jwtToken } = await response.json();
+            switch (purpose) {
+                case 'ACCOUNT-ACTIVATION':
+                    await SecureStore.setItemAsync("jwtToken", jwtToken);
+                    router.navigate('/(tabs)/profile');
+                    break;
+                case 'PASSWORD-RESET':
+                    await SecureStore.setItemAsync("resetToken", jwtToken);
+                    router.push({
+                        pathname: `/resetPasswordScreen`,
+                        params: {
+                            username: username
+                        }
+                    });
+                    break;
             }
-        );
-        if (response.status !== 200) return alert(await response.text());
-        const { jwtToken } = await response.json();
-        switch (purpose) {
-            case 'ACCOUNT-ACTIVATION':
-                await SecureStore.setItemAsync("jwtToken", jwtToken);
-                router.navigate('/(tabs)/profile');
-                break;
-            case 'PASSWORD-RESET':
-                await SecureStore.setItemAsync("resetToken", jwtToken);
-                router.push({
-                    pathname: `/resetPasswordScreen`,
-                    params: {
-                        username: username
-                    }
-                });
-                break;
+            return;
+        } catch (e: any) {
+            console.error("Unexpected error:", e.message);
+        } finally {
+            setLoading(false);
         }
-        return;
     }
 
     const refreshOTP = async () => {
@@ -105,6 +115,14 @@ export default function OTPScreen() {
             <TouchableOpacity style={authStyles.secondaryButton} onPress={refreshOTP}>
                 <Text style={authStyles.secondaryButtonText}>Refresh OTP</Text>
             </TouchableOpacity>
+
+            {isLoading && (
+                <ActivityIndicator
+                    testID="activity-indicator"
+                    size="large"
+                    style={{ marginTop: 10 }} />
+            )}
+
         </View>
     );
 }

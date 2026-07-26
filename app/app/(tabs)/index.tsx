@@ -14,9 +14,9 @@ export default function App() {
     const [isLoading, setLoading] = useState(false);
 
     const findPath = async () => {
+        if (isLoading) return;
         setLoading(true);
         console.log("Fetching:", `${API}/path/find`);
-        console.log("API env:", API);
         try {
             const response = await fetch(`${API}/path/find`, {
                 method: 'POST',
@@ -37,7 +37,6 @@ export default function App() {
             });
 
             const data = await response.json();
-            console.log(data);
             if (!data.success) return alert("No available path to destination");
 
             // Save to history
@@ -59,6 +58,7 @@ export default function App() {
                     endLocation: endLocation?.name,
                     optimisation: data.optimisation,
                     totalNodes: String(data.totalNodes),
+                    from: 'index',
                 },
             });
 

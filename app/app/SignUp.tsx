@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { authStyles } from '@/components/authStyles';
@@ -6,43 +6,54 @@ import { authStyles } from '@/components/authStyles';
 export default function SignUpPage() {
     const API = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : "https://campus-path.vercel.app/api";
 
+    const [isLoading, setLoading] = useState(false);
+
     const [username, setUsername] = useState<string | null>();
     const [email, setEmail] = useState<string | null>();
     const [password, setPassword] = useState<string | null>();
 
     const handleSignUp = async () => {
-        if (!username) return alert("Empty Username");
-        if (!email) return alert("Empty Email");
-        if (!password) return alert("Empty Password");
+        if (isLoading) return;
+        try {
+            setLoading(true);
 
-        const SUCCESS = 201;
+            if (!username) return alert("Empty Username");
+            if (!email) return alert("Empty Email");
+            if (!password) return alert("Empty Password");
 
-        const accountDetail = JSON.stringify({
-            username: username,
-            email: email,
-            password: password
-        });
+            const SUCCESS = 201;
 
-        const response = await fetch(
-            `${API}/auth/signUp`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: accountDetail
-            }
-        );
-
-        if (response.status == SUCCESS) {
-            router.push({
-                pathname: `/otpScreen`,
-                params: {
-                    username: username,
-                    purpose: "ACCOUNT-ACTIVATION"
-                }
+            const accountDetail = JSON.stringify({
+                username: username,
+                email: email,
+                password: password
             });
-            return;
+
+            const response = await fetch(
+                `${API}/auth/signUp`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: accountDetail
+                }
+            );
+
+            if (response.status == SUCCESS) {
+                router.push({
+                    pathname: `/otpScreen`,
+                    params: {
+                        username: username,
+                        purpose: "ACCOUNT-ACTIVATION"
+                    }
+                });
+                return;
+            }
+            alert(await response.text());
+        } catch (e: any) {
+            console.log("Unexpected issue: ", e.message);
+        } finally {
+            setLoading(false);
         }
-        alert(await response.text());
         return;
     };
 
@@ -87,6 +98,13 @@ export default function SignUpPage() {
             <TouchableOpacity style={authStyles.primaryButton} onPress={handleSignUp}>
                 <Text style={authStyles.primaryButtonText}>Sign Up</Text>
             </TouchableOpacity>
+
+            {isLoading && (
+                <ActivityIndicator
+                    testID="activity-indicator"
+                    size="large"
+                    style={{ marginTop: 10 }} />
+            )}
         </View>
     );
 }
