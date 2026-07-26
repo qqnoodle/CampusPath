@@ -58,6 +58,7 @@ export default function App() {
                     endLocation: endLocation?.name,
                     optimisation: data.optimisation,
                     totalNodes: String(data.totalNodes),
+                    from: 'index',
                 },
             });
 

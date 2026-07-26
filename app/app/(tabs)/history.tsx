@@ -69,6 +69,7 @@ export default function HistoryPage() {
                     endLocation: entry.endLocation,
                     optimisation: entry.optimisation,
                     totalNodes: String(entry.totalNodes),
+                    from: 'history',
                 },
             });
         } catch (e: any) {
